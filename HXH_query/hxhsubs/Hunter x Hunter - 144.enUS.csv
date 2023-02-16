@@ -1,0 +1,402 @@
+﻿Number;Start time in milliseconds;End time in milliseconds;"Text"
+1;10460;11740;"Do you need something?"
+2;11740;13740;"I heard that you're leaving tomorrow."
+3;14270;16870;"You're abandoning the election and your son?"
+4;16870;18490;"That bald fool!"
+5;18930;21370;"Why did he tell her?"
+6;21980;24160;"Why don't you stay and see this through?"
+7;24160;26060;"We already know the election's outcome."
+8;26060;28060;"I've had my fun."
+9;28450;31860;"Meeting that Leorio guy was the best part."
+10;32280;34380;"He shows a lot of promise."
+11;34380;35960;"What are you talking about?"
+12;35960;39300;"We're down to four candidates. 
+We don't know the outcome."
+13;39300;43270;"That's what I'm saying. 
+See? You do understand."
+14;124970;129980;"Approval x And x Coalition"
+15;131780;134860;"I plan on voting for you today."
+16;135220;136540;"See ya around."
+17;138560;140860;"What in the world are you talking about?"
+18;141470;142370;"Are you stupid?"
+19;142810;146080;"I'm saying the outcome will be 
+that there is no outcome!"
+20;146080;148620;"Want to know how many days 
+it'll be before this is over?"
+21;148950;151130;"How can you possibly know that?"
+22;151130;154540;"Because you and Mizai are in this to win."
+23;155260;159870;"But if you really wanted to win, 
+you should have tried harder before."
+24;161190;163550;"You needed to use any means necessary"
+25;163550;166750;"during the second or third 
+votes to secure a majority,"
+26;166750;169020;"and clear the turnout requirement."
+27;169380;171190;"Why are you telling me this now?"
+28;171190;173350;"It's easy to say whatever you want in hindsight."
+29;173350;176350;"If I'd warned you beforehand, 
+you'd have done the opposite."
+30;176830;179030;"You're so difficult!"
+31;179870;182540;"Well, I don't care if you think 
+this is hindsight speaking."
+32;183060;185160;"You can tell yourself that until the day this ends."
+33;185910;187430;"Wait!"
+34;187430;189200;"What do you want?"
+35;192140;193920;"I'll do as you say."
+36;194580;196120;"What should I do?"
+37;196120;198670;"You don't sound too happy about it."
+38;200970;203770;"I don't know what Pariston is thinking."
+39;205420;207480;"How do I beat him?"
+40;207480;212820;"Except you've never done anything 
+I've told you to do..."
+41;213570;218990;"Okay, I'll start with what Pariston's thinking, then."
+42;220440;222450;"He doesn't want to win."
+43;222950;225160;"But he doesn't want to lose, either."
+44;225850;227530;"That's what makes him strong."
+45;229600;232060;"What? How can that be?"
+46;232060;233790;"Yeah, I know."
+47;233790;240290;"Common sense tells you that people 
+who want to win are stronger, right?"
+48;240290;242930;"Nothing wrong with that. You're right."
+49;243900;246180;"And being right makes you predictable."
+50;246890;249170;"That goes especially for when you want to win"
+51;249640;252560;"a game where you're trying to secure votes."
+52;253750;255190;"Game?"
+53;255190;258780;"See? You thought I was being disrespectful, right?"
+54;258780;264200;"You're mad because you're big on morals, 
+balance, and sticking to the manual."
+55;265350;266970;"Look at me."
+56;266970;269320;"You're failing to act like a dog."
+57;269780;271200;"You're just being yourself."
+58;272450;277200;"Pariston is familiar with both sides 
+of you, so he knows that."
+59;277560;281720;"He knows exactly what you're 
+thinking and what you'll do next."
+60;282860;285630;"And even then, he doesn't want to win."
+61;285630;286970;"He's damn good, right?"
+62;287210;289310;"Then what do I do?"
+63;289310;290880;"I told you..."
+64;290880;294810;"If I tell you what to do, you'll never listen."
+65;295220;297480;"How many times must we go through this?"
+66;298870;302990;"Okay, I'll tell you what happens 
+if the game continues as is."
+67;303780;307490;"First, you and Pariston will be the ones 
+remaining after the next vote."
+68;307810;311620;"In the two-candidate vote after 
+that, first and second will flip."
+69;313010;316250;"And that's what will keep happening."
+70;318270;320750;"Pariston will probably try 
+to lower the turnout rate."
+71;321740;326510;"The Association Hunters he has 
+control over will refuse to vote."
+72;326980;328040;"Why?"
+73;328340;329680;"Like I said..."
+74;329680;332130;"He doesn't want to win or lose."
+75;332580;334770;"He'll drag things out until the very last day."
+76;335790;337840;"He's just looking to have fun."
+77;338290;340170;"He's like Netero and me."
+78;340520;343150;"Well, I get bored a lot more quickly..."
+79;343920;345900;"But he has more patience."
+80;346790;350280;"Of the four remaining candidates, 
+Pariston is the only one"
+81;351430;353160;"who carries on Netero's will."
+82;354880;357410;"You have no right to say that!"
+83;359900;361900;"You're only jealous of him."
+84;361900;365670;"Were you that fond of the dirty old man?"
+85;367120;368300;"Shut your mouth!"
+86;368300;369800;"Don't get too full of yourself!"
+87;370230;373310;"You just have to tell me the day 
+when this election will end,"
+88;373310;375310;"you stupid vagabond!"
+89;377210;378810;"Okay, I can do that..."
+90;379340;381760;"But before this is over, you 
+should learn to act in character."
+91;381760;383130;"You're impossible to talk to."
+92;385240;387130;"The day Netero blew himself up,"
+93;387870;391550;"one hundred large airships belonging 
+to the Hunter Association"
+94;391550;393450;"set off for East Gorteau."
+95;394140;395800;"There's no record of their departure."
+96;396440;399580;"All records show that they're 
+in hangars for maintenance."
+97;399910;401440;"You had no idea, did you?"
+98;401980;405710;"You should make friends with 
+some mechanics and pilots."
+99;406270;408150;"What are you talking about?"
+100;408780;411710;"They're recovering approximately 
+five thousand cocoons."
+101;412260;416120;"Cocoons containing chimera mutants."
+102;417670;419580;"They all have the ability to use <i>Nen</i>."
+103;420050;422780;"And they're all probably about to hatch."
+104;423860;426400;"Pariston plans to have some fun with them,"
+105;426840;429360;"now that he has such a huge playground."
+106;430060;432610;"The day the election ends will be 
+the day of the next Hunter Exam."
+107;432960;436840;"However, if the Commandments are reformed,"
+108;436840;439120;"the situation will change slightly."
+109;440260;442200;"You'll have to figure out the rest yourself."
+110;442710;443910;"Aren't you a Hunter?"
+111;448620;454680;"Okay, we will now hold the eighth vote 
+for the election of the 13th chairman."
+112;455350;460520;"Today, we will start by listening to speeches 
+from the four remaining candidates."
+113;460900;465780;"After some debate among the candidates, 
+we will move on to the vote."
+114;467880;470030;"How did this happen?"
+115;470930;473280;"Oh, I guess it's my fault..."
+116;474370;476460;"Now, first,"
+117;476460;480840;"we have comments from the 
+candidates who did not qualify."
+118;482370;487040;"First, I would like to thank everyone 
+who supported me. Thank you."
+119;487540;489250;"And if possible,"
+120;489250;496300;"going forward, I would ask those who had 
+faith in me to give your votes to Cheadle."
+121;496780;500090;"The Zodiacs are not united."
+122;500090;504700;"However, there are those among 
+us who share very similar goals."
+123;504700;507560;"And the one who shares my goal is Cheadle."
+124;508260;515470;"Her desire to maintain balance will lead 
+the Association in a better direction."
+125;517910;520370;"{\fad(316,309)}Where you people are now is not 
+my reality, so do what you want."
+126;521660;524330;"{\fad(278,265)}Ging!! Don't try to run while you're 
+ahead!! Get back here!!"
+127;527110;531390;"We will now begin the speeches 
+from the candidates."
+128;531390;533720;"There is one thing to note."
+129;534050;537220;"Everyone who's gathered inside the hall today"
+130;537220;544480;"will be asked to stay until the 13th 
+chairman has been selected."
+131;567610;568880;"Anyone inside?"
+132;569310;571030;"Only Tsubone and Canary."
+133;594720;595760;"How's Master Alluka?"
+134;596150;597570;"She's still asleep."
+135;597570;599290;"I'm waiting for her to wake up."
+136;606500;607790;"It won't be much longer."
+137;608600;610400;"Just a little longer, Gon!"
+138;639590;644200;"It's possible that we will 
+continue to have multiple ties,"
+139;644200;647620;"but we've arranged for all necessary provisions,"
+140;647620;652760;"so you can rest easy repeating the vote as 
+many times as necessary, be it for hours or days."
+141;652760;654840;"Let me repeat myself."
+142;655400;661090;"You may not leave this hall until the 
+13th chairman has been selected."
+143;661710;668540;"Now, we'll start with a speech from 
+the candidate in fourth, Mizaistom."
+144;670390;671560;"This is bad."
+145;674910;678990;"To eliminate Pariston, I will 
+serve as a sacrificial lamb."
+146;680720;682210;"I'll make this quick."
+147;682210;684480;"Of the four candidates on stage,"
+148;684480;686870;"I believe the one most qualified to be chairman"
+149;687660;689620;"is Cheadle."
+150;691300;693770;"I won't say that I'm not willing 
+to become chairman."
+151;693770;695590;"But it isn't my time."
+152;697220;701270;"First, I must train the Hunters under me,"
+153;701270;704010;"and work to become a Triple Hunter."
+154;705390;711020;"I would appreciate it if you'd respect my 
+wishes, and help end this election today."
+155;711930;713000;"That's all I have to say."
+156;716090;717520;"What should I say?"
+157;718190;722400;"Next, we have the candidate 
+in third, Cheadle-san."
+158;722400;723690;"All yours."
+159;725260;727550;"I'll also make this quick."
+160;727890;732290;"Ladies and gentlemen, I believe the 13th chairman"
+161;733410;735830;"should be Leorio."
+162;738280;739420;"That's all I have to say."
+163;742120;745600;"What is Cheadle up to?"
+164;746760;749030;"I'm not gonna be elected."
+165;749030;751680;"I don't even want to be elected."
+166;752180;754570;"But I guess I should say what I want."
+167;754570;757300;"My focus right now isn't this election, anyway."
+168;758570;761320;"Okay... Thank you."
+169;761320;765220;"Next, we have the candidate 
+in second, Leorio-san."
+170;765220;766340;"All yours."
+171;768100;770950;"You aren't smiling anymore, Pariston."
+172;771820;775710;"I won't let you have your way!"
+173;776220;777200;"Huh?"
+174;778190;782160;"Leorio-san, could you please speak?"
+175;783830;785820;"Leorio-san!"
+176;786890;788870;"Damn it, Leorio!"
+177;788870;790600;"Are you asleep?"
+178;790600;792840;"I'll strangle you!"
+179;794180;796290;"Ah! Me?"
+180;800620;803390;"Nope, I'm drawing a blank."
+181;803390;806740;"What am I doing up here?"
+182;807950;809800;"Forget it."
+183;809800;811490;"In that case..."
+184;814920;817120;"I'll just say what's on my mind."
+185;817720;823260;"If elected chairman, I'll treat the 
+Association like it belongs to me!"
+186;827340;833770;"My first command will be to order 
+all of you to help save Gon!"
+187;837730;841740;"This isn't where I should be right now."
+188;843290;849160;"Well, it isn't like I could help 
+Gon if I were with him..."
+189;850250;853410;"He's... Gon is fighting for his life now."
+190;854040;857320;"He's a buddy. A friend."
+191;859550;863300;"But I only found out recently."
+192;864510;868740;"While I was studying for myself,"
+193;869670;872290;"drinking, moving from place to place,"
+194;873130;875520;"jerking off, entertaining women,"
+195;876180;878440;"and surfing the Internet..."
+196;880100;882070;"He was fighting for others."
+197;882810;886130;"Alongside the former chairman and their allies."
+198;888410;894740;"One of them has put his life 
+on the line to save Gon."
+199;896350;900680;"All I could do was talk to Gon."
+200;901260;904460;"That's all I can do."
+201;905360;910240;"So if I become chairman, 
+I won't stop talking to you."
+202;912910;915360;"Please help save Gon!"
+203;915750;917130;"Use your heads!"
+204;917130;918750;"If you have an idea, take action!"
+205;920840;923240;"If there's something I can do, tell me."
+206;923240;924550;"I'll do anything!"
+207;929630;930360;"Ging..."
+208;931530;934870;"I think I understand why you 
+didn't avoid his punch."
+209;936660;941250;"Even from that moment, 
+you saw something in him."
+210;945730;948700;"I'm fine with having him as chairman."
+211;949640;954280;"Damn, I think I said more than I needed to."
+212;954280;956160;"Forget the part about jerking off."
+213;956780;957620;"I'm done."
+214;963150;965330;"If we're there to support him,"
+215;967480;971460;"I'm sure he'll make a good chairman."
+216;977280;980900;"Finally, we have the candidate 
+in first place, Pariston-san."
+217;980900;982150;"All yours."
+218;982880;985380;"Everyone, please be quiet!"
+219;986340;988080;"It's over, Pariston."
+220;988590;990880;"It doesn't matter what you say."
+221;991270;995390;"My eighty-seven votes, 
+Mizai's seventy-two votes,"
+222;995860;998270;"and the fifty-seven independent votes"
+223;998270;1001020;"will be added to Leorio's ninety-five."
+224;1001610;1004100;"That gives him three hundred, eleven votes."
+225;1004510;1007400;"He'll have over fifty percent of the vote."
+226;1008250;1011400;"The 13th chairman will be Leorio."
+227;1012070;1015080;"Everyone, please quiet down."
+228;1015080;1017910;"Refrain from using mobile phones."
+229;1019200;1023540;"Um, in a moment, I'm going to get loud."
+230;1026190;1029850;"Everyone, you can continue 
+talking on the phone."
+231;1029850;1032340;"This is the true Hunter spirit."
+232;1032790;1038240;"Once this election ends, I promise to 
+do everything I can to help Gon-kun."
+233;1039050;1044070;"However, we must keep that matter 
+separate from the election."
+234;1044070;1047190;"Of the remaining candidates, 
+the one most qualified to be chairman"
+235;1048370;1050190;"is Mizaistom-san."
+236;1054440;1064460;"Heart <font color="#434340">Is Valuable</font>"
+237;1055080;1056520;"There's something I've learned"
+238;1056520;1060710;"after serving as Chairman Netero's 
+Vice Chairman for three years."
+239;1060710;1064460;"There are three conditions a chairman needs."
+240;1064970;1066960;"First is combat ability."
+241;1067380;1071330;"This is an absolute necessity, 
+given our job requirements."
+242;1071330;1073710;"During the recent crisis, this was evident."
+243;1074310;1076220;"Second is experience."
+244;1076740;1079460;"Wisdom comes from experience!"
+245;1079460;1082850;"As a Hunter, you can never have 
+too many years of experience."
+246;1083750;1084850;"Why?"
+247;1085680;1090110;"Why do I feel so irritated when he's talking?"
+248;1090800;1093850;"And the third is caliber."
+249;1093850;1095240;"I know why..."
+250;1095240;1096520;"I understand him."
+251;1097780;1101240;"He never says what he truly thinks."
+252;1101240;1105320;"There aren't too many people who make you think"
+253;1105320;1109290;"that the Association would be in good 
+hands if they were chairman."
+254;1109600;1111780;"Cheadle lacks combat ability."
+255;1111780;1113750;"Leorio-san lacks experience."
+256;1114010;1116630;"Stop... Don't let emotions get the best of me."
+257;1117190;1120170;"And I lack all three!"
+258;1120170;1122670;"Hey, you were supposed to laugh."
+259;1123050;1126140;"I need to figure out what he's after."
+260;1128120;1134650;"I believe that Mizaistom-san is the only 
+one possessing all three qualities."
+261;1135410;1140910;"One hundred and twenty of Pariston's two 
+hundred ninety are Association Hunters."
+262;1142550;1144750;"Thirty of the votes come from"
+263;1144750;1149010;"the investigative and administrative 
+departments he heads."
+264;1149770;1152860;"Pariston is able to control those votes"
+265;1152860;1155920;"as he likes without any signs or speeches."
+266;1157530;1162200;"We will now move on to the 
+debate among the candidates."
+267;1163090;1165500;"Pariston's speech will create a split"
+268;1165500;1169300;"among the independents, who were all 
+most likely leaning toward Leorio."
+269;1169710;1171440;"I'm guessing this is how it will look."
+270;1171540;1179190;"{\fad(800,1)}Leorio: Leorio votes, Cheadle votes, Morel votes, Teradein votes 
+
+Pariston: Association Hunter and Administrative 
+Department votes, Pariston personal votes 
+
+Mizaistom: Mizai votes, Pariston votes 
+
+Cheadle: Mizai votes"
+271;1173500;1176760;"But that would just push the 
+election out another vote,"
+272;1176760;1178700;"which matches our goal."
+273;1180160;1184200;"Will something change during the debate?"
+274;1189580;1192210;"Fine, then... I'll figure this out myself!"
+275;1192810;1195030;"Can I go first, then?"
+276;1195030;1197090;"No, I go first."
+277;1197690;1201470;"As I said earlier, I'm not interested 
+in becoming chairman."
+278;1201470;1205770;"No, you said that you wouldn't say 
+you're not willing to become chairman."
+279;1205770;1209580;"However, this isn't about what you want, Mizai-san."
+280;1210500;1213570;"What matters is how the voters feel."
+281;1213570;1217830;"Sometimes, there are situations where a job 
+can only be done by a certain person."
+282;1217830;1219500;"That's where caliber comes in."
+283;1220570;1223960;"You shouldn't be talking about how you feel."
+284;1223960;1227650;"Stop the petty tricks, and let the voters decide."
+285;1228180;1230300;"You have the nerve to say that?"
+286;1231270;1233980;"But why is he pushing Mizai?"
+287;1233980;1237280;"Does he expect us"
+288;1237280;1240880;"to let greed get the better of 
+us and push Mizai to second?"
+289;1241670;1243920;"That will never happen!"
+290;1243920;1246890;"Because the votes for Leorio 
+are primarily independent."
+291;1247250;1251870;"If Leorio loses, they're likely to swing to Pariston."
+292;1252370;1254770;"But if Leorio remains,"
+293;1254770;1259630;"the votes previously cast for myself 
+and the openly anti-Pariston Mizai"
+294;1259630;1261150;"will go to Leorio."
+295;1261720;1265090;"He'll hold on to Teradein's anti-Zodiac votes,"
+296;1265090;1267850;"and the Morel votes are also anti-Pariston."
+297;1267850;1270510;"Meaning that they'll never switch to Pariston."
+298;1272080;1274040;"Got it, Mizai?"
+299;1274040;1275780;"Yeah, I understand."
+300;1276530;1279610;"Defeating Pariston is the ultimate goal."
+301;1280840;1283330;"As a Crime Hunter, I trust my instinct."
+302;1283940;1288660;"There's no proof, and it's entirely possible 
+that his hands are clean."
+303;1289050;1290060;"However..."
+304;1290970;1293710;"He definitely has underground ties."
+305;1294340;1298020;"We can't let him run rampant within 
+the Association any longer."
+306;1299250;1304300;"Since it appears that not even 
+Netero could rein him in..."
+307;1306180;1308330;"This election is where we must..."
+308;1309360;1311580;"...tear down Pariston's system."
+309;1316700;1321860;"And so, the eighth vote for 
+the 13th chairman begins."
+310;1404800;1406130;"The votes fly."
+311;1406130;1407450;"Is he defeated?"
+312;1407450;1411890;"As Killua takes Something's hand, 
+everything approaches its end."
+313;1411890;1414940;"Next time: Defeat x And x Reunion."

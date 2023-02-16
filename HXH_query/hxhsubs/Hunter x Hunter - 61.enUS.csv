@@ -1,0 +1,576 @@
+﻿Number;Start time in milliseconds;End time in milliseconds;"Text"
+1;7770;9040;"A field of green."
+2;9440;10940;"Stretching as far as I can see..."
+3;22950;24170;"I'm being watched."
+4;25320;26680;"Someone's out there..."
+5;110000;115050;"Invitation x And x Friend"
+6;127760;130270;"Anyway, I have to wait for Killua."
+7;143660;145700;"Yo, sorry to make you wait."
+8;145700;149990;"Do you feel something 
+constantly watching us?"
+9;149990;152140;"Yeah, eyes this persistent 
+can only be a human's."
+10;152780;154960;"So everyone's noticed."
+11;155290;159090;"Well, they can't be too good 
+if we can sense them from here."
+12;159570;160580;"Just ignore it."
+13;164380;165410;"We're being watched."
+14;166240;167060;"Killua!"
+15;167060;167980;"Sorry."
+16;168700;171200;"I don't see any nearby towns."
+17;171200;174470;"Yeah, but everyone headed 
+in the same directions."
+18;175880;177530;"They either went this way or that way?"
+19;177990;179420;"Huh? How did you know?"
+20;179760;181920;"Because that's where we're 
+being watched from."
+21;182310;186220;"But we still don't know 
+why they're watching us."
+22;186220;187240;"True."
+23;187800;189240;"Well, let's go."
+24;189720;193250;"Regardless of who's watching, we should 
+start by gathering information."
+25;195500;196850;"So, how did it go?"
+26;196850;197790;"Hmm?"
+27;197790;199350;"Your save data."
+28;199640;200130;"Book."
+29;202080;204130;"How many cards were inside?"
+30;204130;205850;"There weren't any cards inside."
+31;205850;207260;"Huh? For real?"
+32;207260;210110;"But there was a message from Ging."
+33;210480;211410;"What did he say?"
+34;211660;213400;"To enjoy the game."
+35;213870;216000;"Enjoy the game?"
+36;216440;220590;"But this doesn't really feel like a game."
+37;220590;221290;"Book."
+38;222220;225710;"What do you think about the rules?"
+39;226790;229910;"I still don't know enough yet."
+40;238810;240330;"What was that?"
+41;240960;242380;"Was it </i>Nen<i>?"
+42;243070;245680;"This must be your first 
+time playing this game."
+43;246630;248180;"I wonder if you're right."
+44;248810;251640;"Since you're carrying a book, 
+you must be a player."
+45;251640;252430;"Well, sure."
+46;254020;255800;"You can't fool me."
+47;255800;258500;"I know you're new to this game."
+48;258050;260940;"{\fad(166,1)}Steal 
+
+Reveal all free slots of 
+one target player. (Can 
+only be used on a player 
+who's been encountered 
+within the game.) 
+
+[LR][NORM]"
+49;258720;260940;"I can use the Steal card."
+50;263450;266450;"Casting Steal. 
+Select target player."
+51;269240;271450;"What is he doing?!"
+52;271730;273960;"Zefespa 
+
+Grecoloas 
+
+Killua 
+
+Gon"
+53;274150;276220;"Killua-kun and Gon-kun, huh?"
+54;277280;279040;"How do you know our names?"
+55;279040;281090;"How indeed?"
+56;282830;285970;"You have zero chance if you don't 
+know about the spell cards."
+57;287370;291790;"View Killua's free slots? 
+Yes      No"
+58;291950;296050;"No cards in Killua's free slots. 
+Steal card was consumed."
+59;294890;296570;"And that confirms it."
+60;297560;300910;"They're total newbies who just arrived."
+61;300910;302480;"And they're kids."
+62;302480;305490;"Adhesion 
+
+Complete data of one target 
+player's restricted slots will 
+be available at all times. 
+(Effect lasts until player 
+leaves the game.) 
+
+[SR][ATK]"
+63;302720;305490;"I don't wanna waste this spell on them."
+64;306970;309120;"{\fad(170,1)}Trace 
+
+Current location of one 
+target player will be 
+available at all times. 
+(Effect lasts until player 
+leaves the game.) 
+
+[SR][ATK]"
+65;307330;309120;"Trace should be good enough."
+66;309520;310680;"Trace on!"
+67;310680;311870;"Attack, Killua!"
+68;317880;320630;"You can't run from spells in this game!"
+69;323500;325130;"Killua, are you okay?"
+70;326560;327630;"My attack worked!"
+71;331320;333640;"What did you just do to me?"
+72;336060;338110;"This kid's dangerous!"
+73;340130;341650;"Return 
+
+Warp to a city 
+of your choice. 
+(Must be a city 
+you have visited.) 
+
+[LR][NORM]"
+74;340590;341650;"Return on!"
+75;342200;343150;"Take me to Masadora!"
+76;357580;359460;"Shizuku, Kortopi..."
+77;359990;361210;"Do you have a moment?"
+78;363240;364090;"Play the game?"
+79;364340;366340;"Yes, would you like to join me?"
+80;367000;370220;"Once we get home, 
+there's nothing for us to do."
+81;370220;372420;"You really want to clear this game?"
+82;372420;375510;"Actually, clearing it isn't my goal."
+83;375990;378730;"Then this relates to Troupe business?"
+84;379470;380100;"More or less."
+85;382470;383430;"Understood."
+86;383430;384310;"Sure."
+87;385750;388600;"Killua, how are you holding up?"
+88;388600;390910;"Hmm? I don't feel any different."
+89;390910;392680;"But I'm still worried."
+90;392680;395120;"He definitely did something to you."
+91;395570;397620;"No point in worrying about it now."
+92;397950;401840;"Hey, was he using <i>Nen</i> 
+when he said, "Trace on"?"
+93;401840;405260;"No, it's probably some magic 
+that only works in the game."
+94;405260;407150;"Magic? What kind?"
+95;407150;408300;"Beats me."
+96;408300;410430;"Well, we'll find out eventually."
+97;410430;411440;"Yeah."
+98;411440;413140;"Look, there's a town!"
+99;416660;420140;"{\fad(423,1)}Welcome to Antokiba, City of Prizes"
+100;420380;422400;"Are those the prizes?"
+101;422400;425150;"Wow, all these are prizes?"
+102;425150;426590;"Looks that way."
+103;426590;427830;"Oh, Killua..."
+104;427830;428530;"Look."
+105;429880;432530;""Antokiba Monthly Tournaments Schedule.""
+106;432530;434780;"There's a rock-paper-scissors 
+tournament this month."
+107;434780;438040;"{\an7\fad(405,1)}September: Rock-Paper-Scissors 
+
+Prize: Sword of Truth"
+108;435350;438040;"The prize is a Sword of Truth."
+109;438360;440450;"Is that an important item?"
+110;440450;441700;"Probably."
+111;442190;443420;"Look over there."
+112;444640;445580;"And over there."
+113;446580;448010;"Should we participate?"
+114;448010;449300;"Of course."
+115;449580;453500;"Then let's try to win all kinds of prizes."
+116;453500;455930;"We should also gather information."
+117;459580;461450;"Welcome!"
+118;461450;464620;"If you can finish this within thirty 
+minutes, you don't need to pay!"
+119;464620;467570;"In addition, you'll also receive 
+a Galgaida as your prize."
+120;464880;467570;"{\fad(210,1)}Galgaida 
+
+One of the island's 
+three greatest delicacies. 
+Delicious, despite its 
+appearance. The roe is 
+said to extend your life. 
+Good boiled or grilled."
+121;468050;469820;"Okay, begin!"
+122;473480;474750;"Hey, chef."
+123;474750;476770;"Do you know how to use magic?"
+124;476770;478140;"What's that?"
+125;478140;481260;"Who's the most knowledgeable 
+person in this city?"
+126;481260;483210;"Knowledgeable? What's that?"
+127;483990;486730;"This guy doesn't know anything."
+128;486730;490340;"He's probably just an in-game character."
+129;491010;493590;"Oh, no! You did it!"
+130;493940;496600;"Here is your prize, Galgaida."
+131;498530;500100;""1217."
+132;500490;502120;"F-185.""
+133;502560;504580;"What does that mean?"
+134;504580;506980;"Is this your first time seeing a card?"
+135;507090;509760;"{\fad(167,1)}Galgaida 
+
+One of the island's 
+three greatest delicacies. 
+Delicious, despite its 
+appearance. The roe is 
+said to extend your life. 
+Good boiled or grilled."
+136;507480;510390;"The left number is the item's card number,"
+137;510390;513990;"and the sequence on the right 
+ranks how difficult it is to obtain."
+138;514260;517750;"There are ten ranks, from SS to H."
+139;517750;520240;"F would be the third easiest."
+140;520770;525750;"The number next to the rank is the item's 
+maximum transformation limit."
+141;525970;529140;"Oh, which means this item card..."
+142;529140;531260;"Is nothing but junk."
+143;540310;541980;"I've never seen him around."
+144;541980;543520;"That's brutal."
+145;543830;545900;"He's one of the players who entered with us."
+146;546480;548290;"Hey, what happened?"
+147;548700;550620;"His body suddenly exploded."
+148;551060;553030;"From the inside."
+149;553450;556370;"We've only been inside the 
+game for a few hours,"
+150;556370;557530;"and someone's already dead."
+151;558120;560870;"And this corpse has a very real presence."
+152;560870;562910;"Hard to believe it's a game."
+153;563510;566690;"We're risking our lives here."
+154;569480;570470;"He disappeared?"
+155;571000;573020;"He probably went back to the real world."
+156;573340;574670;"Game over."
+157;575170;576550;"Hey, Killua."
+158;576790;579930;"Was the magic used on you earlier..."
+159;580630;581930;"I don't know."
+160;582110;583350;"Don't worry."
+161;584280;587190;"There's no such spell in this game."
+162;587190;588310;"Spell?"
+163;588800;592110;"As you just said, it's something like magic."
+164;595330;599210;"He died from another player's <i>Nen</i>."
+165;599210;599910;"<i>Nen</i>{\fscx40} {\fscx100}?"
+166;600400;603400;"Does that mean the players are 
+trying to kill each other?"
+167;603820;604990;"Why?"
+168;604990;606610;"Player hunting."
+169;607050;608450;"Player hunting?"
+170;608450;610670;"I can explain later."
+171;610960;613330;"Anyway, are you interested in teaming up?"
+172;613330;616170;"We know of a sure way to clear this game."
+173;616470;617130;"Huh?"
+174;617130;619430;"If you're interested, follow me."
+175;619920;622180;"My allies are waiting ahead."
+176;623340;624320;"What do we do?"
+177;625350;626910;"Sounds suspicious."
+178;626910;629400;"And we're already off to a bad start."
+179;630390;631440;"As I recall,"
+180;631770;636170;"on your way here, another player 
+used an attack spell on you."
+181;636920;639870;"Have you been watching us?"
+182;639870;640700;"Yeah."
+183;641030;642480;"And I wasn't the only one."
+184;642480;646140;"Lots of people keep an eye 
+on the starting point."
+185;646600;648600;"If you come, I'll explain why."
+186;649090;651710;"I can also tell you about the 
+spell that was cast on you."
+187;652010;653970;"You're being very nice."
+188;653970;656470;"There must be a catch."
+189;656470;657970;"We have no choice."
+190;658490;663180;"This game is difficult, 
+unpleasant, and frightening."
+191;663180;664920;"Once you realize that,"
+192;664920;667980;"you'll be more willing to accept our offer."
+193;669250;673570;"Well, it's your first time playing,"
+194;673570;677110;"so you could use the information..."
+195;677430;679270;"What makes you think it's our first time?"
+196;679770;683490;"We could be returning players."
+197;685480;686320;"Book."
+198;688270;691580;"This proves that you're beginners."
+199;692730;697490;"An experienced player would react 
+by summoning his own binder."
+200;697880;700670;"Because you need spell cards 
+to defend yourself."
+201;700670;703400;"Then the spell cast on Killua..."
+202;703810;705680;"Could only be stopped by another card."
+203;705680;708170;"Even when you aren't carrying any cards,"
+204;708170;709600;"you should still summon it."
+205;709880;711260;"It's an important bluff."
+206;712360;713100;"Book."
+207;714550;717810;"Hey, how do we obtain spell cards?"
+208;717810;722070;"The easiest method would be to 
+go to Masadora, City of Magic."
+209;722070;722860;"Masadora?"
+210;723090;724620;"Return 
+
+Warp to a city 
+of your choice. 
+(Must be a city 
+you have visited.) 
+
+[LR][NORM]"
+211;723780;724620;"Return on!"
+212;725470;726370;"Take me to Masadora!"
+213;726820;728910;"Killua, we should go with him."
+214;728910;731370;"I'm worried about the spell on you."
+215;732390;733310;"Okay?"
+216;735650;736540;"Sure..."
+217;746380;747940;"Is this everyone?"
+218;747940;749140;"Yeah."
+219;749140;751140;"Everyone else turned me down."
+220;751750;754210;"Let's get started, then."
+221;756400;760090;"Another player was just killed."
+222;760090;762930;"He arrived with the rest of you."
+223;763520;765160;"His stomach exploded."
+224;765810;767530;"It was the Bomber."
+225;767530;768580;"The Bomber?"
+226;769100;771660;"The victims aren't killed by spells."
+227;772380;777090;"No spell in this game is capable 
+of injuring people."
+228;777660;781420;"Which means that you won't be harmed or killed"
+229;781420;783680;"by any spell that's been cast on you."
+230;785060;787180;"There are forty different spells."
+231;787530;790800;"The one cast on you was an inspection spell."
+232;791210;793710;"Either Trace or Adhesion."
+233;794140;797940;"Trace 
+
+Current location of one 
+target player will be 
+available at all times. 
+(Effect lasts until player 
+leaves the game.) 
+
+[SR][ATK]"
+234;794480;796120;"In short,"
+235;796120;798990;"once the enemy uses these on you,"
+236;797940;801940;"Adhesion 
+
+Complete data of one target 
+player's restricted slots will 
+be available at all times. 
+(Effect lasts until player 
+leaves the game.) 
+
+[SR][ATK]"
+237;798990;801180;"he will then know everything about you."
+238;802190;803390;"I get it."
+239;803390;804530;"That's why..."
+240;807330;810930;"Some players wait near the starting point"
+241;810930;813950;"in order to cast these spells on new players."
+242;814430;817060;"As soon as a player obtains a valuable card,"
+243;817060;818620;"they'll show up and steal it."
+244;819600;822580;"In some cases, they kill their target."
+245;822580;824470;"Like the guy who just died?"
+246;824470;827120;"I won't be that easy to kill."
+247;827120;830470;"No, he was killed by something else."
+248;830950;834560;"There is a violent faction hunting players."
+249;835200;836730;"This was done by one of them..."
+250;837540;839730;"The Bomber."
+251;840210;841170;"Bomber..."
+252;842210;846830;"In this game, there are three 
+ways to acquire item cards."
+253;847250;848490;"Do you know what they are?"
+254;849730;850990;"Find them yourself."
+255;851520;853740;"Trade with other players."
+256;854200;856160;"Steal them from other players."
+257;856520;859250;"Yes, those are the three ways."
+258;859770;860900;"However,"
+259;860900;863750;"the number of players stealing 
+from others has recently increased."
+260;865050;869550;"That's due to the card's difficulty to obtain 
+and the card transformation limit system."
+261;871130;873880;"Players who can't obtain cards themselves"
+262;873880;876310;"choose to take them from others."
+263;876820;879790;"If those players resist, they're killed."
+264;880320;883400;"When they die, their ring disappears, 
+and their cards are lost."
+265;883770;886800;"However, it increases the transformation 
+limit of that type of card."
+266;888430;891350;"If you kill a player, you can't take his cards."
+267;891890;896090;"That rule was meant to keep 
+players from killing one another."
+268;896540;899590;"But now, it's backfiring."
+269;900270;902710;"It's been over ten years since the game's release."
+270;903140;905810;"If no one can find a way to beat it,"
+271;905810;907550;"the killing will only continue."
+272;908410;910940;"That's why we're trying to end this mess."
+273;910940;913050;"We're recruiting allies to clear this game."
+274;913400;914810;"We need your help."
+275;916500;918310;"How do you plan to obtain cards?"
+276;918450;920430;"1) Find them yourself."
+277;920430;922060;"2) Trade for them."
+278;922380;924090;"3) Steal them."
+279;924090;925440;"Which method will you use?"
+280;926430;927320;"3..."
+281;927570;930620;"I assume you mean to use all three methods,"
+282;930620;932680;"but 3 will be the primary method."
+283;932680;935830;"What, so you'll still use force?"
+284;935830;936760;"No!"
+285;936760;939450;"We won't use violence to reach our goal."
+286;939890;940670;"Spells."
+287;941590;942810;"You'll use spells."
+288;942810;943580;"Am I right?"
+289;943890;945080;"Correct."
+290;946680;949570;"There are certain spells for taking cards,"
+291;949570;951950;"and there are cards that 
+defend against those spells."
+292;951950;954600;"We'll focus on monopolizing these cards."
+293;955050;958570;"We're going to use the very 
+card transformation limit"
+294;958570;960100;"that's frustrated the players."
+295;960310;963180;"This is the only way to clear the game."
+296;963180;967100;"I have met many players, and they 
+all reached the same conclusion."
+297;967570;970620;"Even if you search for cards, 
+they'll be taken from you eventually."
+298;971550;975620;"Because this game is based on 
+players taking cards from each other."
+299;976180;978780;"We will ensure that we can take 
+cards from other players,"
+300;978780;980790;"while mitigating our risk of losing cards."
+301;981700;984720;"You're leaving out something important."
+302;984720;988250;"Upon clearing the game, 
+how will you split the reward?"
+303;988620;992260;"You were hired by Mr. Battera, right?"
+304;992700;994900;"So you knew who we were when you invited us."
+305;994900;995600;"Yeah."
+306;996290;999630;"Mr. Battera also hired us to play this game."
+307;999630;1002470;"That means the reward will be 50 billion."
+308;1002790;1005020;"We'll split it among everyone who helps."
+309;1005440;1007730;"Currently, we have fifty-three players."
+310;1008230;1010880;"It'll take two months to collect 
+the remaining spell cards,"
+311;1011420;1013030;"and one month to get the cards we need."
+312;1013630;1014980;"We can finish in three months."
+313;1015760;1018530;"Of course, if you join us,"
+314;1018530;1021520;"we'll remove any spells cast on you."
+315;1024430;1025290;"I'm in."
+316;1025670;1028890;"I don't like the idea of splitting the 50 billion."
+317;1028890;1032300;"But I like the three month schedule 
+for clearing the game."
+318;1032760;1033830;"What about you?"
+319;1034740;1035970;"I have a question."
+320;1036440;1041560;"If I obtain an SS rank card on 
+my own, what's my cut?"
+321;1041900;1045940;"Naturally, you'd receive 500 million 
+for a card of that rank."
+322;1047350;1049320;"Okay, I'm in."
+323;1050000;1051820;"What about you two?"
+324;1053220;1055070;"Killua, sorry."
+325;1055070;1057070;"Hmm? What?"
+326;1058050;1059220;"I'm out."
+327;1059890;1061580;"I'm playing this game on my own."
+328;1065570;1067490;"You heard the leader."
+329;1067490;1068830;"I have to pass."
+330;1069590;1071590;"Hey, Gon! Wait up..."
+331;1074200;1075470;"What about you?"
+332;1078630;1080750;"We'll need you to first exit the game,"
+333;1080750;1083810;"so the spells placed on you can be removed."
+334;1084160;1088580;"Once you're back in the game, 
+wait by the starting point."
+335;1088580;1090310;"We'll come get you."
+336;1090930;1093860;"If you have any cards in your free slots,"
+337;1093860;1095760;"give them to me now."
+338;1096080;1096760;"Why?"
+339;1097230;1099000;"When you leave the game,"
+340;1099000;1102830;"the cards in your free slots disappear."
+341;1103050;1106310;"I believe your data automatically 
+saves when cards are"
+342;1106310;1108400;"put in or removed from restricted slots."
+343;1108400;1110350;"Yes, but your data disappears"
+344;1110350;1113460;"if you don't return within ten days."
+345;1113730;1119110;"If you don't return before then, 
+we'll assume that you gave up."
+346;1119110;1120090;"Got it?"
+347;1121540;1124100;"Don't worry, we're being joined by an ally."
+348;1127100;1128890;"We don't know if anyone's watching."
+349;1129390;1130350;"Let's get started."
+350;1131000;1133860;"Leave 
+
+Send one 
+target player 
+off the island. 
+
+[SR][NORM]"
+351;1131240;1133860;"I'll be using the Leave card."
+352;1135090;1137610;"Hey, Gon..."
+353;1137610;1139810;"Will you explain what that was about?"
+354;1144210;1145680;"Sorry, Killua."
+355;1145680;1147910;"I couldn't take it anymore."
+356;1147910;1151000;"I still don't get why you're apologizing."
+357;1151000;1155600;"But this means you'll be stuck 
+with that spell for a while."
+358;1155600;1157800;"Oh, that's why."
+359;1157800;1159260;"It's not a big deal."
+360;1159260;1162130;"But you're playing this game"
+361;1162130;1164770;"to help me find my dad..."
+362;1166360;1167390;"You're wrong."
+363;1167980;1170110;"I'm playing this game because..."
+364;1170790;1173520;"Anyway, why were you so mad?"
+365;1173810;1178050;"Because they had nothing 
+but bad things to say about"
+366;1178050;1182030;"the game Ging made, like how 
+it's based on killing and stealing."
+367;1182740;1186850;"I want to do what Ging said, 
+and enjoy the game."
+368;1187330;1189190;"When I first started,"
+369;1189190;1192040;"I knew it wouldn't be easy."
+370;1192380;1197600;"That was because I thought all the 
+players enjoyed playing the game."
+371;1198500;1200230;"People have died."
+372;1200660;1204840;"But it's the player mentality, 
+not the game, that scares me."
+373;1204840;1208550;"They're willing to hurt others to get cards."
+374;1208960;1209870;"Really?"
+375;1209870;1211430;"I think it makes sense."
+376;1212320;1214370;"Killua, you really mean that?"
+377;1214370;1217470;"That's why this game is meant for Hunters."
+378;1217470;1218420;"But..."
+379;1218420;1219940;"Killing is wrong."
+380;1219940;1221450;"I agree with you on that part."
+381;1222050;1225510;"But what if two players have a fair 
+fight with predetermined rules,"
+382;1225510;1228480;"and the winner gets to take a card?"
+383;1228480;1230130;"Th-That's acceptable."
+384;1230130;1230830;"See?"
+385;1231200;1233300;"When that guy cast a spell on me"
+386;1233300;1235430;"and when those guys carry out their plan,"
+387;1235430;1237840;"they're just following the game's rules."
+388;1238920;1239820;"Yeah."
+389;1240090;1242840;"Though it does still feel lame."
+390;1243120;1246050;"Well, forget about them."
+391;1246050;1248160;"Let's enjoy this game."
+392;1249440;1250480;"Killua..."
+393;1250480;1250980;"Hmm?"
+394;1251970;1252980;"Thanks."
+395;1254400;1256630;"I'm glad you came with me."
+396;1256630;1257480;"No..."
+397;1258310;1261630;"I'm glad I got to know you!"
+398;1262450;1263920;"Cut it out, stupid."
+399;1263920;1264790;"You're embarrassing me."
+400;1264790;1267990;"Why? I really mean it."
+401;1270420;1271490;"You've got it backwards."
+402;1272350;1274270;"Gon, I should thank you."
+403;1275140;1278660;"I'm the one who's glad"
+404;1278660;1279910;"that I got to know you..."
+405;1281750;1282910;"I understand."
+406;1282910;1284220;"So that's why."
+407;1285650;1290360;"Such a beautiful thing, the friendship 
+and innocence of two young boys."
+408;1291240;1294810;"I feel like messing with them."
+409;1298250;1301470;"Gon and Killua have 
+reaffirmed their friendship."
+410;1302380;1307480;"But who is the girl watching them?"
+411;1381150;1388150;"G.I. Tutorial"
+412;1381610;1384750;"Coming up, it's the Greed Island Tutorial!"
+413;1386910;1389310;"Today, we introduce the card Return."
+414;1388240;1399250;"Return 
+
+Warp to a city 
+of your choice. 
+(Must be a city 
+you have visited.) 
+
+[LR][NORM]"
+415;1389310;1391610;"This travel card lets you instantly warp"
+416;1391610;1394370;"to a city you've visited before."
+417;1394370;1395330;"Return on!"
+418;1395330;1396650;"Mito-san's place."
+419;1396650;1398300;"It only works for places inside the game."
+420;1398300;1399250;"Huh?"
+421;1399380;1401250;"Continue!"
+422;1406810;1409630;"Next time: Reality x And x Raw."
+423;1409630;1411820;"If you polish a raw diamond, you can make it shine!"
+424;1411820;1413180;"Hey, a shooting star!"
+425;1413180;1414350;"Shiny."

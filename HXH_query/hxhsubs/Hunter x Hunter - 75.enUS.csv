@@ -1,0 +1,500 @@
+﻿Number;Start time in milliseconds;End time in milliseconds;"Text"
+1;8880;10530;"Don't worry."
+2;11210;13160;"We aren't here to get in your way."
+3;13160;15030;"In fact, you could say we're here to help."
+4;15600;16530;"Help?"
+5;17010;18070;"Yeah."
+6;18070;21810;"If we get the top score on 
+the quiz and win the card,"
+7;21810;24040;"we want to sell it to you for 2.5 billion."
+8;24940;28270;"That's only five percent of your reward."
+9;28270;30050;"It's a reasonable price, yeah?"
+10;30540;32510;"Oh, right..."
+11;32510;35000;"They haven't heard about Battera yet."
+12;37100;39810;"Sure, if you get the top score."
+13;41080;44840;"Everyone else is here for the chance 
+to sell us the final card, too?"
+14;44840;46750;"With the game ending,"
+15;46750;50320;"they're all hoping to share in the reward."
+16;50850;54310;"It looks like they're going 
+to take the quiz in teams."
+17;54750;56500;"What should we do?"
+18;56500;59320;"What? We should do it by ourselves."
+19;59320;60320;"Yeah."
+20;60320;62760;"Whoever scores lower gets penalized."
+21;62760;64210;"Okay, I'm in!"
+22;65050;67960;"Honestly... They've got guts."
+23;68730;70750;"They just came from a fight to the death,"
+24;70750;74970;"and now they're facing the final event 
+in the game with such confidence."
+25;75560;79430;"I bet those two enjoyed this 
+game more than anyone."
+26;80420;82150;"Keep it up."
+27;163010;168060;"Ging's Friends x And x True Friends"
+28;169310;173440;"The quiz contest open to all players has begun."
+29;174100;177260;"Then I will now start the quiz."
+30;177910;179400;"Question one."
+31;179400;182820;"What is the name of the elder"
+32;182820;185980;"who gives an important hint 
+about #1, Patch of Forest?"
+33;185980;187330;"A: Hira."
+34;187330;188730;"B: Hida."
+35;188730;190250;"C: Hiso."
+36;190250;191690;"D: Mayu."
+37;191690;192830;"E: Hima."
+38;192830;195040;"Damn! I'm stumped on the first one!"
+39;195040;196240;"Five choices?"
+40;199120;204050;"What is the condition to obtain 
+#17, Breath of Archangel?"
+41;210950;212850;"I caught the Bomber."
+42;221970;223360;"#84,"
+43;223870;228290;"Paladin's Necklace, is offered as a prize 
+in a monthly tournament of what?"
+44;228670;229620;"Yes!"
+45;229620;232620;"B. Rock-Paper-Scissors 
+
+C. Two-Man Tug-of-War 
+
+D. Snowball Fight 
+
+E. Kick the Can"
+46;233250;234170;"Okay!"
+47;238250;240130;"And now for the final question..."
+48;240910;243340;"What is the name of card #0?"
+49;243340;245150;"A: Ruler's Banquet."
+50;245500;247180;"B: Ruler's Invitation."
+51;247640;249500;"C: Ruler's Reception."
+52;250790;251890;"Can't remember..."
+53;251890;253890;"C. Ruler's Reception 
+
+D. Ruler's Welcome 
+
+E. Ruler's Blessing"
+54;258560;259650;"The quiz is over."
+55;260020;263650;"I will now announce the player with the top score."
+56;267770;271510;"With a score of 87 out of 100 points,"
+57;274540;276040;"our top scoring player"
+58;278270;279830;"is Gon."
+59;281070;282940;"Yes!"
+60;282940;284550;"We have all one hundred!"
+61;287940;288990;"You did it."
+62;288990;290500;"I hate to say it, but you beat us..."
+63;290500;291420;"Congratulations."
+64;291730;292560;"Thanks."
+65;293170;295410;"That means Killua gets penalized."
+66;295410;296500;"Damn..."
+67;296500;298140;"How many points did I get?"
+68;310100;311870;"Ruler's Invitation?"
+69;311620;316580;"{\fad(1025,1)}Ruler's Invitation 
+
+An invitation from 
+this island's ruler. 
+The envelope contains 
+a map that shows the 
+castle and a badge. 
+Player must have badge 
+to enter the castle."
+70;312930;316580;"Looks like only the one with 
+the badge is invited."
+71;316880;319030;"So Limeiro is the capital?"
+72;319420;321680;"I have to go alone?"
+73;321680;323770;"We'll wait for you by the castle."
+74;331550;333910;"Hey, he really got it."
+75;333910;336110;"That kid really collected all the cards."
+76;336810;340930;"Hey, let's have a contest with 
+all your cards at stake."
+77;341250;344000;"Sorry, but you don't have a choice."
+78;360830;363470;"Then I'll take an Accompany card."
+79;363470;365050;"Wait, that won't work."
+80;365050;367070;"We haven't been to Limeiro before."
+81;367070;369480;"So we should use Drift..."
+82;369480;371640;"Since we've been to the other cities before."
+83;371680;375180;"{\fad(483,1)}Drift 
+
+Transports you to a 
+previously unvisited city. 
+(If all cities have been 
+visited, Drift is used, 
+without transporting player.)
+[SR][NORM]"
+84;372330;375890;"In that case, I'll use Drift to go to Limeiro,"
+85;375890;377250;"then come back for you guys."
+86;377250;379190;"Accompany will work after that."
+87;380020;381310;"Drift on!"
+88;392180;392990;"Bingo!"
+89;395930;399370;"{\fad(1258,1)}Accompany 
+
+Warp all players within 20 meters 
+of caster to city (must have been visited) 
+or player of your choice (must have 
+been met inside the game). 
+
+[SR][NORM]"
+90;397940;398940;"Let's go, Gon."
+91;398940;399370;"Yep."
+92;400520;401780;"Accompany on!"
+93;401780;402780;"Limeiro!"
+94;406390;408250;"Those kids are amazing."
+95;408250;410790;"They wiped the floor with the Belum brothers."
+96;410790;412780;"Of course..."
+97;412780;415350;"They even defeated the bombers."
+98;417220;418350;"It's true,"
+99;419340;424240;"those boys are much stronger 
+than when I first met them."
+100;424690;428610;"But they're still weaker than 
+Genthru in raw power."
+101;429120;431820;"{\fad(1,472)}They must have executed a brilliant plan..."
+102;433040;434320;"Well, no matter."
+103;434650;437610;"I'll let you have the reward for beating the game."
+104;438600;440410;"Magnetic Force on."
+105;440410;441730;"Chrollo Lucilfer."
+106;445850;451000;"I'll head back to reality and 
+make a fortune exorcising <i>Nen</i>."
+107;456290;458290;"I wonder what he's feeling."
+108;458290;459380;"What he's feeling?"
+109;459380;462270;"He might meet Ging, after all."
+110;462820;465380;"The father he's been searching for all this time."
+111;484120;487320;"Welcome to Greed Island Castle."
+112;492870;493880;"Come in."
+113;501670;502950;"This place is a dump!"
+114;502950;505520;"I've brought the top scorer, Gon-kun."
+115;506390;508650;"Oh, hey! I've been waiting for you!"
+116;509250;511710;"I hear you're Ging's son?"
+117;511710;513150;"Why don't you have a seat?"
+118;513610;515500;"Uh..."
+119;515500;517370;"Where should I sit?"
+120;518110;519450;"Isn't there any open space?"
+121;519840;521540;"Clear some space, then..."
+122;522100;522790;"Like this!"
+123;527740;528780;"Uh..."
+124;528780;530990;"Wait, where did I put it?"
+125;531620;532920;"Oh! Here it is!"
+126;534300;535230;"There you go."
+127;535680;540180;"Ruler's Blessing 
+
+Castle awarded to the 
+winner of the quiz. 
+Comes with capital city 
+(population 10,000). 
+The city's residents 
+will obey any laws or 
+commands you give."
+128;536140;538270;"Ruler's Blessing,"
+129;538270;540180;"the reward for the top scorer."
+130;540620;541720;"How about it?!"
+131;541720;542450;"Isn't it cool?"
+132;542450;544640;"Are you amazed? Well?"
+133;544640;547410;"There are 10,000 people in this city."
+134;547960;550320;"One of them could be..."
+135;550680;553430;"Wait, did I get your hopes up?"
+136;553430;554360;"Well?"
+137;554360;557820;"Or were you just thinking that 
+Ging could be the ruler?"
+138;557820;559420;"I was not!"
+139;559420;562080;"I never considered that Ging might be here."
+140;562430;563900;"Oh, really now?"
+141;563900;565390;"That's good, then..."
+142;565390;567040;"Since he's not."
+143;567290;570750;"Dwun-san, can we get to business?"
+144;570750;572050;"Oh, my bad."
+145;575260;576250;"Listen up."
+146;576250;580530;"You've collected all one hundred cards."
+147;580920;583680;"Which triggers a new event."
+148;583680;585560;"Hmm..."
+149;585960;587560;"Oh, here it is!"
+150;589580;590430;"This is it."
+151;591390;592530;"Open it up."
+152;593680;598390;"You can place three restricted 
+slot cards in this binder."
+153;598390;602750;"You can then take those three back 
+for use in the real world."
+154;603120;604590;"However!"
+155;604590;607990;"You cannot take multiple 
+copies of the same card."
+156;607990;614490;"You must choose three different restricted 
+slot cards from the hundred in your binder."
+157;617090;621220;"Okay, you've reached the ending..."
+158;621720;625570;"Do you want the normal ending, 
+or the ending just for you?"
+159;626020;627100;"Just for me?"
+160;627100;628820;"Yep, that's right."
+161;628820;630500;"Which one do you want? Well?"
+162;632370;633940;"Then I'll take the normal one."
+163;634820;636110;"Why would you choose that one?"
+164;636460;639300;"I didn't clear the game alone, and if it's"
+165;639300;641860;"the normal ending, my friends 
+can watch with me, right?"
+166;643050;644430;"I see..."
+167;644430;645540;"Dwun-san?"
+168;645540;645870;"Huh?"
+169;646570;648900;"Would you stop teasing him?"
+170;648900;650160;"I'm sorry..."
+171;650160;652880;"There's no such thing as an ending just for you."
+172;652880;654840;"What? Really?"
+173;654840;659630;"However, there's a message we've been told 
+to give you only after you beat the game."
+174;662000;665330;"Sorry for taking so long to introduce ourselves."
+175;665740;667100;"I'm List."
+176;667100;668340;"He's Dwun."
+177;668340;672400;"As you probably know, 
+we're friends of your old man."
+178;673380;677340;"This game was created by Ging 
+and ten of his friends."
+179;678200;680330;"The name "Greed Island" was created"
+180;680330;684310;"from the first letter in each of their names."
+181;684950;687910;"Your father was in charge,"
+182;687910;692020;"so we wanted a word that began 
+with "G," and settled on "Greed.""
+183;692640;694300;"Have you met Razor?"
+184;694300;696780;"He's the "R," and I'm the "L.""
+185;697220;699860;"The girl who explains the game at the start"
+186;699860;702610;"is the twin of the girl you see 
+when leaving the island."
+187;702610;704120;"Eeta and Elena."
+188;704120;706320;"Both names begin with "E.""
+189;707670;710240;"And then, we have "D"!"
+190;710600;713150;"Wanna hear my story? Well?"
+191;713150;714840;"Yeah? Yeah? Yeah?"
+192;714840;716150;"Y-Yeah..."
+193;716710;718130;"Okay, pay attention."
+194;718840;721650;"You see, that Ging..."
+195;722860;726890;"was a totally mean guy!"
+196;726890;728430;"Totally mean!"
+197;730510;732400;"My name is Dwun!"
+198;732400;734170;"What do you think is the first letter?"
+199;734520;736420;"Huh? Isn't it "D"?"
+200;737410;739300;"Even you, huh?"
+201;739620;741150;"Of course you'd think so..."
+202;741150;743330;"After all, you're Ging's son."
+203;743330;745180;"Weren't we talking about "D"?"
+204;745180;747700;"It's "W!" "W!""
+205;747700;751480;"W-d-w-u-n-e."
+206;751480;752450;"Wdwune!"
+207;752710;754060;"That was my name!"
+208;754480;758570;"But even my oldest friends 
+thought it began with "D.""
+209;759460;762870;"So when we decided on the 
+game's name, I was clear..."
+210;762870;765520;"That my name began with "W.""
+211;765520;768080;"What do you think Ging said?"
+212;768660;769650;"Really?"
+213;769650;771240;"Then, ditch the "W.""
+214;771630;775480;"Starting now, your name is D-w-u-n..."
+215;775480;776530;"Dwun."
+216;779490;780960;"Can you believe him?"
+217;781480;784220;"He changed my name without asking."
+218;784220;787360;"Just so the title of the game would work!"
+219;787360;788860;"What's really amazing"
+220;788860;792970;"is that Ging had legally changed 
+the name a minute later."
+221;792970;795230;"He only needed a phone and a computer."
+222;795920;801230;"What's worse is that he even removed 
+the "E" because he got confused!"
+223;801470;804890;"But your luck has been better as a result."
+224;805200;807900;"I guess! Ever since..."
+225;842820;847040;"Once I've chosen the three cards, 
+I'm supposed to go to the port."
+226;847430;850030;"Did they tell you about your father?"
+227;850390;854420;"Yeah, but they don't know 
+where he is right now."
+228;854420;855760;"Oh..."
+229;855760;859470;"So I guess the game didn't have any clues."
+230;860020;863170;"Well, that's what the starting message said."
+231;863430;865190;"Yeah, that's true."
+232;865190;868600;"So, what will you do for the three cards?"
+233;868600;871050;"How about we each pick one?"
+234;871050;873930;"Blue Planet 
+
+A gemstone with an 
+incomparable blue shine. 
+Its composition matches 
+no known minerals, 
+so it's named for its 
+otherworldly nature."
+235;871640;874540;"Then I want Blue Planet!"
+236;874540;876410;"This is still the best one!"
+237;877170;879690;"I can't wait to see the real thing..."
+238;880630;882390;"Which one do you want, Killua?"
+239;883880;885330;"I'm still thinking."
+240;885330;886780;"Have you decided, Gon?"
+241;886780;888700;"Yeah, I think so."
+242;888700;890220;"Really? Which one?"
+243;890650;891950;"Let's see..."
+244;892830;893630;"This one."
+245;893630;894640;"Which one?"
+246;896180;898480;"Wait, why this one?"
+247;898920;900050;"I get it."
+248;900350;901690;"That makes sense."
+249;901690;904210;"You're only allowed to take 
+restricted slot cards..."
+250;904870;906590;"Yep, that sounds fun!"
+251;907250;908790;"When did you have the idea?"
+252;910460;912090;"The moment I saw this card."
+253;912090;915910;"Paladin's Necklace 
+
+When a player wears this, 
+all spells targeting player 
+will be reflected. 
+Can also dispel curses 
+placed on any card 
+touched by player."
+254;912870;915340;"But this one won't be enough."
+255;915340;917360;"Right, we also need this one."
+256;915910;918100;"Transform 
+
+Change one card in your possession into any 
+other card in your possession. (Card will now 
+count against the limit of new card type. If limit has already been reached, nothing will happen, 
+and the Transform card will be destroyed.) 
+
+[SR][NORM]"
+257;917360;918100;"Eh?"
+258;918660;920250;"Do you think this will work?"
+259;920660;921530;"Yeah."
+260;921530;924170;"And this is the only way to do it!"
+261;924170;925700;"Wait, what is this?"
+262;925700;926980;"What are you talking about?"
+263;927560;930490;"You're okay with Blue Planet, Bisky?"
+264;930880;933490;"Let me in on this!"
+265;943240;945460;"Congratulations on clearing the game."
+266;946180;951470;"Please choose three restricted 
+slot cards from your binder."
+267;953970;957720;"You've chosen #2, Patch of Shore,"
+268;954950;957700;"Patch of Shore 
+
+The entrance to an 
+underwater cavern known 
+as the Sea God's Grotto. 
+The cavern changes 
+every time you enter."
+269;957700;960330;"Blue Planet 
+
+A gemstone with an 
+incomparable blue shine. 
+Its composition matches 
+no known minerals, 
+so it's named for its 
+otherworldly nature."
+270;958190;960410;"#81, Blue Planet,"
+271;960330;964050;"Paladin's Necklace 
+
+When a player wears this, 
+all spells targeting player 
+will be reflected. 
+Can also dispel curses 
+placed on any card 
+touched by player."
+272;960790;963480;"and #84, Paladin's Necklace."
+273;963770;966770;"Are you sure these are the three cards you want?"
+274;966770;967600;"Yep."
+275;968750;970740;"Then I will now return your ring."
+276;971240;972920;"Good work."
+277;974930;976180;"Thank you..."
+278;976500;978620;"Uh, Elena-san!"
+279;980170;981760;"You remembered my name?"
+280;981760;982870;"Thank you."
+281;984920;986180;"Goodbye."
+282;995610;996700;"Welcome back!"
+283;996700;997620;"Yeah."
+284;998780;1002020;"We're back in the real world now?"
+285;1002610;1004010;"I can't tell."
+286;1004010;1006900;"Well, the game was part of the real world."
+287;1006900;1008450;"Hey, hurry up!"
+288;1008450;1010150;"Bring out your binder..."
+289;1010510;1011210;"Book."
+290;1016850;1017680;"Gain!"
+291;1022810;1023840;"This is it!"
+292;1023840;1025040;"This is what I wanted!"
+293;1025620;1028540;"The Blue Planet I've dreamed of for so long!"
+294;1031270;1033360;"I'm so happy!"
+295;1033360;1034790;"What should I name it?"
+296;1034790;1035830;"Pla-chan?"
+297;1035830;1037220;"Maybe Blue-chan?"
+298;1037220;1038270;"Planet-chan?"
+299;1038270;1040750;"Yep, I'll go with Planet-chan!"
+300;1043910;1047920;"So, are you sure about the two you picked?"
+301;1048230;1050770;"Yeah, these are the best ones, right?"
+302;1050770;1051440;"Yep."
+303;1052340;1053820;"Then let's give it a go!"
+304;1054080;1054950;"Yeah!"
+305;1055410;1056180;"Gain!"
+306;1061040;1062450;"Give it to me, Killua."
+307;1072550;1074690;"Yes! It worked!"
+308;1074690;1075720;"Okay!"
+309;1076100;1077350;"I see."
+310;1077870;1082030;"You used Transform to make 
+Accompany a restricted slot card,"
+311;1082030;1084960;"then used Paladin's Necklace to revert it."
+312;1085730;1087600;"That's clever thinking..."
+313;1088510;1091870;"But I'm surprised you'd do 
+all that for an Accompany,"
+314;1091870;1095990;"rather than choose a restricted slot card."
+315;1095990;1096750;"Yeah..."
+316;1097410;1102240;"Well, if I hadn't been the first 
+one of us to enter the game,"
+317;1102240;1104340;"I probably wouldn't have noticed."
+318;1105850;1108120;"Remember when we played 
+rock-paper-scissors here?"
+319;1108520;1109780;"Rock-paper-scissors?"
+320;1109780;1110500;"Yeah."
+321;1112250;1114250;"I was the first to enter the game."
+322;1115090;1119570;"And while I was waiting for Killua, 
+no one else was around."
+323;1120320;1123140;"Which means the first person I met in the game"
+324;1123140;1126010;"should have been the second 
+one to go in, Goreinu-san."
+325;1127080;1129650;"But when I checked my binder,"
+326;1130090;1133310;"there was someone I met before him."
+327;1131920;1135420;"{\fad(1,1000)}Nigg 
+
+Goreinu"
+328;1135670;1139530;"Ging is spelled G-i-n-g."
+329;1140240;1143910;"Oh, so Nigg is an anagram!"
+330;1146410;1151420;"My guess is that when I was a 
+baby, I came here with Ging."
+331;1153870;1157040;"He was probably trying to tell me this:"
+332;1158260;1161280;"If I'm ready to give up everything to find him,"
+333;1161280;1165080;"I have to get strong enough 
+to clear the game..."
+334;1171860;1174920;"Your dedication is really something."
+335;1175510;1178440;"Well? What will you do once you find Ging?"
+336;1178900;1181370;"Naturally, I'll introduce him to Killua!"
+337;1182340;1184900;"My best friend in the world!"
+338;1186260;1188300;"Stupid! Cut that out!"
+339;1188300;1189650;"It's embarrassing..."
+340;1192280;1193330;"Really..."
+341;1193980;1195790;"Stop it..."
+342;1203240;1204720;"I can't take this!"
+343;1204720;1206210;"It must be age."
+344;1206210;1208560;"It doesn't take much to make me cry..."
+345;1209970;1213350;"Hey, wanna come with us to see Ging?"
+346;1215670;1218330;"No, I'll pass."
+347;1219100;1221540;"I'm not interested in men who already have kids."
+348;1223810;1224770;"Okay."
+349;1227560;1231970;"If I stay with you any longer, 
+I really will get too attached."
+350;1234550;1236950;"Well, take care, Bisky."
+351;1236950;1238100;"Yeah."
+352;1238100;1239880;"You, too."
+353;1242320;1244360;"Thank you very much!"
+354;1244360;1245260;"Osu!"
+355;1256360;1257770;"Accompany on!"
+356;1258380;1259530;"Nigg!"
+357;1273480;1274680;"Bye-bye."
+358;1296420;1299110;"Gon has cleared the game his father created,"
+359;1299110;1301160;"becoming much stronger."
+360;1301800;1306720;"Is the one waiting before him really Ging?"
+361;1381060;1397270;"G.I. Tutorial"
+362;1381840;1385000;"Coming up, it's the 
+Greed Island Tutorial!"
+363;1387170;1389350;"Today, we beat <i>Greed Island</i>."
+364;1389900;1392360;"We've introduced a whole bunch of cards."
+365;1392360;1394500;"I did all the introducing!"
+366;1394500;1395610;"You just fooled aro—"
+367;1398280;1400190;"Game over."
+368;1398540;1401170;"Killua Zoldyck                                        Gon Freecs"
+369;1407080;1409610;"Next time: Reunion x And x Understanding."
+370;1409610;1410850;"Hey, Killua..."
+371;1411370;1412180;"Re..."
+372;1412180;1413180;"...union and..."
+373;1413180;1414540;"...understanding."
