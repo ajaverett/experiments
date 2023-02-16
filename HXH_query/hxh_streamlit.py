@@ -11,7 +11,7 @@ st.title('Hunter x Hunter Query Mentions')
 # Ask the user for the search term
 search_term = st.text_input('Search here:')
 
-hxh_episodes = pd.read_csv("hxh_episodes.csv")
+hxh_episodes = pd.read_csv("/hxh_episodes.csv")
 
 def HXH_query(search_term):
     HXH = hxh_episodes
