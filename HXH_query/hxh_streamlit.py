@@ -44,26 +44,41 @@ def HXH_query(search_term):
         hovermode='x unified'
     )
 
-    # fig.update_traces(hovertemplate="Episode: %{x|%B %d}<br>Mentions in Episode: %{y}")
     fig.update_traces(name=search_term,
                       hovertemplate="""<br>
     <b>Episode:</b> %{customdata[0]}<br>
     <b>Mentions in Episode:</b> %{y}
     """,
                       customdata=np.stack((HXH['Episode'],)).T)
+    
+    fig.update_layout(
+    legend=dict(
+        yanchor="top",
+        y=1.1,
+        xanchor="left",
+        x=.85)
+    )
+
+    fig.update_layout(
+    xaxis=dict(
+        title=dict(
+            standoff=0
+        ),
+        title_standoff=30
+    ))
+
 
 
     return fig
 
-st.sidebar.header('Instructions')
-st.sidebar.write('''
-This program allows a user to type in a search term. This program will query through a database of Hunter x Hunter subtitles to see how many times the term was used in a paticular episode. 
-''')
-st.sidebar.write('')
-st.sidebar.write('Note: The search term is case-sensitive.')
-st.sidebar.write('')
-st.sidebar.write('This program uses Pandas, Numpy, Plotly, Streamlit, and Skimpy for Python')
-# Plot the results
 if search_term:
     fig = HXH_query(search_term)
     st.plotly_chart(fig, use_container_width=True)
+
+st.write('')
+st.write('')
+st.header('Description')
+st.write('This app allows you to search for a term said in the subtitles of the Hunter x Hunter anime. The app will return a line plot of the number of times the search term appears in each episode.')
+st.write('Note: The search term is case-sensitive.')
+# Plot the results
+
