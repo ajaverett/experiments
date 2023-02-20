@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from skimpy import clean_columns
 import os
+import re 
 
 
 def clean_hxh_table(season):
@@ -24,6 +25,12 @@ def clean_hxh_table(season):
               x.original_air_date.str.replace(r"\s*\[\d+\]\s*", ""))\
            .assign(Episode = lambda x: x['title'].str.split('"', 2).str[1])
     
+    df = df.assign(
+        no_overall = lambda x: x.no_overall.astype(int),
+        no_in_season = lambda x: x.no_in_season.astype(int),
+        original_air_date = lambda x: pd.to_datetime(x.original_air_date, format='%B %d, %Y'),
+    )
+    
     return df
 
 hxh_list = []
@@ -33,7 +40,8 @@ for i in range(6):
 
 hxh_episodes = pd.concat(hxh_list)
 
-hxh_episodes['original_air_date'] = pd.to_datetime(hxh_episodes['original_air_date'], format='%B %d, %Y')
+
+#%% 
 
 hxh_subs = np.array([])
 
@@ -43,6 +51,9 @@ for i in range(1, 149):
         with open(file_path, "r") as f:
             hxh_subs = np.append(hxh_subs, f.read())
 
-hxh_episodes['hxh_subs'] = pd.Series(hxh_subs)
+hxh_subs = np.vectorize(lambda x: re.sub(r"\n\d+;\d+;\d+;", "", x))(hxh_subs)
 
-# hxh_episodes.to_csv("hxh_episodes.csv", index=False)
+hxh_episodes = hxh_episodes.sort_values(by=['original_air_date']).reset_index(drop=True)
+hxh_episodes['hxh_subs'] = pd.Series([word[68:] for word in list(hxh_subs)])
+
+hxh_episodes.to_csv("hxh_episodes.csv", index=False)
