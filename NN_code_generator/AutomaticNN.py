@@ -10,9 +10,9 @@ st.sidebar.header('Preprocess Data:')
 
 # Define input parameters
 data_source = st.sidebar.text_input('Data source (URL or file path)', 'https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv')
-y_col = st.sidebar.text_input('Name of the target variable column', 'y')
+y_col = st.sidebar.text_input('Name of the target variable column', 'variety')
 id_col = st.sidebar.text_input('Name of the ID column (optional)', '')
-ml_type = st.sidebar.radio('Prediction Type', ('Regression', 'Binary Classification', 'Multiple Classification'))
+ml_type = st.sidebar.radio('Prediction Type', ('Binary Classification', 'Multiple Classification', 'Regression'))
 
 code = f'''
 import pandas as pd
@@ -86,7 +86,7 @@ st.sidebar.header('Neural Network Options:')
 
 num_hidden_layers = st.sidebar.slider('Number of hidden layers', min_value=1, max_value=5, value=2)
 num_neurons = st.sidebar.slider('Neurons per hidden layer', min_value=1, max_value=50, value=10)
-num_epochs = st.sidebar.slider('Number of epochs', min_value=1, max_value=300, value=10)
+num_epochs = st.sidebar.slider('Number of epochs', min_value=1, max_value=300, value=100)
 
 use_dropout = st.sidebar.checkbox('Use dropout')
 use_batch_norm = st.sidebar.checkbox('Use batch normalization')
