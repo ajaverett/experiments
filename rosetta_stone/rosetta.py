@@ -840,7 +840,7 @@ SELECT *,
        CASE WHEN column = true THEN x + 2 ELSE x END AS if_twomore
 FROM my_table;
 '''
-st.code(create_cols)
+st.code(create_cols_cond)
 
 
 
