@@ -2,6 +2,7 @@ import streamlit as st
 
 st.title('Data Science Rosetta Stone')
 lang_var = st.multiselect('Select a library', ('Pandas', 'Tidyverse','Polars','SQL'), default='Pandas')
+st.write('Note this may have errors, please let me know if you find any.')
 
 
 st.subheader('Imports')
