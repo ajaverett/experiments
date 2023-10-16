@@ -418,7 +418,7 @@ df.sort_values('col_one', ascending=False)
 if 'Tidyverse' in lang_var:
     arrange_data += '''
 #tidyverse
-df %>% arrange('col_one')
+df %>% arrange(col_one)
 df %>% arrange(col_one %>% desc())
 '''
 if 'Polars' in lang_var:
@@ -507,7 +507,7 @@ if 'Tidyverse' in lang_var:
     drop_na += '''
 #tidyverse
 df %>% drop_na()
-df %>% drop_na(c("col_one", "col_two"))
+df %>% drop_na(c(col_one, col_two))
 df %>% select(where(~mean(is.na(.)) < n)) #percent threshold
 '''
 if 'Polars' in lang_var:
