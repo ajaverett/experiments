@@ -1,16 +1,4 @@
 import streamlit as st
-st.set_page_config(
-    page_title="My Custom App",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-    theme={
-        'primaryColor': '#E694FF',
-        'backgroundColor': '#00172B',
-        'secondaryBackgroundColor': '#0083B8',
-        'textColor': '#FFFFFF',
-        'font': 'sans-serif'
-    }
-)
 
 st.title('Data Science Rosetta Stone!')
 lang_var = st.multiselect('Select a library', ('Pandas', 'Tidyverse','Polars','SQL'), default='Pandas')
