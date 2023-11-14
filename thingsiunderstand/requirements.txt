@@ -2,3 +2,4 @@ polars
 janitor
 pandas
 numpy
+ConfigParser
