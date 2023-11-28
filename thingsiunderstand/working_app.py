@@ -1,428 +1,423 @@
 import pandas as pd
 import polars as pl
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 import os
 import streamlit as st
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-lmao = st.text_input("Enter Password:", value="", type="password")
-
-def every_thing():
-
-    # Define the data
-    @st.cache_data
-    def load_in_data():
-        wwtext = pl.read_csv("wwtext_df.csv")
-        people = pl.read_csv("people_df.csv")
-        places = pl.read_csv("places_df.csv")
-        topics = pl.read_csv("topics_df.csv")
-
-        return wwtext, people, places, topics
-
-    @st.cache_data
-    def make_df_display():
-        df_display = pl\
-            .read_csv('derived_data.csv')\
-            .rename({
-                'Internal ID': 'internal_id',
-                'Document Type': 'document_type',
-                'Parent ID': 'parent_id',
-                'Order': 'order',
-                'Parent Name': 'parent_name',
-                'UUID': 'uuid',
-                'Name': 'name',
-                'Website URL': 'website_url',
-                'Short URL': 'short_url',
-                'Image URL': 'image_url',
-                'Original Transcript': 'original_transcript',
-                'Text Only Transcript': 'text_only_transcript',
-                'People': 'people',
-                'Places': 'places',
-                'First Date': 'first_date',
-                'Dates': 'dates',
-                'Topics': 'topics'})\
-            .select(['internal_id', 'text_only_transcript', 'people', 'places', 'topics'])\
-            .with_columns([
-                pl.col("people").fill_null(""),
-                pl.col("places").fill_null(""),
-                pl.col("topics").fill_null("")])\
-            .with_columns([
-                pl\
-                    .col("text_only_transcript")\
-                    .str\
-                    .replace_all(r"\||\[\[|\]\]|\\r|\\t|\\n", " "),
-                pl\
-                    .col("people")\
-                    .str\
-                    .replace_all(r"\||\[\[|\]\]|\\r|\\t|\\n", ", "),
-                pl\
-                    .col("places")\
-                    .str\
-                    .replace_all(r"\||\[\[|\]\]|\\r|\\t|\\n", ", "),
-                pl\
-                    .col("topics")\
-                    .str\
-                    .replace_all(r"\||\[\[|\]\]|\\r|\\t|\\n", ", ")])
-        
-        return df_display
 
-    with st.status("Loading and calculating..."):
-        st.write("Defining data...")
-        df_display = make_df_display()
-        wwtext, people, places, topics = load_in_data()
-        st.write("Finished!")
 
-    def grab_from_internal_id(internal_id, column_name):
-        return df_display\
-            .filter(pl.col("internal_id") == internal_id)\
-            [column_name]\
-            .to_list()[0]
 
-    def return_text(df, place, var="text_only_transcript"):
-        return df_display\
-                .filter(pl.col("internal_id") == list(df.filter(pl.col("internal_id") == input_number)\
-                .transpose())[0][place])\
-                [var]\
-                .to_list()[0]
+# Define the data
+@st.cache_data
+def load_in_data():
+    people = pl.read_parquet("closest_people_df.parquet")
+    places = pl.read_parquet("closest_places_df.parquet")
+    topics = pl.read_parquet("closest_topics_df.parquet")
+
+
+    return people, places, topics
+
+@st.cache_data
+def make_df_display():
+    df_display = pl\
+        .read_csv('derived_data.csv')\
+        .rename({
+            'Internal ID': 'internal_id',
+            'Document Type': 'document_type',
+            'Parent ID': 'parent_id',
+            'Order': 'order',
+            'Parent Name': 'parent_name',
+            'UUID': 'uuid',
+            'Name': 'name',
+            'Website URL': 'website_url',
+            'Short URL': 'short_url',
+            'Image URL': 'image_url',
+            'Original Transcript': 'original_transcript',
+            'Text Only Transcript': 'text_only_transcript',
+            'People': 'people',
+            'Places': 'places',
+            'First Date': 'first_date',
+            'Dates': 'dates',
+            'Topics': 'topics'})\
+        .select(['internal_id', 'text_only_transcript', 'people', 'places', 'topics'])\
+        .with_columns([
+            pl.col("people").fill_null(""),
+            pl.col("places").fill_null(""),
+            pl.col("topics").fill_null("")])\
+        .with_columns([
+            pl\
+                .col("text_only_transcript")\
+                .str\
+                .replace_all(r"\||\[\[|\]\]|\\r|\\t|\\n", " "),
+            pl\
+                .col("people")\
+                .str\
+                .replace_all(r"\||\[\[|\]\]|\\r|\\t|\\n", ", "),
+            pl\
+                .col("places")\
+                .str\
+                .replace_all(r"\||\[\[|\]\]|\\r|\\t|\\n", ", "),
+            pl\
+                .col("topics")\
+                .str\
+                .replace_all(r"\||\[\[|\]\]|\\r|\\t|\\n", ", ")])
+    
+    return df_display
+
+def grab_from_internal_id(internal_id, column_name):
+    return df_display\
+        .filter(pl.col("internal_id") == internal_id)\
+        [column_name]\
+        .to_list()[0]
+
+with st.status("Loading and calculating..."):
+    st.write("Defining data...")
+    df_display = make_df_display()
+    people, places, topics = load_in_data()
+
+    people = people\
+        .with_columns([
+            pl.col("internal_id").cast(pl.Int32),
+            pl.col("closest_0").cast(pl.Int32),
+            pl.col("closest_1").cast(pl.Int32),
+            pl.col("closest_2").cast(pl.Int32),
+            pl.col("closest_3").cast(pl.Int32)])
+
+    places = places\
+        .with_columns([
+            pl.col("internal_id").cast(pl.Int32),
+            pl.col("closest_0").cast(pl.Int32),
+            pl.col("closest_1").cast(pl.Int32),
+            pl.col("closest_2").cast(pl.Int32),
+            pl.col("closest_3").cast(pl.Int32)])
+    
+    topics = topics\
+        .with_columns([
+            pl.col("internal_id").cast(pl.Int32),
+            pl.col("closest_0").cast(pl.Int32),
+            pl.col("closest_1").cast(pl.Int32),
+            pl.col("closest_2").cast(pl.Int32),
+            pl.col("closest_3").cast(pl.Int32)])
+
+
+    st.write("Finished!")
+
+def return_text(df, match_number, column_name):
+    return df_display\
+        .filter(pl.col("internal_id") == match_number)\
+        .select([column_name])\
+        .item()
 
 
-    # Sidebar:
+st.sidebar.title("Choose a Journal Entry")
 
-    st.sidebar.title("Woodruff Similarity Algorithm")
+# Get the user's choice
+input_number = st.sidebar.selectbox(
+    "Which journal entry would you like to view?",
+    df_display["internal_id"].to_list())
 
-    input_number = st.sidebar.number_input("Choose internal_id to analyze:",
-                                            min_value=df_display['internal_id'].min(),
-                                            max_value=df_display['internal_id'].max(),
-                                            value=42,
-                                            step=1)
+# Display the journal entry
 
+side_col1, side_col2, side_col3 = st.sidebar.columns(3)
 
-    side_col1, side_col2, side_col3 = st.sidebar.columns(3)
+with side_col1:
+    st.sidebar.write("Topics:")
+    st.sidebar.write(f":blue[{grab_from_internal_id(input_number, 'topics')}]")
 
-    with side_col1:
-        st.sidebar.write("Topics:")
-        st.sidebar.write(f":blue[{grab_from_internal_id(input_number, 'topics')}]")
+with side_col2:
+    st.sidebar.write("People:")
+    st.sidebar.write(f":red[{grab_from_internal_id(input_number, 'people')}]")
 
-    with side_col2:
-        st.sidebar.write("People:")
-        st.sidebar.write(f":red[{grab_from_internal_id(input_number, 'people')}]")
+with side_col3:
+    st.sidebar.write("Places:")
+    st.sidebar.write(f":green[{grab_from_internal_id(input_number, 'places')}]")
 
-    with side_col3:
-        st.sidebar.write("Places:")
-        st.sidebar.write(f":green[{grab_from_internal_id(input_number, 'places')}]")
+st.sidebar.write("Transcript:")
+st.sidebar.write(grab_from_internal_id(input_number, "text_only_transcript"))
 
-    st.sidebar.write("Transcript:")
-    st.sidebar.write(grab_from_internal_id(input_number, "text_only_transcript"))
 
+# ######################
+# # Main Page
+# ######################
 
+st.title("Woodruff Similarity Algorithm")
 
+tab1, tab2, tab3 = st.tabs(["People", "Topics", "Places"])
 
+with tab1:
 
+    ###
+    st.header("People Match 1")
+    ###
+    
+    match1_people = people\
+        .filter(pl.col("internal_id") == input_number)\
+        .select(["closest_1"])[0]\
+        .item()
+    
+    st.write(f"Internal ID: {match1_people}")
 
+    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
+    with col1_tab1:
+        st.write("Topics:")
+        st.write(f":blue[{return_text(people, match1_people, 'topics')}]")
 
+    with col2_tab1:
+        st.write("People:")
+        st.write(f":red[{return_text(people, match1_people, 'people')}]")
 
+    with col3_tab1:
+        st.write("Places:")
+        st.write(f":green[{return_text(people, match1_people, 'places')}]")
 
+    st.write(df_display\
+        .filter(pl.col("internal_id") == match1_people)\
+        .select(["text_only_transcript"])[0]\
+        .item())
 
+    ###
 
+    st.header("People Match 2")
 
+    match2_people = people\
+        .filter(pl.col("internal_id") == input_number)\
+        .select(["closest_2"])[0]\
+        .item()
+    
+    st.write(f"Internal ID: {match2_people}")
 
+    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
+    with col1_tab1:
+        st.write("Topics:")
+        st.write(f":blue[{return_text(people, match2_people, 'topics')}]")
 
+    with col2_tab1:
+        st.write("People:")
+        st.write(f":red[{return_text(people, match2_people, 'people')}]")
 
+    with col3_tab1:
+        st.write("Places:")
+        st.write(f":green[{return_text(people, match2_people, 'places')}]")
 
+    st.write(df_display\
+        .filter(pl.col("internal_id") == match2_people)\
+        .select(["text_only_transcript"])[0]\
+        .item())
+    
+    ###
 
-        
+    st.header("People Match 3")
 
-    # ######################
-    # # Main Page
-    # ######################
+    match3_people = people\
+        .filter(pl.col("internal_id") == input_number)\
+        .select(["closest_3"])[0]\
+        .item()
+    
+    st.write(f"Internal ID: {match3_people}")
 
-    st.title("Woodruff Similarity Algorithm")
+    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
+    with col1_tab1:
+        st.write("Topics:")
+        st.write(f":blue[{return_text(people, match3_people, 'topics')}]")
 
+    with col2_tab1:
+        st.write("People:")
+        st.write(f":red[{return_text(people, match3_people, 'people')}]")
 
+    with col3_tab1:
+        st.write("Places:")
+        st.write(f":green[{return_text(people, match3_people, 'places')}]")
 
+    st.write(df_display\
+        .filter(pl.col("internal_id") == match3_people)\
+        .select(["text_only_transcript"])[0]\
+        .item())
 
-    tab1, tab2, tab3, tab4 = st.tabs(["Overall", "People", "Topics", "Places"])
+with tab2:
 
+    ###
+    st.header("Topics Match 1")
+    ###
+    
+    match1_topics = topics\
+        .filter(pl.col("internal_id") == input_number)\
+        .select(["closest_1"])[0]\
+        .item()
+    
+    st.write(f"Internal ID: {match1_topics}")
 
+    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
-    with tab1:
+    with col1_tab1:
+        st.write("Topics:")
+        st.write(f":blue[{return_text(topics, match1_topics, 'topics')}]")
 
-        ###
-        st.header("1st Best Match Overall")
+    with col2_tab1:
+        st.write("People:")
+        st.write(f":red[{return_text(topics, match1_topics, 'people')}]")
 
-        st.write(f"Internal ID:{return_text(wwtext, 1, 'internal_id')}")
+    with col3_tab1:
+        st.write("Places:")
+        st.write(f":green[{return_text(topics, match1_topics, 'places')}]")
 
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+    st.write(df_display\
+        .filter(pl.col("internal_id") == match1_topics)\
+        .select(["text_only_transcript"])[0]\
+        .item())
 
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(wwtext, 1, 'topics')}]")
+    ###
 
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(wwtext, 1, 'people')}]")
+    st.header("Topics Match 2")
 
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(wwtext, 1, 'places')}]")
+    match2_topics = topics\
+        .filter(pl.col("internal_id") == input_number)\
+        .select(["closest_2"])[0]\
+        .item()
+    
+    st.write(f"Internal ID: {match2_topics}")
 
-        st.write("Transcript:")
-        st.markdown(return_text(wwtext, 1, "text_only_transcript"))
+    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
-        ###
-        st.header("2nd Best Match Overall")
+    with col1_tab1:
+        st.write("Topics:")
+        st.write(f":blue[{return_text(topics, match2_topics, 'topics')}]")
 
-        st.write(f"Internal ID:{return_text(wwtext, 2, 'internal_id')}")
+    with col2_tab1:
+        st.write("People:")
+        st.write(f":red[{return_text(topics, match2_topics, 'people')}]")
 
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+    with col3_tab1:
+        st.write("Places:")
+        st.write(f":green[{return_text(topics, match2_topics, 'places')}]")
 
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(wwtext, 2, 'topics')}]")
+    st.write(df_display\
+        .filter(pl.col("internal_id") == match2_topics)\
+        .select(["text_only_transcript"])[0]\
+        .item())
+    
+    ###
 
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(wwtext, 2, 'people')}]")
+    st.header("Topics Match 3")
 
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(wwtext, 2, 'places')}]")
+    match3_topics = topics\
+        .filter(pl.col("internal_id") == input_number)\
+        .select(["closest_3"])[0]\
+        .item()
+    
+    st.write(f"Internal ID: {match3_topics}")
 
-        st.write("Transcript:")
-        st.markdown(return_text(wwtext, 1, "text_only_transcript"))
+    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
-        ###
-        st.header("3rd Best Match Overall")
+    with col1_tab1:
+        st.write("Topics:")
+        st.write(f":blue[{return_text(topics, match3_topics, 'topics')}]")
 
-        st.write(f"Internal ID:{return_text(wwtext, 3, 'internal_id')}")
+    with col2_tab1:
+        st.write("People:")
+        st.write(f":red[{return_text(topics, match3_topics, 'people')}]")
 
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+    with col3_tab1:
+        st.write("Places:")
+        st.write(f":green[{return_text(topics, match3_topics, 'places')}]")
 
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(wwtext, 3, 'topics')}]")
+    st.write(df_display\
+        .filter(pl.col("internal_id") == match3_topics)\
+        .select(["text_only_transcript"])[0]\
+        .item())
 
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(wwtext, 3, 'people')}]")
+with tab3:
 
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(wwtext, 3, 'places')}]")
+    ###
+    st.header("Places Match 1")
+    ###
+    
+    match1_places = places\
+        .filter(pl.col("internal_id") == input_number)\
+        .select(["closest_1"])[0]\
+        .item()
+    
+    st.write(f"Internal ID: {match1_places}")
 
-        st.write("Transcript:")
-        st.markdown(return_text(wwtext, 3, "text_only_transcript"))
+    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
+    with col1_tab1:
+        st.write("Topics:")
+        st.write(f":blue[{return_text(places, match1_places, 'topics')}]")
 
-    with tab2:
+    with col2_tab1:
+        st.write("People:")
+        st.write(f":red[{return_text(places, match1_places, 'people')}]")
 
-        ###
-        st.header("1st Best Match Overall")
+    with col3_tab1:
+        st.write("Places:")
+        st.write(f":green[{return_text(places, match1_places, 'places')}]")
 
-        st.write(f"Internal ID:{return_text(people, 1, 'internal_id')}")
+    st.write(df_display\
+        .filter(pl.col("internal_id") == match1_places)\
+        .select(["text_only_transcript"])[0]\
+        .item())
 
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+    ###
 
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(people, 1, 'topics')}]")
+    st.header("Places Match 2")
 
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(people, 1, 'people')}]")
+    match2_places = places\
+        .filter(pl.col("internal_id") == input_number)\
+        .select(["closest_2"])[0]\
+        .item()
+    
+    st.write(f"Internal ID: {match2_places}")
 
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(people, 1, 'places')}]")
+    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
-        st.write("Transcript:")
-        st.markdown(return_text(people, 1, "text_only_transcript"))
+    with col1_tab1:
+        st.write("Topics:")
+        st.write(f":blue[{return_text(places, match2_places, 'topics')}]")
 
-        ###
-        st.header("2nd Best Match Overall")
+    with col2_tab1:
+        st.write("People:")
+        st.write(f":red[{return_text([places], match2_places, 'people')}]")
 
-        st.write(f"Internal ID:{return_text(people, 2, 'internal_id')}")
+    with col3_tab1:
+        st.write("Places:")
+        st.write(f":green[{return_text(places, match2_places, 'places')}]")
 
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+    st.write(df_display\
+        .filter(pl.col("internal_id") == match2_places)\
+        .select(["text_only_transcript"])[0]\
+        .item())
+    
+    ###
 
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(people, 2, 'topics')}]")
+    st.header("Places Match 3")
 
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(people, 2, 'people')}]")
+    match3_places = places\
+        .filter(pl.col("internal_id") == input_number)\
+        .select(["closest_3"])[0]\
+        .item()
+    
+    st.write(f"Internal ID: {match3_places}")
 
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(people, 2, 'places')}]")
+    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
-        st.write("Transcript:")
-        st.markdown(return_text(people, 1, "text_only_transcript"))
+    with col1_tab1:
+        st.write("Topics:")
+        st.write(f":blue[{return_text(places, match3_places, 'topics')}]")
 
-        ###
-        st.header("3rd Best Match Overall")
+    with col2_tab1:
+        st.write("People:")
+        st.write(f":red[{return_text(places, match3_places, 'people')}]")
 
-        st.write(f"Internal ID:{return_text(people, 3, 'internal_id')}")
+    with col3_tab1:
+        st.write("Places:")
+        st.write(f":green[{return_text(places, match3_places, 'places')}]")
 
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(people, 3, 'topics')}]")
-
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(people, 3, 'people')}]")
-
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(people, 3, 'places')}]")
-
-        st.write("Transcript:")
-        st.markdown(return_text(people, 3, "text_only_transcript"))
-
-    with tab3:
-
-        ###
-        st.header("1st Best Match Overall")
-
-        st.write(f"Internal ID:{return_text(topics, 1, 'internal_id')}")
-
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(topics, 1, 'topics')}]")
-
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(topics, 1, 'people')}]")
-
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(topics, 1, 'places')}]")
-
-        st.write("Transcript:")
-        st.markdown(return_text(topics, 1, "text_only_transcript"))
-
-        ###
-        st.header("2nd Best Match Overall")
-
-        st.write(f"Internal ID:{return_text(topics, 2, 'internal_id')}")
-
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(topics, 2, 'topics')}]")
-
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(topics, 2, 'people')}]")
-
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(topics, 2, 'places')}]")
-
-        st.write("Transcript:")
-        st.markdown(return_text(topics, 1, "text_only_transcript"))
-
-        ###
-        st.header("3rd Best Match Overall")
-
-        st.write(f"Internal ID:{return_text(topics, 3, 'internal_id')}")
-
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(topics, 3, 'topics')}]")
-
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(topics, 3, 'people')}]")
-
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(topics, 3, 'places')}]")
-
-        st.write("Transcript:")
-        st.markdown(return_text(topics, 3, "text_only_transcript"))
-
-    with tab4:
-
-        ###
-        st.header("1st Best Match Overall")
-
-        st.write(f"Internal ID:{return_text(places, 1, 'internal_id')}")
-
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(places, 1, 'topics')}]")
-
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(places, 1, 'people')}]")
-
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(places, 1, 'places')}]")
-
-        st.write("Transcript:")
-        st.markdown(return_text(places, 1, "text_only_transcript"))
-
-        ###
-        st.header("2nd Best Match Overall")
-
-        st.write(f"Internal ID:{return_text(places, 2, 'internal_id')}")
-
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(places, 2, 'topics')}]")
-
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(places, 2, 'people')}]")
-
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(places, 2, 'places')}]")
-
-        st.write("Transcript:")
-        st.markdown(return_text(places, 1, "text_only_transcript"))
-
-        ###
-        st.header("3rd Best Match Overall")
-
-        st.write(f"Internal ID:{return_text(places, 3, 'internal_id')}")
-
-        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-        with col1_tab1:
-            st.write("Topics:")
-            st.write(f":blue[{return_text(places, 3, 'topics')}]")
-
-        with col2_tab1:
-            st.write("People:")
-            st.write(f":red[{return_text(places, 3, 'people')}]")
-
-        with col3_tab1:
-            st.write("Places:")
-            st.write(f":green[{return_text(places, 3, 'places')}]")
-
-        st.write("Transcript:")
-        st.markdown(return_text(places, 3, "text_only_transcript"))
-
-if lmao == "password":
-    every_thing()
+    st.write(df_display\
+        .filter(pl.col("internal_id") == match3_places)\
+        .select(["text_only_transcript"])[0]\
+        .item())
