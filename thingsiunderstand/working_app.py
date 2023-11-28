@@ -8,7 +8,6 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 
-
 # Define the data
 @st.cache_data
 def load_in_data():
@@ -77,31 +76,6 @@ with st.status("Loading and calculating..."):
     df_display = make_df_display()
     people, places, topics = load_in_data()
 
-    people = people\
-        .with_columns([
-            pl.col("internal_id").cast(pl.Int32),
-            pl.col("closest_0").cast(pl.Int32),
-            pl.col("closest_1").cast(pl.Int32),
-            pl.col("closest_2").cast(pl.Int32),
-            pl.col("closest_3").cast(pl.Int32)])
-
-    places = places\
-        .with_columns([
-            pl.col("internal_id").cast(pl.Int32),
-            pl.col("closest_0").cast(pl.Int32),
-            pl.col("closest_1").cast(pl.Int32),
-            pl.col("closest_2").cast(pl.Int32),
-            pl.col("closest_3").cast(pl.Int32)])
-    
-    topics = topics\
-        .with_columns([
-            pl.col("internal_id").cast(pl.Int32),
-            pl.col("closest_0").cast(pl.Int32),
-            pl.col("closest_1").cast(pl.Int32),
-            pl.col("closest_2").cast(pl.Int32),
-            pl.col("closest_3").cast(pl.Int32)])
-
-
     st.write("Finished!")
 
 def return_text(df, match_number, column_name):
@@ -111,313 +85,318 @@ def return_text(df, match_number, column_name):
         .item()
 
 
-st.sidebar.title("Choose a Journal Entry")
+def everything():
 
-# Get the user's choice
-input_number = st.sidebar.selectbox(
-    "Which journal entry would you like to view?",
-    df_display["internal_id"].to_list())
+    st.sidebar.title("Choose a Journal Entry")
 
-# Display the journal entry
+    # Get the user's choice
+    input_number = st.sidebar.selectbox(
+        "Which journal entry would you like to view?",
+        df_display["internal_id"].to_list())
 
-side_col1, side_col2, side_col3 = st.sidebar.columns(3)
+    # Display the journal entry
 
-with side_col1:
-    st.sidebar.write("Topics:")
-    st.sidebar.write(f":blue[{grab_from_internal_id(input_number, 'topics')}]")
+    side_col1, side_col2, side_col3 = st.sidebar.columns(3)
 
-with side_col2:
-    st.sidebar.write("People:")
-    st.sidebar.write(f":red[{grab_from_internal_id(input_number, 'people')}]")
+    with side_col1:
+        st.sidebar.write("Topics:")
+        st.sidebar.write(f":blue[{grab_from_internal_id(input_number, 'topics')}]")
 
-with side_col3:
-    st.sidebar.write("Places:")
-    st.sidebar.write(f":green[{grab_from_internal_id(input_number, 'places')}]")
+    with side_col2:
+        st.sidebar.write("People:")
+        st.sidebar.write(f":red[{grab_from_internal_id(input_number, 'people')}]")
 
-st.sidebar.write("Transcript:")
-st.sidebar.write(grab_from_internal_id(input_number, "text_only_transcript"))
+    with side_col3:
+        st.sidebar.write("Places:")
+        st.sidebar.write(f":green[{grab_from_internal_id(input_number, 'places')}]")
 
+    st.sidebar.write("Transcript:")
+    st.sidebar.write(grab_from_internal_id(input_number, "text_only_transcript"))
 
-# ######################
-# # Main Page
-# ######################
 
-st.title("Woodruff Similarity Algorithm")
+    # ######################
+    # # Main Page
+    # ######################
 
-tab1, tab2, tab3 = st.tabs(["People", "Topics", "Places"])
+    st.title("Woodruff Similarity Algorithm")
 
-with tab1:
+    tab1, tab2, tab3 = st.tabs(["People", "Topics", "Places"])
 
-    ###
-    st.header("People Match 1")
-    ###
-    
-    match1_people = people\
-        .filter(pl.col("internal_id") == input_number)\
-        .select(["closest_1"])[0]\
-        .item()
-    
-    st.write(f"Internal ID: {match1_people}")
+    with tab1:
 
-    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+        ###
+        st.header("People Match 1")
+        ###
+        
+        match1_people = people\
+            .filter(pl.col("internal_id") == input_number)\
+            .select(["closest_1"])[0]\
+            .item()
+        
+        st.write(f"Internal ID: {match1_people}")
 
-    with col1_tab1:
-        st.write("Topics:")
-        st.write(f":blue[{return_text(people, match1_people, 'topics')}]")
+        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
-    with col2_tab1:
-        st.write("People:")
-        st.write(f":red[{return_text(people, match1_people, 'people')}]")
+        with col1_tab1:
+            st.write("Topics:")
+            st.write(f":blue[{return_text(people, match1_people, 'topics')}]")
 
-    with col3_tab1:
-        st.write("Places:")
-        st.write(f":green[{return_text(people, match1_people, 'places')}]")
+        with col2_tab1:
+            st.write("People:")
+            st.write(f":red[{return_text(people, match1_people, 'people')}]")
 
-    st.write(df_display\
-        .filter(pl.col("internal_id") == match1_people)\
-        .select(["text_only_transcript"])[0]\
-        .item())
+        with col3_tab1:
+            st.write("Places:")
+            st.write(f":green[{return_text(people, match1_people, 'places')}]")
 
-    ###
+        st.write(df_display\
+            .filter(pl.col("internal_id") == match1_people)\
+            .select(["text_only_transcript"])[0]\
+            .item())
 
-    st.header("People Match 2")
+        ###
 
-    match2_people = people\
-        .filter(pl.col("internal_id") == input_number)\
-        .select(["closest_2"])[0]\
-        .item()
-    
-    st.write(f"Internal ID: {match2_people}")
+        st.header("People Match 2")
 
-    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+        match2_people = people\
+            .filter(pl.col("internal_id") == input_number)\
+            .select(["closest_2"])[0]\
+            .item()
+        
+        st.write(f"Internal ID: {match2_people}")
 
-    with col1_tab1:
-        st.write("Topics:")
-        st.write(f":blue[{return_text(people, match2_people, 'topics')}]")
+        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
 
-    with col2_tab1:
-        st.write("People:")
-        st.write(f":red[{return_text(people, match2_people, 'people')}]")
+        with col1_tab1:
+            st.write("Topics:")
+            st.write(f":blue[{return_text(people, match2_people, 'topics')}]")
 
-    with col3_tab1:
-        st.write("Places:")
-        st.write(f":green[{return_text(people, match2_people, 'places')}]")
+        with col2_tab1:
+            st.write("People:")
+            st.write(f":red[{return_text(people, match2_people, 'people')}]")
 
-    st.write(df_display\
-        .filter(pl.col("internal_id") == match2_people)\
-        .select(["text_only_transcript"])[0]\
-        .item())
-    
-    ###
+        with col3_tab1:
+            st.write("Places:")
+            st.write(f":green[{return_text(people, match2_people, 'places')}]")
 
-    st.header("People Match 3")
+        st.write(df_display\
+            .filter(pl.col("internal_id") == match2_people)\
+            .select(["text_only_transcript"])[0]\
+            .item())
+        
+        ###
 
-    match3_people = people\
-        .filter(pl.col("internal_id") == input_number)\
-        .select(["closest_3"])[0]\
-        .item()
-    
-    st.write(f"Internal ID: {match3_people}")
-
-    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-    with col1_tab1:
-        st.write("Topics:")
-        st.write(f":blue[{return_text(people, match3_people, 'topics')}]")
-
-    with col2_tab1:
-        st.write("People:")
-        st.write(f":red[{return_text(people, match3_people, 'people')}]")
-
-    with col3_tab1:
-        st.write("Places:")
-        st.write(f":green[{return_text(people, match3_people, 'places')}]")
-
-    st.write(df_display\
-        .filter(pl.col("internal_id") == match3_people)\
-        .select(["text_only_transcript"])[0]\
-        .item())
-
-with tab2:
-
-    ###
-    st.header("Topics Match 1")
-    ###
-    
-    match1_topics = topics\
-        .filter(pl.col("internal_id") == input_number)\
-        .select(["closest_1"])[0]\
-        .item()
-    
-    st.write(f"Internal ID: {match1_topics}")
-
-    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-    with col1_tab1:
-        st.write("Topics:")
-        st.write(f":blue[{return_text(topics, match1_topics, 'topics')}]")
-
-    with col2_tab1:
-        st.write("People:")
-        st.write(f":red[{return_text(topics, match1_topics, 'people')}]")
-
-    with col3_tab1:
-        st.write("Places:")
-        st.write(f":green[{return_text(topics, match1_topics, 'places')}]")
-
-    st.write(df_display\
-        .filter(pl.col("internal_id") == match1_topics)\
-        .select(["text_only_transcript"])[0]\
-        .item())
-
-    ###
-
-    st.header("Topics Match 2")
-
-    match2_topics = topics\
-        .filter(pl.col("internal_id") == input_number)\
-        .select(["closest_2"])[0]\
-        .item()
-    
-    st.write(f"Internal ID: {match2_topics}")
-
-    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-    with col1_tab1:
-        st.write("Topics:")
-        st.write(f":blue[{return_text(topics, match2_topics, 'topics')}]")
-
-    with col2_tab1:
-        st.write("People:")
-        st.write(f":red[{return_text(topics, match2_topics, 'people')}]")
-
-    with col3_tab1:
-        st.write("Places:")
-        st.write(f":green[{return_text(topics, match2_topics, 'places')}]")
-
-    st.write(df_display\
-        .filter(pl.col("internal_id") == match2_topics)\
-        .select(["text_only_transcript"])[0]\
-        .item())
-    
-    ###
-
-    st.header("Topics Match 3")
-
-    match3_topics = topics\
-        .filter(pl.col("internal_id") == input_number)\
-        .select(["closest_3"])[0]\
-        .item()
-    
-    st.write(f"Internal ID: {match3_topics}")
-
-    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-    with col1_tab1:
-        st.write("Topics:")
-        st.write(f":blue[{return_text(topics, match3_topics, 'topics')}]")
-
-    with col2_tab1:
-        st.write("People:")
-        st.write(f":red[{return_text(topics, match3_topics, 'people')}]")
-
-    with col3_tab1:
-        st.write("Places:")
-        st.write(f":green[{return_text(topics, match3_topics, 'places')}]")
-
-    st.write(df_display\
-        .filter(pl.col("internal_id") == match3_topics)\
-        .select(["text_only_transcript"])[0]\
-        .item())
-
-with tab3:
-
-    ###
-    st.header("Places Match 1")
-    ###
-    
-    match1_places = places\
-        .filter(pl.col("internal_id") == input_number)\
-        .select(["closest_1"])[0]\
-        .item()
-    
-    st.write(f"Internal ID: {match1_places}")
-
-    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-    with col1_tab1:
-        st.write("Topics:")
-        st.write(f":blue[{return_text(places, match1_places, 'topics')}]")
-
-    with col2_tab1:
-        st.write("People:")
-        st.write(f":red[{return_text(places, match1_places, 'people')}]")
-
-    with col3_tab1:
-        st.write("Places:")
-        st.write(f":green[{return_text(places, match1_places, 'places')}]")
-
-    st.write(df_display\
-        .filter(pl.col("internal_id") == match1_places)\
-        .select(["text_only_transcript"])[0]\
-        .item())
-
-    ###
-
-    st.header("Places Match 2")
-
-    match2_places = places\
-        .filter(pl.col("internal_id") == input_number)\
-        .select(["closest_2"])[0]\
-        .item()
-    
-    st.write(f"Internal ID: {match2_places}")
-
-    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-    with col1_tab1:
-        st.write("Topics:")
-        st.write(f":blue[{return_text(places, match2_places, 'topics')}]")
-
-    with col2_tab1:
-        st.write("People:")
-        st.write(f":red[{return_text([places], match2_places, 'people')}]")
-
-    with col3_tab1:
-        st.write("Places:")
-        st.write(f":green[{return_text(places, match2_places, 'places')}]")
-
-    st.write(df_display\
-        .filter(pl.col("internal_id") == match2_places)\
-        .select(["text_only_transcript"])[0]\
-        .item())
-    
-    ###
-
-    st.header("Places Match 3")
-
-    match3_places = places\
-        .filter(pl.col("internal_id") == input_number)\
-        .select(["closest_3"])[0]\
-        .item()
-    
-    st.write(f"Internal ID: {match3_places}")
-
-    col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
-
-    with col1_tab1:
-        st.write("Topics:")
-        st.write(f":blue[{return_text(places, match3_places, 'topics')}]")
-
-    with col2_tab1:
-        st.write("People:")
-        st.write(f":red[{return_text(places, match3_places, 'people')}]")
-
-    with col3_tab1:
-        st.write("Places:")
-        st.write(f":green[{return_text(places, match3_places, 'places')}]")
-
-    st.write(df_display\
-        .filter(pl.col("internal_id") == match3_places)\
-        .select(["text_only_transcript"])[0]\
-        .item())
+        st.header("People Match 3")
+
+        match3_people = people\
+            .filter(pl.col("internal_id") == input_number)\
+            .select(["closest_3"])[0]\
+            .item()
+        
+        st.write(f"Internal ID: {match3_people}")
+
+        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+
+        with col1_tab1:
+            st.write("Topics:")
+            st.write(f":blue[{return_text(people, match3_people, 'topics')}]")
+
+        with col2_tab1:
+            st.write("People:")
+            st.write(f":red[{return_text(people, match3_people, 'people')}]")
+
+        with col3_tab1:
+            st.write("Places:")
+            st.write(f":green[{return_text(people, match3_people, 'places')}]")
+
+        st.write(df_display\
+            .filter(pl.col("internal_id") == match3_people)\
+            .select(["text_only_transcript"])[0]\
+            .item())
+
+    with tab2:
+
+        ###
+        st.header("Topics Match 1")
+        ###
+        
+        match1_topics = topics\
+            .filter(pl.col("internal_id") == input_number)\
+            .select(["closest_1"])[0]\
+            .item()
+        
+        st.write(f"Internal ID: {match1_topics}")
+
+        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+
+        with col1_tab1:
+            st.write("Topics:")
+            st.write(f":blue[{return_text(topics, match1_topics, 'topics')}]")
+
+        with col2_tab1:
+            st.write("People:")
+            st.write(f":red[{return_text(topics, match1_topics, 'people')}]")
+
+        with col3_tab1:
+            st.write("Places:")
+            st.write(f":green[{return_text(topics, match1_topics, 'places')}]")
+
+        st.write(df_display\
+            .filter(pl.col("internal_id") == match1_topics)\
+            .select(["text_only_transcript"])[0]\
+            .item())
+
+        ###
+
+        st.header("Topics Match 2")
+
+        match2_topics = topics\
+            .filter(pl.col("internal_id") == input_number)\
+            .select(["closest_2"])[0]\
+            .item()
+        
+        st.write(f"Internal ID: {match2_topics}")
+
+        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+
+        with col1_tab1:
+            st.write("Topics:")
+            st.write(f":blue[{return_text(topics, match2_topics, 'topics')}]")
+
+        with col2_tab1:
+            st.write("People:")
+            st.write(f":red[{return_text(topics, match2_topics, 'people')}]")
+
+        with col3_tab1:
+            st.write("Places:")
+            st.write(f":green[{return_text(topics, match2_topics, 'places')}]")
+
+        st.write(df_display\
+            .filter(pl.col("internal_id") == match2_topics)\
+            .select(["text_only_transcript"])[0]\
+            .item())
+        
+        ###
+
+        st.header("Topics Match 3")
+
+        match3_topics = topics\
+            .filter(pl.col("internal_id") == input_number)\
+            .select(["closest_3"])[0]\
+            .item()
+        
+        st.write(f"Internal ID: {match3_topics}")
+
+        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+
+        with col1_tab1:
+            st.write("Topics:")
+            st.write(f":blue[{return_text(topics, match3_topics, 'topics')}]")
+
+        with col2_tab1:
+            st.write("People:")
+            st.write(f":red[{return_text(topics, match3_topics, 'people')}]")
+
+        with col3_tab1:
+            st.write("Places:")
+            st.write(f":green[{return_text(topics, match3_topics, 'places')}]")
+
+        st.write(df_display\
+            .filter(pl.col("internal_id") == match3_topics)\
+            .select(["text_only_transcript"])[0]\
+            .item())
+
+    with tab3:
+
+        ###
+        st.header("Places Match 1")
+        ###
+        
+        match1_places = places\
+            .filter(pl.col("internal_id") == input_number)\
+            .select(["closest_1"])[0]\
+            .item()
+        
+        st.write(f"Internal ID: {match1_places}")
+
+        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+
+        with col1_tab1:
+            st.write("Topics:")
+            st.write(f":blue[{return_text(places, match1_places, 'topics')}]")
+
+        with col2_tab1:
+            st.write("People:")
+            st.write(f":red[{return_text(places, match1_places, 'people')}]")
+
+        with col3_tab1:
+            st.write("Places:")
+            st.write(f":green[{return_text(places, match1_places, 'places')}]")
+
+        st.write(df_display\
+            .filter(pl.col("internal_id") == match1_places)\
+            .select(["text_only_transcript"])[0]\
+            .item())
+
+        ###
+
+        st.header("Places Match 2")
+
+        match2_places = places\
+            .filter(pl.col("internal_id") == input_number)\
+            .select(["closest_2"])[0]\
+            .item()
+        
+        st.write(f"Internal ID: {match2_places}")
+
+        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+
+        with col1_tab1:
+            st.write("Topics:")
+            st.write(f":blue[{return_text(places, match2_places, 'topics')}]")
+
+        with col2_tab1:
+            st.write("People:")
+            st.write(f":red[{return_text([places], match2_places, 'people')}]")
+
+        with col3_tab1:
+            st.write("Places:")
+            st.write(f":green[{return_text(places, match2_places, 'places')}]")
+
+        st.write(df_display\
+            .filter(pl.col("internal_id") == match2_places)\
+            .select(["text_only_transcript"])[0]\
+            .item())
+        
+        ###
+
+        st.header("Places Match 3")
+
+        match3_places = places\
+            .filter(pl.col("internal_id") == input_number)\
+            .select(["closest_3"])[0]\
+            .item()
+        
+        st.write(f"Internal ID: {match3_places}")
+
+        col1_tab1, col2_tab1, col3_tab1 = st.columns(3)
+
+        with col1_tab1:
+            st.write("Topics:")
+            st.write(f":blue[{return_text(places, match3_places, 'topics')}]")
+
+        with col2_tab1:
+            st.write("People:")
+            st.write(f":red[{return_text(places, match3_places, 'people')}]")
+
+        with col3_tab1:
+            st.write("Places:")
+            st.write(f":green[{return_text(places, match3_places, 'places')}]")
+
+        st.write(df_display\
+            .filter(pl.col("internal_id") == match3_places)\
+            .select(["text_only_transcript"])[0]\
+            .item())
+
+if st.text_input("Password:", value="", type="password") == "password":
+    everything()
