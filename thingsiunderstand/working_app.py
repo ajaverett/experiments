@@ -1,6 +1,7 @@
 import pandas as pd
 import polars as pl
 import numpy as np
+import plotly.express as px
 import os
 import streamlit as st
 
@@ -65,6 +66,12 @@ def make_df_display():
     
     return df_display
 
+@st.cache_data
+def get_emotions():
+    return pd.read_csv("emotions.csv")\
+        .rename(columns={"Unnamed: 0": "emotions"})\
+        .set_index("emotions")
+
 def grab_from_internal_id(internal_id, column_name):
     return df_display\
         .filter(pl.col("internal_id") == internal_id)\
@@ -75,7 +82,7 @@ with st.status("Loading and calculating..."):
     st.write("Defining data...")
     df_display = make_df_display()
     people, places, topics = load_in_data()
-
+    emotions = get_emotions()
     st.write("Finished!")
 
 def return_text(df, match_number, column_name):
@@ -84,8 +91,27 @@ def return_text(df, match_number, column_name):
         .select([column_name])\
         .item()
 
+def make_radarchart(id):
 
+    user_data = emotions.filter([str(id)])
 
+    return px\
+        .line_polar(user_data, 
+                    r=user_data.values.flatten(), 
+                    theta=user_data.index, 
+                    line_close=True, 
+                    line_shape='linear')\
+        .update_traces(fill='toself', 
+                    marker=dict(size=10, color='LightSkyBlue'),
+                    line=dict(color='RoyalBlue', width=2))\
+        .update_layout(title=f'Emotional Radar Chart for<br>Journal Entry {id}<br><br>',
+                    width=450, 
+                    height=450,
+                    polar=dict(
+                            radialaxis=dict(visible=True,
+                                            showticklabels = False),
+                            angularaxis=dict(showline=False, showticklabels=True)),
+                    font=dict(size=12, color='RebeccaPurple'))
 
 st.sidebar.title("Choose a Journal Entry")
 
@@ -94,8 +120,10 @@ input_number = st.sidebar.selectbox(
     "Which journal entry would you like to view?",
     df_display["internal_id"].to_list())
 
-# Display the journal entry
+emotion_graph = make_radarchart(input_number)
+st.sidebar.plotly_chart(emotion_graph)
 
+# Display the journal entry
 side_col1, side_col2, side_col3 = st.sidebar.columns(3)
 
 with side_col1:
@@ -397,4 +425,3 @@ with tab3:
         .filter(pl.col("internal_id") == match3_places)\
         .select(["text_only_transcript"])[0]\
         .item())
-
