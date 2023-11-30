@@ -2,3 +2,4 @@ polars
 pandas
 numpy
 scikit-learn
+plotly
