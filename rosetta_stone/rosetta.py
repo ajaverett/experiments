@@ -1007,7 +1007,7 @@ df.withColumn(
     'if_twomore', 
     F.when(
         F.col('column') == True, 
-        F.col('x') + 2)\
+        F.col('x') + 2) \\
         .otherwise(F.col('x')))
 '''
 
