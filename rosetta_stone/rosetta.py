@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.title('Data Science Rosetta Stone!')
-lang_var = st.multiselect('Select a library', ('Pandas', 'Tidyverse','Polars','SQL'), default='Pandas')
+lang_var = st.multiselect('Select a library', ('Pandas', 'Tidyverse','Polars','SQL', 'PySpark'), default='Pandas')
 st.write('Note this may have errors, please let me know if you find any.')
 
 
@@ -19,20 +19,26 @@ if 'Polars' in lang_var: imports += '''
 #polars
 import polar as pl
 '''
+if 'PySpark' in lang_var:
+    imports += '''
+#pyspark
+# if in Databricks, imports are natively handled
+from pyspark.sql import functions as F
+'''
 st.code(imports)
 
 
 st.subheader('Columns of a dataframe')
-imports = ''
-if 'Pandas' in lang_var: imports += '''
+columns_var = ''
+if 'Pandas' in lang_var: columns_var += '''
 #pandas
 series = pd.Series([1,2,3])
 '''
-if 'Tidyverse' in lang_var: imports += '''
+if 'Tidyverse' in lang_var: columns_var += '''
 #tidyverse
 vector <- c(1,2,3)
 '''
-if 'Polars' in lang_var: imports += '''
+if 'Polars' in lang_var: columns_var += '''
 #polars
 series = pl.Series([1,2,3])
 '''
@@ -76,6 +82,26 @@ VALUES
     ('C', 3),
     ('D', 4);
 '''
+
+if 'PySpark' in lang_var: create_df += '''
+#pyspark
+
+schema = StructType([
+    StructField("col_one", StringType(), True),
+    StructField("col_two", IntegerType(), True)
+])
+
+data = [
+    ('A', 1),
+    ('B', 2),
+    ('C', 3),
+    ('D', 4)
+]
+
+df = spark.createDataFrame(data, schema)
+
+'''
+
 st.code(create_df)
 
 
@@ -95,6 +121,11 @@ if 'Polars' in lang_var: read_csv += '''
 #polars
 df = pl.read_csv('data.csv')
 df = pl.read_csv('data.csv', has_header=False)
+'''
+if 'PySpark' in lang_var: read_csv += '''
+#pyspark
+df = spark.read.csv('data.csv', header=True, inferSchema=True)
+df_no_header = spark.read.csv('data.csv', header=False, inferSchema=True)
 '''
 st.code(read_csv)
 
@@ -118,6 +149,10 @@ if 'SQL' in lang_var: count_df += '''
 SELECT col_one, COUNT(*) AS count
 FROM df
 GROUP BY col_one;
+'''
+if 'PySpark' in lang_var: count_df += '''
+#pyspark
+df.groupBy('col_one').count()
 '''
 st.code(count_df)
 
@@ -156,6 +191,14 @@ SELECT STDDEV(col_one) AS std FROM df;
 SELECT MIN(col_one) AS min_val FROM df;
 SELECT MAX(col_one) AS max_val FROM df;
 '''
+if 'PySpark' in lang_var: stats_df += '''
+#pyspark
+df.agg(F.mean("col_one"))   # add .collect()[0][0] to the end to get the value
+df.approxQuantile("Salary", [0.5], error) # 0.5 is the median (A smaller error means more precise but more computation)
+df.agg(F.stddev("col_one"))
+df.agg(F.min("col_one"))
+df.agg(F.max("col_one"))
+'''
 st.code(stats_df)
 
 
@@ -193,6 +236,15 @@ if 'SQL' in lang_var: select_cols += '''
 SELECT col_one FROM df;
 SELECT col_one, col_two FROM df;
 '''
+if 'PySpark' in lang_var: select_cols += '''
+#pyspark
+df.select('col_one').show()
+df.select('col_one', 'col_two').show()
+df.select([col for col in df.columns if col.startswith("prefix_")]).show()
+df.select([col for col in df.columns if col.endswith("_suffix")]).show()
+df.select([col for col in df.columns if "_infix_" in col]).show()
+'''
+
 st.code(select_cols)
 
 
@@ -222,6 +274,11 @@ if 'SQL' in lang_var:
 ALTER TABLE df DROP COLUMN col_one;
 ALTER TABLE df DROP COLUMN col_one DROP COLUMN col_two;
 '''
+if 'PySpark' in lang_var: drop_cols += '''
+#pyspark
+df.drop('col_one')
+df.drop('col_one', 'col_two')
+'''
 st.code(drop_cols)
 
 
@@ -231,25 +288,35 @@ if 'Pandas' in lang_var:
     rename_cols += '''
 #pandas
 df.rename(columns={"column_one": "new_col_1"})
-df.rename(columns={"column_one": "new_col_1", "column_two": "new_col_2"})
+df.rename(columns={"column_one": "new_col_1", 
+                   "column_two": "new_col_2"})
 '''
 if 'Tidyverse' in lang_var:
     rename_cols += '''
 #tidyverse
 df %>% rename(new_col_1 = column_one)
-df %>% rename(new_col_1 = column_one, new_col_2 = column_two)
+df %>% rename(new_col_1 = column_one, 
+              new_col_2 = column_two)
 '''
 if 'Polars' in lang_var:
     rename_cols += '''
 #polars
 df.rename({"column_one": "new_col_1"})
-df.rename({"column_one": "new_col_1", "column_two": "new_col_2"})
+df.rename({"column_one": "new_col_1", 
+           "column_two": "new_col_2"})
 '''
 if 'SQL' in lang_var:
     rename_cols += '''
 #sql
 ALTER TABLE df RENAME COLUMN column_one TO new_col_1;
 ALTER TABLE df RENAME COLUMN column_one TO new_col_1 RENAME COLUMN column_two TO new_col_2;
+'''
+if 'PySpark' in lang_var: rename_cols += '''
+#pyspark
+df = df.withColumnRenamed('column_one', 'new_col_1')
+df = df.withColumnsRenamed({
+    "column_one": "new_col_1",
+    "column_two": "new_col_2"})
 '''
 st.code(rename_cols)
 
@@ -282,6 +349,12 @@ if 'SQL' in lang_var:
 #sql
 ALTER TABLE df ALTER COLUMN Age INTEGER;
 ALTER TABLE df ALTER COLUMN Zip TYPE VARCHAR(max_length);
+'''
+if 'PySpark' in lang_var: data_type_conv += '''
+#pyspark
+df = df.withColumn('Race', F.col('Race').cast('string'))
+df = df.withColumn('Age',  F.col('Age').cast('int'))
+df = df.withColumn('Zip',  F.col('Zip').cast('string'))
 '''
 st.code(data_type_conv)
 
@@ -364,6 +437,13 @@ SELECT * FROM df WHERE col_one <> 'Blue';
 SELECT * FROM df WHERE col_one IN ('A', 'B');
 SELECT * FROM df WHERE NOT (Race = 'White' AND Gender = 'Male');
 '''
+if 'PySpark' in lang_var: filter_data += '''
+#pyspark
+df.filter(F.col('col_one') >= 100)
+df.filter(F.col('col_one') != 'Blue')
+df.filter(F.col('col_one').isin(['A', 'B']))
+df.filter(~((F.col('Race') == 'White') & (F.col('Gender') == 'Male')))
+'''
 st.code(filter_data)
 
 
@@ -376,7 +456,7 @@ df.query('col_one.str.contains("string").values')
 df.query('col_one.str.contains(["string1", "string2"]).values')
 df.query('col_one.str.startswith("string").values')
 df.query('col_one.str.endswith("string").values')
-df.query('col_one.str.match("regex_pattern").values')
+df.query('col_one.str.match(regex_pattern).values')
 '''
 if 'Tidyverse' in lang_var:
     filter += '''
@@ -385,7 +465,7 @@ df %>% filter(str_detect(col_one, "string"))
 df %>% filter(str_detect(col_one, c("string1", "string2")))
 df %>% filter(str_starts(col_one, "string"))
 df %>% filter(str_ends(col_one, "string"))
-df %>% filter(str_match(col_one, "regex_pattern"))
+df %>% filter(str_match(col_one, regex_pattern))
 '''
 if 'Polars' in lang_var:
     filter += '''
@@ -403,6 +483,14 @@ SELECT * FROM df WHERE col_one LIKE '%string1%' OR col_one LIKE '%string2%';
 SELECT * FROM df WHERE col_one LIKE 'string%';
 SELECT * FROM df WHERE col_one LIKE '%string';
 SELECT * FROM df WHERE col_one ~ 'regex_pattern';
+'''
+if 'PySpark' in lang_var: filter += '''
+#pyspark
+df.filter(F.col('col_one').contains("string"))
+df.filter((F.col("col_one").contains("string1")) | (F.col("col_one").contains("string2")))
+df.filter(F.col('col_one').startswith("string"))
+df.filter(F.col('col_one').endswith("string"))
+df.filter(F.col('col_one').rlike(regex_pattern))
 '''
 st.code(filter)
 
@@ -433,6 +521,12 @@ if 'SQL' in lang_var:
 SELECT * FROM my_table ORDER BY col_one;
 SELECT * FROM my_table ORDER BY col_one DESC;
 '''
+if 'PySpark' in lang_var:
+    arrange_data += '''
+#pyspark
+df.orderBy('col_one')
+df.orderBy(F.desc('col_one'))
+'''
 st.code(arrange_data)
 
 
@@ -462,8 +556,13 @@ if 'SQL' in lang_var:
 SELECT DISTINCT ON (col_one) * FROM my_table;
 SELECT DISTINCT * FROM my_table;
 '''
+if 'PySpark' in lang_var:
+    distinct += '''
+#pyspark
+df.dropDuplicates(['col_one']).show()
+df.dropDuplicates().show()
+'''
 st.code(distinct)
-
 
 st.subheader('Replace values')
 replace=''
@@ -490,6 +589,11 @@ if 'SQL' in lang_var:
     replace += '''
 #sql
 UPDATE df SET col_one = 'foo' WHERE col_one = 2;
+'''
+if 'PySpark' in lang_var:
+    replace += '''
+#pyspark
+df = df.withColumn('col_one', F.when(F.col('col_one') == 2, 'foo').otherwise(F.col('col_one')))
 '''
 st.code(replace)
 
@@ -523,8 +627,12 @@ if 'SQL' in lang_var:
 #sql
 DELETE FROM df WHERE col_one IS NULL
 '''
+if 'PySpark' in lang_var:
+    drop_na += '''
+df.na.drop()
+df.na.drop(subset=['col_one', 'col_two'])
+'''
 st.code(drop_na)
-
 
 st.subheader('Replace missing values')
 replace_missing = ''
@@ -559,6 +667,7 @@ if 'SQL' in lang_var:
 #sql
 UPDATE df SET col_one = 'x' WHERE col_one IS NULL;
 '''
+
 st.code(replace_missing)
 
 #df.fill_null(strategy='backward')
@@ -614,6 +723,17 @@ SELECT Race, Sex,
 FROM df
 GROUP BY Race, Sex;
 '''
+if 'PySpark' in lang_var:
+    group_by += '''
+#pyspark
+df.groupBy('Race').count().show()
+df.groupBy('Race').agg(F.expr('percentile_approx(Income, 0.5)').alias('median')).show()
+df.groupBy('Race', 'Sex').agg(
+    F.expr('percentile_approx(Income, 0.5)').alias('new_col1'),
+    F.count('id').alias('new_col2'),
+    F.mean('Age').alias('new_col3')
+).show()
+'''
 st.code(group_by)
 
 
@@ -622,10 +742,9 @@ pivot_longer = ''
 if 'Pandas' in lang_var:
     pivot_longer += '''
 #pandas
-(df.melt(
+df.melt(
     id_vars='columns_staying_put',
     var_name=['col1_melting','col2_melting'])
-)
 '''
 if 'Tidyverse' in lang_var:
     pivot_longer += '''
@@ -637,10 +756,19 @@ df %>% pivot_longer(
 if 'Polars' in lang_var:
     pivot_longer += '''
 #polars
-(df.melt(
+df.melt(
     id_vars='col_staying',
     value_vars=['col1_melting','col2_melting'])
-)
+
+'''
+if 'PySpark' in lang_var:
+    pivot_longer += '''
+#pyspark
+df.melt(
+    ids=['col_staying'], 
+    values=['col1_melting', 'col2_melting'],
+    variableColumnName='variable',
+    valueColumnName='value'))
 '''
 st.code(pivot_longer)
 
@@ -671,6 +799,14 @@ df.pivot_table(index=['col1_staying','col2_staying'],
       values='val_pivoting'
 )
 '''
+if 'PySpark' in lang_var:
+    pivot_wider += '''
+#pyspark
+(df
+    .groupBy('col1_staying', 'col2_staying')
+    .pivot('col_pivoting')
+    .agg(F.first('val_pivoting')))
+'''
 st.code(pivot_wider)
 
 
@@ -693,6 +829,12 @@ if 'Polars' in lang_var:
 #polars
 pd.concat([df1,df2])
 pd.concat([df1,df2], how="horizontal")
+'''
+if 'PySpark' in lang_var:
+    combine_df += '''
+#pyspark
+df1.union(df2)
+df1.join(df2)
 '''
 st.code(combine_df)
 
@@ -728,6 +870,11 @@ FROM df1
 JOIN df2
 ON df1.df1_id = df2.df2_id;
 '''
+if 'PySpark' in lang_var:
+    merge_df += '''
+#pyspark
+df1.join(df2, df1.df1_id == df2.df2_id, "inner")
+'''
 st.code(merge_df)
 
 
@@ -761,6 +908,11 @@ SELECT *
 FROM df1
 LEFT JOIN df2
 ON df1.df1_id = df2.df2_id;
+'''
+if 'PySpark' in lang_var:
+    left_join_df += '''
+#pyspark
+df1.join(df2, df1.df1_id == df2.df2_id, "left")
 '''
 st.code(left_join_df)
 
@@ -798,6 +950,14 @@ SELECT *,
        x + 2 AS twomore,
        x - 2 AS twoless
 FROM df;
+'''
+if 'PySpark' in lang_var:
+    create_cols += '''
+#pyspark
+(df
+    .withColumn('twomore', F.col('x') + 2)
+    .withColumn('twoless', F.col('x') - 2))
+
 '''
 st.code(create_cols)
 
@@ -840,6 +1000,17 @@ SELECT *,
        CASE WHEN column = true THEN x + 2 ELSE x END AS if_twomore
 FROM my_table;
 '''
+if 'PySpark' in lang_var:
+    create_cols_cond += '''
+#pyspark
+df.withColumn(
+    'if_twomore', 
+    F.when(
+        F.col('column') == True, 
+        F.col('x') + 2)\
+        .otherwise(F.col('x')))
+'''
+
 st.code(create_cols_cond)
 
 
