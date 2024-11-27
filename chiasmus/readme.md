@@ -9,8 +9,6 @@ Welcome to the **Chiastic Likelihood Calculator**! This Streamlit app calculates
   - [Reordering Likelihood (L)](#reordering-likelihood-l)
   - [Chiastic Likelihood (P)](#chiastic-likelihood-p)
 - [Using the App](#using-the-app)
-  - [Installation](#installation)
-  - [Running the App](#running-the-app)
   - [Input Parameters](#input-parameters)
   - [Calculating L and P](#calculating-l-and-p)
 - [Examples](#examples)
@@ -67,26 +65,6 @@ $$
 
 ## Using the App
 
-### Installation
-
-1. **Prerequisites**:
-   - Python 3.6 or higher installed on your system.
-   - Streamlit library installed. If not, you can install it using:
-
-```
-pip install streamlit
-```
-
-2. **Clone or Download** the repository containing the app code.
-
-3. **Navigate** to the directory containing the app script.
-
-### Running the App
-
-Run the app using the Streamlit CLI:
-
-
-Replace `app.py` with the name of your script file if different.
 
 ### Input Parameters
 

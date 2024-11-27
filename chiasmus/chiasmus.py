@@ -49,7 +49,7 @@ def main():
     st.sidebar.header("Input Parameters")
 
     # Chiasm name
-    chiasm_name = st.sidebar.text_input("Chiasm Name")
+    chiasm_name = st.sidebar.text_area("""Chiasm Name""")
 
     # Number of chiastic elements
     num_chiastic_elements = st.sidebar.number_input(
