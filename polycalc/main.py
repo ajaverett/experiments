@@ -31,22 +31,13 @@ st.header("Mesh Calculations")
 warp_yarns_per_meter = warp_count / INCH_TO_METER
 weft_yarns_per_meter = weft_count / INCH_TO_METER
 
-st.write(f"**Warp Yarns per Meter**: {warp_yarns_per_meter:.2f} yarns/m")
-st.write(f"**Weft Yarns per Meter**: {weft_yarns_per_meter:.2f} yarns/m")
-
 # Step 2: Calculate mass per meter of the yarns (grams per meter)
 warp_mass_per_meter = warp_denier / 9000  # Denier is grams per 9000 meters
 weft_mass_per_meter = weft_denier / 9000
 
-st.write(f"**Warp Mass per Meter**: {warp_mass_per_meter:.4f} g/m")
-st.write(f"**Weft Mass per Meter**: {weft_mass_per_meter:.4f} g/m")
-
 # Step 3: Calculate the total length of yarn per square meter (warp and weft)
 warp_length_per_sqm = warp_yarns_per_meter * 1  # Length in meters for 1 square meter
 weft_length_per_sqm = weft_yarns_per_meter * 1
-
-st.write(f"**Warp Length per Square Meter**: {warp_length_per_sqm:.2f} m")
-st.write(f"**Weft Length per Square Meter**: {weft_length_per_sqm:.2f} m")
 
 # Step 4: Calculate the total mass per square meter
 total_mass_per_sqm_mesh = (warp_length_per_sqm * warp_mass_per_meter) + (weft_length_per_sqm * weft_mass_per_meter)
@@ -58,20 +49,19 @@ st.subheader(f"{total_mass_per_sqm_mesh:.2f} grams")
 st.header("LDPE Film Calculations")
 
 # Weight of LDPE film in grams per square meter
-ldpe_weight_per_sqm = ldpe_thickness * ldpe_density * 0.1
+ldpe_weight_per_sqm = ldpe_thickness * ldpe_density
 
 st.write(f"**LDPE Thickness**: {ldpe_thickness} microns")
 st.write(f"**LDPE Density**: {ldpe_density} g/cm³")
 st.write(f"The **weight per square meter** of the LDPE film is:")
 st.subheader(f"{ldpe_weight_per_sqm:.2f} grams")
 
-st.write("""
-***
-""")
+# Show Calculations
+st.header("Show Detailed Calculations")
 
+# Buttons to toggle calculations
 show_mesh_calcs = st.button("Show Calculations for Mesh Parameters")
 show_ldpe_calcs = st.button("Show Calculations for LDPE Film Parameters")
-
 
 if show_mesh_calcs:
     st.subheader("Mesh Calculations - Step-by-Step")
@@ -113,13 +103,8 @@ if show_mesh_calcs:
 if show_ldpe_calcs:
     st.subheader("LDPE Film Calculations - Step-by-Step")
     st.latex(r"""
-    \text{Weight (GSM)} = \text{Thickness (microns)} \times \text{Density (g/cm}^3\text{)} \times 0.1
+    \text{Weight (GSM)} = \text{Thickness (microns)} \times \text{Density (g/cm}^3\text{)}
     """)
     st.latex(rf"""
-    = {ldpe_thickness} \times {ldpe_density} \times 0.1 = {ldpe_weight_per_sqm:.2f} \, \text{{grams}}
+    = {ldpe_thickness} \times {ldpe_density} = {ldpe_weight_per_sqm:.2f} \, \text{{grams}}
     """)
-
-
-
-
-
