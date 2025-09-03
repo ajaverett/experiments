@@ -203,7 +203,7 @@ st.sidebar.subheader("Shape")
 skew_param = st.sidebar.slider("Skew (shape)", min_value=-15.0, max_value=15.0, value=0.0, step=0.1)
 
 st.sidebar.markdown("---")
-with st.sidebar.expander("Axes & Range"):
+with st.sidebar.expander(""):
     xr_min, xr_max = st.slider("X-range", -20, 20, (-10, 10))
     y_pad_pdf = st.slider("Y padding (PDF)", 0.0, 1.0, 0.6, 0.05)
     y_pad_pmf = st.slider("Y padding (PMF)", 0.0, 1.0, 0.2, 0.05)
