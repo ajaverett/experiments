@@ -42,7 +42,7 @@ if 'Polars' in lang_var: columns_var += '''
 #polars
 series = pl.Series([1,2,3])
 '''
-st.code(imports)
+st.code(columns_var)
 
 
 st.subheader('Create a dataframe')
@@ -411,7 +411,14 @@ if 'Pandas' in lang_var:
 df.query("col_one >= 100")
 df.query("col_one != 'Blue'")
 df.query("col_one in ['A', 'B']")
+df.query("Race == 'White' and Gender == 'Male'")
 df.query("not (Race == 'White' and Gender == 'Male')")
+
+df[df["col_one"] >= 100]
+df[df["col_one"] != "Blue"]
+df[df["col_one"].isin(['A', 'B'])]
+df[df[(Race == "White") & (Gender == "Male")]]
+df[df[~((Race == "White") & (Gender == "Male"))]]
 '''
 if 'Tidyverse' in lang_var:
     filter_data += '''
@@ -680,8 +687,18 @@ if 'Pandas' in lang_var:
     group_by += '''
 #pandas
 df.groupby('Race', as_index=False).count()
+
 df.groupby('Race', as_index=False)['Income'].median()
-(df.groupby(['Race', 'Sex'])
+
+(df.groupby('Race', as_index=False)
+   .agg({
+        "Income":"median",
+        "id":"count",
+        "Age":"mean"
+   })
+)
+
+(df.groupby(['Race', 'Sex'], as_index=False)
    .agg(
       new_col1=pd.NamedAgg(column = 'Income', aggfunc = np.median),
       new_col2=pd.NamedAgg(column = 'id', aggfunc = 'count'), #any column will work
