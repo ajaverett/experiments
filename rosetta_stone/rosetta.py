@@ -832,8 +832,8 @@ combine_df = ''
 if 'Pandas' in lang_var:
     combine_df += '''
 #pandas
-pd.concat([df1,df2])
-pd.concat([df1,df2], axis=1)
+pd.concat([df1,df2], axis="index") # vertically stack (row-wise)
+pd.concat([df1,df2], axis="columns") # horizontally stack (column-wise)
 '''
 if 'Tidyverse' in lang_var:
     combine_df += '''
