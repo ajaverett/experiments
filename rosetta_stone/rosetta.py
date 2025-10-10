@@ -686,7 +686,7 @@ group_by = ''
 if 'Pandas' in lang_var:
     group_by += '''
 #pandas
-df.groupby('Race', as_index=False).count()
+df.groupby('Race', as_index=False).size() # Returns the number of rows per group
 
 df.groupby('Race', as_index=False)['Income'].median()
 
