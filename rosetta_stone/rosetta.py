@@ -54,11 +54,9 @@ df.drop_duplicates()
 
 st.header('3. Filter Columns')
 
-col_select_method = st.radio(
-    "Choose your column selection style:",
-    ["filter() method", "loc[] indexing", "Show both"],
-    key="col_select"
-)
+st.write("Choose your column selection style:")
+show_filter_method = st.checkbox("filter() method", value=True, key="show_filter")
+show_loc_method = st.checkbox("loc[] indexing", value=False, key="show_loc")
 
 st.subheader('Keep columns')
 if col_select_method == "filter() method":
