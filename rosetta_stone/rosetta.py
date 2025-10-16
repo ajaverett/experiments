@@ -54,11 +54,37 @@ df.drop_duplicates()
 
 st.header('3. Filter Columns')
 
+col_select_method = st.radio(
+    "Choose your column selection style:",
+    ["filter() method", "loc[] indexing", "Show both"],
+    key="col_select"
+)
+
 st.subheader('Keep columns')
-st.code('''
+if col_select_method == "filter() method":
+    st.code('''
 df.filter(items=['col_one'])
 df.filter(items=['col_one','col_two'])
 df.filter(regex='[pt]al')
+''')
+elif col_select_method == "loc[] indexing":
+    st.code('''
+df.loc[:,['col_one']]
+df.loc[:,['col_one','col_two']]
+df.loc[:,df.columns.str.startswith("prefix_")]
+df.loc[:,df.columns.str.endswith("_suffix")]
+df.loc[:,df.columns.str.contains("_infix_")]
+''')
+else:
+    st.code('''
+# Using filter() method
+df.filter(items=['col_one'])
+df.filter(items=['col_one','col_two'])
+df.filter(regex='[pt]al')
+
+# Using loc[] indexing
+df.loc[:,['col_one']]
+df.loc[:,['col_one','col_two']]
 df.loc[:,df.columns.str.startswith("prefix_")]
 df.loc[:,df.columns.str.endswith("_suffix")]
 df.loc[:,df.columns.str.contains("_infix_")]
@@ -85,15 +111,39 @@ df.iloc[:,1:3]    # all rows and second to third column
 
 st.header('4. Filter Rows')
 
+row_filter_method = st.radio(
+    "Choose your row filtering style:",
+    [".query() method", "Boolean indexing df[]", "Show both"],
+    key="row_filter"
+)
+
 st.subheader('Filter by values')
-st.code('''
+if row_filter_method == ".query() method":
+    st.code('''
+df.query("col_one >= 100")
+df.query("col_one != 'Blue'")
+df.query("col_one in ['A', 'B']")
+df.query("Race == 'White' and Gender == 'Male'")
+df.query("not (Race == 'White' and Gender == 'Male')")
+''')
+elif row_filter_method == "Boolean indexing df[]":
+    st.code('''
+df[df["col_one"] >= 100]
+df[df["col_one"] != "Blue"]
+df[df["col_one"].isin(['A', 'B'])]
+df[(df["Race"] == "White") & (df["Gender"] == "Male")]
+df[~((df["Race"] == "White") & (df["Gender"] == "Male"))]
+''')
+else:
+    st.code('''
+# Using .query() method
 df.query("col_one >= 100")
 df.query("col_one != 'Blue'")
 df.query("col_one in ['A', 'B']")
 df.query("Race == 'White' and Gender == 'Male'")
 df.query("not (Race == 'White' and Gender == 'Male')")
 
-# Alternative syntax
+# Using boolean indexing
 df[df["col_one"] >= 100]
 df[df["col_one"] != "Blue"]
 df[df["col_one"].isin(['A', 'B'])]
@@ -102,12 +152,37 @@ df[~((df["Race"] == "White") & (df["Gender"] == "Male"))]
 ''')
 
 st.subheader('Filter by string patterns')
-st.code('''
+if row_filter_method == ".query() method":
+    st.code('''
 df.query('col_one.str.contains("string", na=False)', engine="python")
 df.query('col_one.str.contains("string1|string2", na=False, regex=True)', engine="python")
 df.query('col_one.str.startswith("string", na=False)', engine="python")
 df.query('col_one.str.endswith("string", na=False)', engine="python")
 df.query('col_one.str.match(regex_pattern, na=False)', engine="python")
+''')
+elif row_filter_method == "Boolean indexing df[]":
+    st.code('''
+df[df['col_one'].str.contains("string", na=False)]
+df[df['col_one'].str.contains("string1|string2", na=False, regex=True)]
+df[df['col_one'].str.startswith("string", na=False)]
+df[df['col_one'].str.endswith("string", na=False)]
+df[df['col_one'].str.match(regex_pattern, na=False)]
+''')
+else:
+    st.code('''
+# Using .query() method
+df.query('col_one.str.contains("string", na=False)', engine="python")
+df.query('col_one.str.contains("string1|string2", na=False, regex=True)', engine="python")
+df.query('col_one.str.startswith("string", na=False)', engine="python")
+df.query('col_one.str.endswith("string", na=False)', engine="python")
+df.query('col_one.str.match(regex_pattern, na=False)', engine="python")
+
+# Using boolean indexing
+df[df['col_one'].str.contains("string", na=False)]
+df[df['col_one'].str.contains("string1|string2", na=False, regex=True)]
+df[df['col_one'].str.startswith("string", na=False)]
+df[df['col_one'].str.endswith("string", na=False)]
+df[df['col_one'].str.match(regex_pattern, na=False)]
 ''')
 
 st.subheader('Select rows by position')
@@ -129,6 +204,12 @@ df.sort_values('col_one', ascending=False)
 
 st.header('5. Handle Data Quality')
 
+fillna_method = st.radio(
+    "Choose your missing value fill style:",
+    ["fillna() method", "Show alternative methods", "Show both"],
+    key="fillna"
+)
+
 st.subheader('Drop missing values')
 st.code('''
 df.dropna()
@@ -137,11 +218,35 @@ df.dropna(thresh=n) #integer threshold
 ''')
 
 st.subheader('Fill missing values')
-st.code('''
+if fillna_method == "fillna() method":
+    st.code('''
 df.fillna(x)
 df['col_one'].fillna(x)
 df['col_one'].fillna(method='ffill')
 df['col_two'].fillna(df['col_two'].mean())
+''')
+elif fillna_method == "Show alternative methods":
+    st.code('''
+# Using ffill/bfill methods directly
+df.ffill()
+df.bfill()
+df['col_one'].ffill()
+
+# Using interpolate
+df['col_one'].interpolate()
+''')
+else:
+    st.code('''
+# Using fillna()
+df.fillna(x)
+df['col_one'].fillna(x)
+df['col_one'].fillna(method='ffill')
+df['col_two'].fillna(df['col_two'].mean())
+
+# Alternative methods
+df.ffill()
+df.bfill()
+df['col_one'].interpolate()
 ''')
 
 st.subheader('Convert data types')
@@ -160,22 +265,68 @@ df['col_one'].replace(2,"foo")
 
 st.header('6. Create New Variables')
 
+new_col_method = st.radio(
+    "Choose your column creation style:",
+    [".assign() method", "Direct assignment df['col']", "Show both"],
+    key="new_col"
+)
+
 st.subheader('Create new columns')
-st.code('''
+if new_col_method == ".assign() method":
+    st.code('''
 df.assign(
     twomore = lambda df: df.x + 2,
     twoless = lambda df: df.x - 2
 )
 ''')
+elif new_col_method == "Direct assignment df['col']":
+    st.code('''
+df['twomore'] = df['x'] + 2
+df['twoless'] = df['x'] - 2
+''')
+else:
+    st.code('''
+# Using .assign() method (chainable)
+df.assign(
+    twomore = lambda df: df.x + 2,
+    twoless = lambda df: df.x - 2
+)
+
+# Using direct assignment
+df['twomore'] = df['x'] + 2
+df['twoless'] = df['x'] - 2
+''')
 
 st.subheader('Create columns with conditional logic')
-st.code('''
+if new_col_method == ".assign() method":
+    st.code('''
 df.assign(
     if_twomore = lambda df: 
         np.where(df.column == True, 
                  df.x + 2, 
                  df.x)
 )
+''')
+elif new_col_method == "Direct assignment df['col']":
+    st.code('''
+df['if_twomore'] = np.where(df['column'] == True, 
+                             df['x'] + 2, 
+                             df['x'])
+''')
+else:
+    st.code('''
+# Using .assign() method
+df.assign(
+    if_twomore = lambda df: 
+        np.where(df.column == True, 
+                 df.x + 2, 
+                 df.x)
+)
+
+# Using direct assignment
+df['if_twomore'] = np.where(df['column'] == True, 
+                             df['x'] + 2, 
+                             df['x'])
 ''')
 
 st.header('7. Reshape Data')
@@ -217,14 +368,24 @@ pd.merge(df1, df2, how='left',
 
 st.header('9. Aggregate & Summarize')
 
+agg_method = st.radio(
+    "Choose your aggregation style:",
+    [".agg() with dict", ".agg() with NamedAgg", "Show both"],
+    key="agg"
+)
+
 st.subheader('Group and aggregate')
-st.code('''
+
+count_code = '''
 # Count rows per group
 df.groupby('Race', as_index=False).size()
 
 # Single aggregation
 df.groupby('Race', as_index=False)['Income'].median()
+'''
 
+if agg_method == ".agg() with dict":
+    st.code(count_code + '''
 # Multiple aggregations
 (df.groupby('Race', as_index=False)
    .agg({
@@ -233,8 +394,29 @@ df.groupby('Race', as_index=False)['Income'].median()
         "Age":"mean"
    })
 )
-
+''')
+elif agg_method == ".agg() with NamedAgg":
+    st.code(count_code + '''
 # Named aggregations with multiple groups
+(df.groupby(['Race', 'Sex'], as_index=False)
+   .agg(
+      new_col1=pd.NamedAgg(column='Income', aggfunc=np.median),
+      new_col2=pd.NamedAgg(column='id', aggfunc='count'),
+      new_col3=pd.NamedAgg(column='Age', aggfunc=np.mean)
+))
+''')
+else:
+    st.code(count_code + '''
+# Multiple aggregations with dict
+(df.groupby('Race', as_index=False)
+   .agg({
+        "Income":"median",
+        "id":"count",
+        "Age":"mean"
+   })
+)
+
+# Named aggregations with NamedAgg
 (df.groupby(['Race', 'Sex'], as_index=False)
    .agg(
       new_col1=pd.NamedAgg(column='Income', aggfunc=np.median),
