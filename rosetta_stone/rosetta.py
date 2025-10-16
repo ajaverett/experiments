@@ -367,7 +367,7 @@ if 'Pandas' in lang_var:
 df.loc[:,:] #all rows and columns
 df.loc[1,:] #second row and all columns
 df.loc[[1,6],:] #second and seventh row and all columns
-df.loc[[1:6],:] #second to seventh row and all columns
+df.loc[1:6, :] #second to seventh row and all columns
 df.loc[:,['col_one']] #all rows and column_one
 df.loc[:,['col_one','col_three']] #all rows and column_one and column_three
 df.loc[:,'col_one':'col_three'] #all rows and column_one to column_three
@@ -417,8 +417,8 @@ df.query("not (Race == 'White' and Gender == 'Male')")
 df[df["col_one"] >= 100]
 df[df["col_one"] != "Blue"]
 df[df["col_one"].isin(['A', 'B'])]
-df[df[(Race == "White") & (Gender == "Male")]]
-df[df[~((Race == "White") & (Gender == "Male"))]]
+df[(df["Race"] == "White") & (df["Gender"] == "Male")]
+df[~((df["Race"] == "White") & (df["Gender"] == "Male"))]
 '''
 if 'Tidyverse' in lang_var:
     filter_data += '''
@@ -459,11 +459,11 @@ filter = ''
 if 'Pandas' in lang_var:
     filter += '''
 #pandas
-df.query('col_one.str.contains("string").values')
-df.query('col_one.str.contains(["string1", "string2"]).values')
-df.query('col_one.str.startswith("string").values')
-df.query('col_one.str.endswith("string").values')
-df.query('col_one.str.match(regex_pattern).values')
+df.query('col_one.str.contains("string", na=False)', engine="python")
+df.query('col_one.str.contains("string1|string2", na=False, regex=True)', engine="python")
+df.query('col_one.str.startswith("string", na=False)', engine="python")
+df.query('col_one.str.endswith("string", na=False)', engine="python")
+df.query('col_one.str.match(regex_pattern, na=False)', engine="python")
 '''
 if 'Tidyverse' in lang_var:
     filter += '''
@@ -760,7 +760,7 @@ if 'Pandas' in lang_var:
     pivot_longer += '''
 #pandas
 df.melt(
-    id_vars='columns_staying_put',
+    id_vars=['columns_staying_put'],
     var_name=['col1_melting','col2_melting'])
 '''
 if 'Tidyverse' in lang_var:
@@ -797,7 +797,8 @@ if 'Pandas' in lang_var:
 #pandas
 df.pivot_table(index=['col1_staying','col2_staying'],
       columns='col_pivoting',
-      values='val_pivoting'
+      values='val_pivoting',
+      aggfunc='mean'
 )
 '''
 if 'Tidyverse' in lang_var:
