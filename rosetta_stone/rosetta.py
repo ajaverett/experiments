@@ -1,691 +1,655 @@
 import streamlit as st
 
 st.title('Data Science Rosetta Stone!')
-lang_var = st.multiselect('Select a library', ('Pandas', 'Tidyverse','Polars','SQL', 'PySpark'), default='Pandas')
+lang_var = st.multiselect('Select a library', ['Pandas'], default=['Pandas'])
 st.write('Note this may have errors, please let me know if you find any.')
 
+show_adv = st.toggle("Show advanced parameters", value=False)
 
-st.subheader('Imports')
-imports = ''
-if 'Pandas' in lang_var: imports += '''
-#pandas
+st.subheader('Importing libraries')
+
+with st.expander("Importing libraries", expanded=False):
+
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
 import pandas as pd
-'''
-if 'Tidyverse' in lang_var: imports += '''
-#tidyverse
-library(tidyverse)
-'''
-if 'Polars' in lang_var: imports += '''
-#polars
-import polar as pl
-'''
-if 'PySpark' in lang_var:
-    imports += '''
-#pyspark
-# if in Databricks, imports are natively handled
-from pyspark.sql import functions as F
-'''
-st.code(imports)
+import numpy as np
+"""
+    st.code(pandas_code, language="python")
 
+st.subheader('Loading in data')
 
-st.subheader('Columns of a dataframe')
-columns_var = ''
-if 'Pandas' in lang_var: columns_var += '''
-#pandas
-series = pd.Series([1,2,3])
-'''
-if 'Tidyverse' in lang_var: columns_var += '''
-#tidyverse
-vector <- c(1,2,3)
-'''
-if 'Polars' in lang_var: columns_var += '''
-#polars
-series = pl.Series([1,2,3])
-'''
-st.code(columns_var)
+with st.expander("Creating a series with **pd.Series()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+series = pd.Series([1, 2, 3])
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+series = pd.Series(
+    data=[1, 2, 3],
+    index=['a', 'b', 'c'],     # custom index
+    dtype='int64',             # explicit dtype
+    name='my_series',          # series name
+    copy=False,                # avoid copying where possible
+)
+"""
+    st.code(pandas_code, language="python")
 
-
-st.subheader('Create a dataframe')
-create_df = ''
-if 'Pandas' in lang_var: create_df += '''
-#pandas
+with st.expander("Creating a dataframe with **pd.DataFrame()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df = pd.DataFrame({
+    'col_one': ['A', 'B', 'C', 'D'],
+    'col_two': [1, 2, 3, 4]
+})
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
 df = pd.DataFrame(
-      {'col_one': ['A', 'B', 'C','D'],
-       'col_two': [1, 2, 3, 4]}
+    data={'col_one': ['A', 'B', 'C', 'D'], 'col_two': [1, 2, 3, 4]},
+    index=pd.Index([0, 1, 2, 3], name='row_id'),  # named index
+    dtype={'col_two': 'int64'},                   # per-column dtype (via astype after creation in most cases)
+    copy=False,
 )
-'''
-if 'Tidyverse' in lang_var: create_df += '''
-#tidyverse
-df <- tibble(
-    col_one = c('A', 'B', 'C', 'D'),
-    col_two = c(1, 2, 3, 4)
-)
-'''
-if 'Polars' in lang_var: create_df += '''
-#polars
-df = pl.DataFrame(
-      {'col_one': ['A', 'B', 'C','D'],
-       'col_two': [1, 2, 3, 4]}
-)
-'''
-if 'SQL' in lang_var: create_df += '''
-#sql
-CREATE TABLE df (
-    col_one CHAR(1),
-    col_two INT
-);
+"""
+    st.code(pandas_code, language="python")
 
-INSERT INTO df (col_one, col_two)
-VALUES
-    ('A', 1),
-    ('B', 2),
-    ('C', 3),
-    ('D', 4);
-'''
-
-if 'PySpark' in lang_var: create_df += '''
-#pyspark
-
-schema = StructType([
-    StructField("col_one", StringType(), True),
-    StructField("col_two", IntegerType(), True)
-])
-
-data = [
-    ('A', 1),
-    ('B', 2),
-    ('C', 3),
-    ('D', 4)
-]
-
-df = spark.createDataFrame(data, schema)
-
-'''
-
-st.code(create_df)
-
-
-st.subheader('Read CSV file into a dataframe')
-read_csv = ''
-if 'Pandas' in lang_var: read_csv += '''
-#pandas
+with st.expander("Loading in a CSV file as a dataframe with **.read_csv()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
 df = pd.read_csv('data.csv')
-df = pd.read_csv('data.csv', header=None)
-'''
-if 'Tidyverse' in lang_var: read_csv += '''
-#tidyverse
-df <- read_csv('data.csv')
-df <- read_csv('data.csv', col_names = F)
-'''
-if 'Polars' in lang_var: read_csv += '''
-#polars
-df = pl.read_csv('data.csv')
-df = pl.read_csv('data.csv', has_header=False)
-'''
-if 'PySpark' in lang_var: read_csv += '''
-#pyspark
-df = spark.read.csv('data.csv', header=True, inferSchema=True)
-df_no_header = spark.read.csv('data.csv', header=False, inferSchema=True)
-'''
-st.code(read_csv)
+    """
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+df = pd.read_csv('data.csv',
+    sep=',',                       # delimiter
+    header=0,                      # row number to use as the column names (0-indexed)
+    names=None,                    # or provide custom names list to override header
+    index_col='Date',              # use 'Date' as index
+    usecols=['Date', 'Region', 'Sales'],  # read only a subset of columns
+    dtype={'Sales': 'float64'},    # set column dtypes
+    parse_dates=['Date'],          # parse date columns
+    dayfirst=False,                # date parsing option
+    na_values=['NA', '-'],         # treat these as missing
+    keep_default_na=True,          # keep default NaN strings too
+    encoding='utf-8',              # file encoding
+    nrows=1000,                    # read first N rows
+    skiprows=0,                    # skip initial rows
+    engine='python'                # engine (python/c) - python supports regex sep
+)
+"""
+    st.code(pandas_code, language="python")
 
+with st.expander("Loading in an Excel file as a dataframe with **.read_excel()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df = pd.read_excel('data.xlsx')
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+df = pd.read_excel('data.xlsx',
+    sheet_name='my_sheet_name',         # sheet name (or index, or list of names)
+    header=0,                           # row number to use as header (0-indexed)
+    names=['Date', 'Region', 'Sales'],  # custom column names (overrides header)
+    index_col='Date',                   # use the 'Date' column as index
+    usecols=['Date', 'Region', 'Sales'],# subset of columns
+    dtype={'Sales': 'float64'},         # set dtypes
+    parse_dates=['Date'],               # parse dates
+    na_values=['NA', '-', ''],          # strings recognized as NaN
+    skiprows=[0],                       # skip rows by index
+    nrows=100,                          # read only first N rows
+    engine='openpyxl'                   # engine for .xlsx
+)
+"""
+    st.code(pandas_code, language="python")
 
-st.subheader('Count how many of each value in a column')
-count_df = ''
-if 'Pandas' in lang_var: count_df += '''
-#pandas
+st.subheader('Descriptive statistics')
+
+with st.expander("Descriptive statistics for a dataframe with **.info()** and **.describe()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+
+df.info() 
+# prints info about a DataFrame including the 
+# index, dtypes, and column names, non-null values counts, and memory usage
+
+df.describe()
+# returns a DataFrame with descriptive statistics
+# for all numeric columns (count, mean, std, min, 25%, 50%, 75%, max)
+"""
+
+    st.code(pandas_code, language="python")
+
+with st.expander("Descriptive statistics for a column", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+# Find all distinct values of a column
+df['col_one'].unique()
+
+# Value counts of categorical columns
 df['col_one'].value_counts()
-'''
-if 'Tidyverse' in lang_var: count_df += '''
-#tidyverse
-df %>% count(col_one)
-'''
-if 'Polars' in lang_var: count_df += '''
-#polars
-df['col_one'].value_counts()
-'''
-if 'SQL' in lang_var: count_df += '''
-#sql
-SELECT col_one, COUNT(*) AS count
-FROM df
-GROUP BY col_one;
-'''
-if 'PySpark' in lang_var: count_df += '''
-#pyspark
-df.groupBy('col_one').count()
-'''
-st.code(count_df)
+"""
+        if show_adv:
+            pandas_code += """df['col_one'].value_counts(normalize=True)  # Value counts of categorical columns (proportions)
+df['col_one'].value_counts(bins=5)          # Value counts of binned numeric columns
 
+# prints info about a Series (index, dtype, and name, counts)
+df['col_one'].info()
 
-st.subheader('Calculate statistics of a column')
-stats_df = ''
-if 'Pandas' in lang_var: stats_df += '''
-#pandas
+# returns a Series with descriptive statistics (count, unique, top, freq)
+df['col_one'].describe()
+"""
+    pandas_code += """
+# Descriptive statistics for numeric columns
 df['col_one'].mean()
 df['col_one'].median()
 df['col_one'].std()
 df['col_one'].min()
 df['col_one'].max()
-'''
-if 'Tidyverse' in lang_var: stats_df += '''
-#tidyverse
-df$col_one %>% mean
-df$col_one %>% median
-df$col_one %>% sd
-df$col_one %>% min
-df$col_one %>% max
-'''
-if 'Polars' in lang_var: stats_df += '''
-#polars
-df['col_one'].mean()
-df['col_one'].median()
-df['col_one'].std()
-df['col_one'].min()
-df['col_one'].max()
-'''
-if 'SQL' in lang_var: stats_df += '''
-#pandas
-SELECT AVG(col_one) FROM df;
-SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY col_one) AS median FROM df;
-SELECT STDDEV(col_one) AS std FROM df;
-SELECT MIN(col_one) AS min_val FROM df;
-SELECT MAX(col_one) AS max_val FROM df;
-'''
-if 'PySpark' in lang_var: stats_df += '''
-#pyspark
-df.agg(F.mean("col_one"))   # add .collect()[0][0] to the end to get the value
-df.approxQuantile("Salary", [0.5], error) # 0.5 is the median (A smaller error means more precise but more computation)
-df.agg(F.stddev("col_one"))
-df.agg(F.min("col_one"))
-df.agg(F.max("col_one"))
-'''
-st.code(stats_df)
+"""
 
+    st.code(pandas_code, language="python")
 
-st.subheader('Keep columns')
-select_cols = ''
-if 'Pandas' in lang_var: select_cols += '''
-#pandas
+st.subheader('Filter a subset of columns')
+
+with st.expander("Selecting columns using **.filter()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
 df.filter(items=['col_one'])
-df.filter(items=['col_one','col_two'])
-df.filter(regex='[pt]al')
-df.loc[:,df.columns.str.startswith("prefix_")]
-df.loc[:,df.columns.str.endswith("_suffix")]
-df.loc[:,df.columns.str.contains("_infix_")]
-'''
-if 'Tidyverse' in lang_var: select_cols += '''
-#tidyverse
-df %>% select(col_one)
-df %>% select(col_one,col_two)
-df %>% select(matches("[pt]al"))
-df %>% select(starts_with("prefix_"))
-df %>% select(ends_with("_suffix"))
-df %>% select(contains("_infix_"))
-'''
-if 'Polars' in lang_var: select_cols += '''
-#polars
-df.select('col_one')
-df.filter(['col_one','col_two'])
-df.filter(pl.col('[pt]al'))
-df.select(pl.col("^prefix_.*$"))
-df.select(pl.col("^*_suffix$"))
-df.select(pl.col("^.*_infix_.*$"))
-'''
-if 'SQL' in lang_var: select_cols += '''
-#sql
-SELECT col_one FROM df;
-SELECT col_one, col_two FROM df;
-'''
-if 'PySpark' in lang_var: select_cols += '''
-#pyspark
-df.select('col_one').show()
-df.select('col_one', 'col_two').show()
-df.select([col for col in df.columns if col.startswith("prefix_")]).show()
-df.select([col for col in df.columns if col.endswith("_suffix")]).show()
-df.select([col for col in df.columns if "_infix_" in col]).show()
-'''
+df.filter(items=['col_one', 'col_two', 'col_three'])
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+df.filter(like='sales', axis='columns')      # columns that contain 'sales' in the name
+df.filter(regex='_2024$', axis='columns')    # columns that end with '_2024'
+df.filter(regex='^sales_', axis='columns')   # columns that start with 'sales_'
+df.filter(regex='A|B', axis='columns')       # columns that contain either 'A' or 'B' (regex OR)
+"""
+    st.code(pandas_code, language="python")
 
-st.code(select_cols)
+with st.expander("Selecting columns using brackets **[]**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df['col_one']
+df[['col_one', 'col_two', 'col_three']]
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+# Assuming a df with columns: col_one, col_two, col_three
+# the following are equivalent:
 
+# select the first column
+# select the first three columns
+# select columns from col_one to col_three (inclusive)
 
-st.subheader('Drop columns')
-drop_cols = ''
-if 'Pandas' in lang_var:
-    drop_cols += '''
-#pandas
+df.loc[:, 'col_one']
+df.loc[:, ['col_one', 'col_two', 'col_three']]
+df.loc[:,'col_one':'col_three'] 
+
+df.iloc[:,0]
+df.iloc[:,[0,1,2]]
+df.iloc[:,0:3]
+"""
+    st.code(pandas_code, language="python")
+
+with st.expander("Dropping columns using **.drop()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
 df.drop(columns=['col_one'])
 df.drop(columns=['col_one','col_two'])
-'''
-if 'Tidyverse' in lang_var:
-    drop_cols += '''
-#tidyverse
-df %>% select(!col_one)
-df %>% select(!c(col_one,col_two))
-'''
-if 'Polars' in lang_var:
-    drop_cols += '''
-#polars
-df.drop('col_one')
-df.drop(['col_one','col_two'])
-'''
-if 'SQL' in lang_var:
-    drop_cols += '''
-#sql
-ALTER TABLE df DROP COLUMN col_one;
-ALTER TABLE df DROP COLUMN col_one DROP COLUMN col_two;
-'''
-if 'PySpark' in lang_var: drop_cols += '''
-#pyspark
-df.drop('col_one')
-df.drop('col_one', 'col_two')
-'''
-st.code(drop_cols)
+"""
+    st.code(pandas_code, language="python")
+
+st.subheader('Filter a subset of rows')
+
+if show_adv:
+    st.markdown("_**Subsetting rows by index**_")
+
+    with st.expander("Subsetting rows using **.iloc[]**", expanded=False):
+        pandas_code = ''
+        if 'Pandas' in lang_var:
+            pandas_code += """# pandas
+    df.iloc[2]              # return the 3rd row as Series
+    df.iloc[[0, 3, 5]]      # return the 1st, 4th, and 6th rows
+    df.iloc[2:6]            # return the 3rd to 6th rows
+    df.iloc[0:5]            # return the first 5 rows
+    df.iloc[-3:]            # return the last 3 rows
+    """
+        st.code(pandas_code, language="python")
+
+st.markdown("_**Conditional statements to filter rows**_")
+
+with st.expander("Subsetting rows using **.query()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df.query("num_col >= 100")
+df.query("str_col != 'Blue'")
+df.query("str_col in ['A', 'B']")
+df.query('(num_col > 2 and num_col < 8) or (str_col == "North")')
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+
+# variables in df.query() must be prefixed with @
+df.query("num_col >= @number_variable")  # using a variable
+df.query("str_col in @list_variable")  # using a variable
 
 
-st.subheader('Rename columns')
-rename_cols = ''
-if 'Pandas' in lang_var:
-    rename_cols += '''
-#pandas
-df.rename(columns={"column_one": "new_col_1"})
-df.rename(columns={"column_one": "new_col_1", 
-                   "column_two": "new_col_2"})
-'''
-if 'Tidyverse' in lang_var:
-    rename_cols += '''
-#tidyverse
-df %>% rename(new_col_1 = column_one)
-df %>% rename(new_col_1 = column_one, 
-              new_col_2 = column_two)
-'''
-if 'Polars' in lang_var:
-    rename_cols += '''
-#polars
-df.rename({"column_one": "new_col_1"})
-df.rename({"column_one": "new_col_1", 
-           "column_two": "new_col_2"})
-'''
-if 'SQL' in lang_var:
-    rename_cols += '''
-#sql
-ALTER TABLE df RENAME COLUMN column_one TO new_col_1;
-ALTER TABLE df RENAME COLUMN column_one TO new_col_1 RENAME COLUMN column_two TO new_col_2;
-'''
-if 'PySpark' in lang_var: rename_cols += '''
-#pyspark
-df = df.withColumnRenamed('column_one', 'new_col_1')
-df = df.withColumnsRenamed({
-    "column_one": "new_col_1",
-    "column_two": "new_col_2"})
-'''
-st.code(rename_cols)
+"""
+    st.code(pandas_code, language="python")
 
+with st.expander("Subsetting rows using boolean masking **df[df[]]**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df[df["num_col"] >= 100]
+df[df["str_col"] != "Blue"]
+df[df["str_col"].isin(["A", "B"])]
+df[(df["num_col"].between(2, 8)) | (df["str_col"] == "North")]
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
 
-st.subheader('Convert data types of columns')
-data_type_conv = ''
-if 'Pandas' in lang_var:
-    data_type_conv += '''
-#pandas
-df.astype({"Race":'category', 
-           "Age":'int64',
-           "Zip":'string'})
-'''
-if 'Tidyverse' in lang_var:
-    data_type_conv += '''
-#tidyverse
-df %>% mutate(Race = as.factor(Race), 
-              Age = as.numeric(Age),
-              Zip = as.character(Zip))
-'''
-if 'Polars' in lang_var:
-    data_type_conv += '''
-#polars
-df.with_columns(pl.col('Race').cast(pl.Categorical, strict=False),
-                pl.col('Age').cast(pl.Int64, strict=False),
-                pl.col('Zip').cast(pl.Utf8, strict=False))
-'''
-if 'SQL' in lang_var:
-    data_type_conv += '''
-#sql
-ALTER TABLE df ALTER COLUMN Age INTEGER;
-ALTER TABLE df ALTER COLUMN Zip TYPE VARCHAR(max_length);
-'''
-if 'PySpark' in lang_var: data_type_conv += '''
-#pyspark
-df = df.withColumn('Race', F.col('Race').cast('string'))
-df = df.withColumn('Age',  F.col('Age').cast('int'))
-df = df.withColumn('Zip',  F.col('Zip').cast('string'))
-'''
-st.code(data_type_conv)
+df[df["num_col"] >= number_variable]
+df[df["str_col"].isin(list_variable)]
 
+"""
+    st.code(pandas_code, language="python")
 
-st.subheader('Subset/locate rows and columns')
-subset_data = ''
-if 'Pandas' in lang_var:
-    subset_data += '''
-#pandas
-df.loc[:,:] #all rows and columns
-df.loc[1,:] #second row and all columns
-df.loc[[1,6],:] #second and seventh row and all columns
-df.loc[1:6, :] #second to seventh row and all columns
-df.loc[:,['col_one']] #all rows and column_one
-df.loc[:,['col_one','col_three']] #all rows and column_one and column_three
-df.loc[:,'col_one':'col_three'] #all rows and column_one to column_three
-df.iloc[:,[1,3]] #all rows and second and fourth column
-df.iloc[:,1:3] #all rows and second to third column
-'''
-if 'Tidyverse' in lang_var:
-    subset_data += '''
-#tidyverse
-df[,] #all rows and columns
-df[1,] #first row and all columns
-df[c(1,6),] #first and sixth row and all columns
-df[c(1:6),] #first to sixth row and all columns
-df[,'col_one'] #all rows and column_one
-df[,c('col_one','col_three')] #all rows and column_one and column_three
-df %>% select(col_one:col_three) #all rows and column_one to column_three
-df[,c(1,3)] #all rows and first and third column
-df[,c('1:3')] #all rows and first to third column
-'''
-if 'Polars' in lang_var:
-    subset_data += '''
-#polars
-df[:,:] #all rows and columns
-df[1,:] #first row and all columns
-df[[1,6],:] #first and sixth row and all columns
-df[1:6,:] #first to sixth row and all columns
-df[:,['Survived']] #all rows and column_one
-df[:,['Survived','Sex']] #all rows and column_one and column_three
-df[:,'Survived':'Sex'] #all rows and column_one to column_three
-df[:,[1,3]] #all rows and second and fourth column
-df[:,1:3] #all rows and second to third column
-'''
-st.code(subset_data)
+with st.expander("Subsetting rows using **.loc[]**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df.loc[df["num_col"] >= 100]
+df.loc[df["str_col"] != "Blue"]
+df.loc[df["str_col"].isin(["A", "B"])]
+df.loc[(df["num_col"].between(2, 8)) | (df["str_col"] == "North")]
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
 
+df.loc[df["num_col"] >= number_variable]
+df.loc[df["str_col"].isin(list_variable)]
 
-st.subheader('Filter data by row values')
-filter_data = ''
-if 'Pandas' in lang_var:
-    filter_data += '''
-#pandas
-df.query("col_one >= 100")
-df.query("col_one != 'Blue'")
-df.query("col_one in ['A', 'B']")
-df.query("Race == 'White' and Gender == 'Male'")
-df.query("not (Race == 'White' and Gender == 'Male')")
+"""
+    st.code(pandas_code, language="python")
 
-df[df["col_one"] >= 100]
-df[df["col_one"] != "Blue"]
-df[df["col_one"].isin(['A', 'B'])]
-df[(df["Race"] == "White") & (df["Gender"] == "Male")]
-df[~((df["Race"] == "White") & (df["Gender"] == "Male"))]
-'''
-if 'Tidyverse' in lang_var:
-    filter_data += '''
-#tidyverse
-df %>% filter(col_one >= 100)
-df %>% filter(col_one != "Blue")
-df %>% filter(col_one %in% c('A','B'))
-df %>% filter(!(Race == "White" & Gender == "Male"))
-'''
-if 'Polars' in lang_var:
-    filter_data += '''
-#polars
-df.filter(pl.col("col_one") >= 100)
-df.filter(pl.col("col_one") != 'Blue')
-df.filter(pl.col("col_one").is_in(['A', 'B']))
-df.filter(~((pl.col("Race")=='White')&(pl.col("Gender")=='Male')))
-'''
-if 'SQL' in lang_var:
-    filter_data += '''
-#sql
-SELECT * FROM df WHERE col_one >= 100;
-SELECT * FROM df WHERE col_one <> 'Blue';
-SELECT * FROM df WHERE col_one IN ('A', 'B');
-SELECT * FROM df WHERE NOT (Race = 'White' AND Gender = 'Male');
-'''
-if 'PySpark' in lang_var: filter_data += '''
-#pyspark
-df.filter(F.col('col_one') >= 100)
-df.filter(F.col('col_one') != 'Blue')
-df.filter(F.col('col_one').isin(['A', 'B']))
-df.filter(~((F.col('Race') == 'White') & (F.col('Gender') == 'Male')))
-'''
-st.code(filter_data)
+st.markdown("_**String related conditional statements**_")
 
+with st.expander("Subsetting rows using **.query()** (strings)", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df.query('str_col.str.contains("string", na=False)', engine="python")
+df.query('str_col.str.startswith("string", na=False)', engine="python")
+df.query('str_col.str.endswith("string", na=False)', engine="python")
+df.query('str_col.str.match(regex_pattern, na=False)', engine="python")
+"""
+    st.code(pandas_code, language="python")
 
-st.subheader('Filter data by string values in rows')
-filter = ''
-if 'Pandas' in lang_var:
-    filter += '''
-#pandas
-df.query('col_one.str.contains("string", na=False)', engine="python")
-df.query('col_one.str.contains("string1|string2", na=False, regex=True)', engine="python")
-df.query('col_one.str.startswith("string", na=False)', engine="python")
-df.query('col_one.str.endswith("string", na=False)', engine="python")
-df.query('col_one.str.match(regex_pattern, na=False)', engine="python")
-'''
-if 'Tidyverse' in lang_var:
-    filter += '''
-#tidyverse
-df %>% filter(str_detect(col_one, "string"))
-df %>% filter(str_detect(col_one, c("string1", "string2")))
-df %>% filter(str_starts(col_one, "string"))
-df %>% filter(str_ends(col_one, "string"))
-df %>% filter(str_match(col_one, regex_pattern))
-'''
-if 'Polars' in lang_var:
-    filter += '''
-#polars
-df.filter(pl.col("col_one").str.contains("string"))
-df.filter(pl.col("col_one").str.contains("string"|string2))
-df.filter(pl.col("col_one").str.startswith("string"))
-df.filter(pl.col("col_one").str.endswith("string"))
-'''
-if 'SQL' in lang_var:
-    filter += '''
-#sql
-SELECT * FROM df WHERE col_one LIKE '%string%';
-SELECT * FROM df WHERE col_one LIKE '%string1%' OR col_one LIKE '%string2%';
-SELECT * FROM df WHERE col_one LIKE 'string%';
-SELECT * FROM df WHERE col_one LIKE '%string';
-SELECT * FROM df WHERE col_one ~ 'regex_pattern';
-'''
-if 'PySpark' in lang_var: filter += '''
-#pyspark
-df.filter(F.col('col_one').contains("string"))
-df.filter((F.col("col_one").contains("string1")) | (F.col("col_one").contains("string2")))
-df.filter(F.col('col_one').startswith("string"))
-df.filter(F.col('col_one').endswith("string"))
-df.filter(F.col('col_one').rlike(regex_pattern))
-'''
-st.code(filter)
+with st.expander("Subsetting rows using boolean masking **df[df[]]** (strings)", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df[df["str_col"].str.contains("string", na=False)]
+df[df["str_col"].str.startswith("string", na=False)]
+df[df["str_col"].str.endswith("string", na=False)]
+df[df["str_col"].str.match(regex_pattern, na=False)]
+"""
+    st.code(pandas_code, language="python")
 
+st.markdown("_**Null related conditional statements**_")
 
-st.subheader('Arrange dataframe by values in a column')
-arrange_data = ''
-if 'Pandas' in lang_var:
-    arrange_data += '''
-#pandas
-df.sort_values('col_one')
-df.sort_values('col_one', ascending=False)
-'''
-if 'Tidyverse' in lang_var:
-    arrange_data += '''
-#tidyverse
-df %>% arrange(col_one)
-df %>% arrange(col_one %>% desc())
-'''
-if 'Polars' in lang_var:
-    arrange_data += '''
-#polars
-df.sort('col_one')
-df.sort('col_one', descending=True)
-'''
-if 'SQL' in lang_var:
-    arrange_data += '''
-#sql
-SELECT * FROM my_table ORDER BY col_one;
-SELECT * FROM my_table ORDER BY col_one DESC;
-'''
-if 'PySpark' in lang_var:
-    arrange_data += '''
-#pyspark
-df.orderBy('col_one')
-df.orderBy(F.desc('col_one'))
-'''
-st.code(arrange_data)
-
-
-st.subheader('Find distinct values in a column')
-distinct = ''
-if 'Pandas' in lang_var:
-    distinct += '''
-#pandas
-df.drop_duplicates(subset = ["col_one"])
-df.drop_duplicates()
-'''
-if 'Tidyverse' in lang_var:
-    distinct += '''
-#tidyverse
-df %>% distinct(col_one, .keep_all = T)
-df %>% distinct()
-'''
-if 'Polars' in lang_var:
-    distinct += '''
-#polars
-df.unique(subset=["col_one"])
-df.unique()
-'''
-if 'SQL' in lang_var:
-    distinct += '''
-#sql
-SELECT DISTINCT ON (col_one) * FROM my_table;
-SELECT DISTINCT * FROM my_table;
-'''
-if 'PySpark' in lang_var:
-    distinct += '''
-#pyspark
-df.dropDuplicates(['col_one']).show()
-df.dropDuplicates().show()
-'''
-st.code(distinct)
-
-st.subheader('Replace values')
-replace=''
-if 'Pandas' in lang_var:
-    replace += '''
-#pandas
-df.replace(2,"foo")
-df[['col_one','col_two']].replace(2,"foo")
-df['col_one'].replace(2,"foo")
-'''
-if 'Tidyverse' in lang_var:
-    replace += '''
-# tidyverse
-df %>% mutate(across(everything(), ~replace(., . ==  2 , "foo")))
-df %>% mutate(across(c(col_one,col_two), ~replace(., . ==  2 , "foo")))
-df %>% mutate(col_one = ifelse(col_one == 2, "foo", col_one))
-'''
-if 'Polars' in lang_var:
-    replace += '''
-# polars
-# ...no good option yet
-'''
-if 'SQL' in lang_var:
-    replace += '''
-#sql
-UPDATE df SET col_one = 'foo' WHERE col_one = 2;
-'''
-if 'PySpark' in lang_var:
-    replace += '''
-#pyspark
-df = df.withColumn('col_one', F.when(F.col('col_one') == 2, 'foo').otherwise(F.col('col_one')))
-'''
-st.code(replace)
-
-
-st.subheader('Drop missing values')
-drop_na = ''
-if 'Pandas' in lang_var:
-    drop_na += '''
-#pandas
+with st.expander("Subsetting rows using **.dropna()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+# Removes all rows with any null values
 df.dropna()
-df.dropna(subset=['col_one', 'col_two'])
-df.dropna(thresh=n) #integer threshold
-'''
-if 'Tidyverse' in lang_var:
-    drop_na += '''
-#tidyverse
-df %>% drop_na()
-df %>% drop_na(c(col_one, col_two))
-df %>% select(where(~mean(is.na(.)) < n)) #percent threshold
-'''
-if 'Polars' in lang_var:
-    drop_na += '''
-#polars
-df.drop_nulls() # will not drop NaNs
-df.fill_nan(None).drop_nulls() # will drop NaNs
-df.drop_nulls(subset=['col_one', 'col_two']) # will not drop NaNs
-df.fill_nan(None).drop_nulls(subset=['col_one', 'col_two']) # will drop NaNs
-'''
-if 'SQL' in lang_var:
-    drop_na += '''
-#sql
-DELETE FROM df WHERE col_one IS NULL
-'''
-if 'PySpark' in lang_var:
-    drop_na += '''
-df.na.drop()
-df.na.drop(subset=['col_one', 'col_two'])
-'''
-st.code(drop_na)
 
-st.subheader('Replace missing values')
-replace_missing = ''
-if 'Pandas' in lang_var:
-    replace_missing += '''
-#pandas
-df.fillna(x)
+# Only removes rows when nulls are in specific columns
+df.dropna(subset=['col_one', 'col_two']) 
+"""
+    if show_adv:
+            pandas_code += """
+# --- advanced ---
+# Keeps rows with at least n non-null values
+df.dropna(thresh=n) 
+"""
+    st.code(pandas_code, language="python")
+
+st.markdown("_**Duplicate related conditional statements**_")
+
+with st.expander("Subsetting rows using **.drop_duplicates()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+# Removes duplicate rows
+df.drop_duplicates()
+
+# Removes duplicate rows based on specific columns
+df.drop_duplicates(subset=['col_one', 'col_two'])
+"""
+    if show_adv:
+            pandas_code += """
+# --- advanced ---
+
+# Keeps the first occurrence of duplicates
+df.drop_duplicates(keep='first')
+
+# Keeps the last occurrence of duplicates
+df.drop_duplicates(keep='last')
+
+# Removes all duplicates, keeping only unique rows
+df.drop_duplicates(keep=False)
+"""
+    st.code(pandas_code, language="python")
+
+st.subheader('Data Cleaning')
+
+st.markdown("_**Renaming columns**_")
+
+with st.expander("Rename columns with **.columns**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+
+# Rename all columns by assigning a new list to df.columns
+df.columns = ["new_col_1", "new_col_2", "new_col_3"]
+"""
+    st.code(pandas_code, language="python")
+
+with st.expander("Rename columns with **.rename()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df.rename(columns={"col_one": "new_col_1"})
+df.rename(columns={"col_one": "new_col_1", 
+                   "col_two": "new_col_2"})
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+
+# rename all columns to lowercase with '_col' suffix
+df.rename(columns=lambda x: x.lower() + '_col')
+
+"""
+    st.code(pandas_code, language="python")
+
+st.markdown("_**Casting data types and using data accessors**_")
+
+with st.expander("Casting data types with **.astype()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df.astype({"race"       :'category', 
+           "is_active"  :'bool',
+           "age"        :'int',
+           "zip"        :'string'})
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+
+# convert all columns to string type
+df.astype(str)
+
+# convert age column to int type, ignoring errors
+df.astype({'age': 'int'}, errors='ignore')
+"""
+    st.code(pandas_code, language="python")
+
+if show_adv:
+    with st.expander("Casting data types with **pd.to_numeric()**", expanded=False):
+        pandas_code = ''
+        if 'Pandas' in lang_var:
+            pandas_code += """# pandas
+pd.to_numeric(df['num_col_str'], errors='coerce') # converts to numeric, setting errors to NaN
+pd.to_numeric(df['num_col_str'], downcast='integer') # converts column to smallest integer subtype
+pd.to_numeric(df['num_col_str'], downcast='float')   # converts column to smallest float subtype
+    """
+        st.code(pandas_code, language="python")
+
+with st.expander("Casting data types with **pd.to_datetime()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+# To find the format of the date strings, 
+# visit https://strftime.org/ or https://devhints.io/datetime
+
+pd.to_datetime(df['date_col_str'], format='%Y-%m-%d') # explicit format
+
+pd.to_datetime(df['date_col_str'], infer_datetime_format=True) # guess format
+
+pd.to_datetime(df['date_col_str'], errors='coerce') 
+# invalid strings become null (NaT)
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+
+df['col_dt'].dt.strftime('%Y-%m-%d') # datetime to string in specified format
+df['col_dt'].dt.tz_localize('UTC') # adds tz info, doesnt alter time
+df['col_dt'].dt.tz_convert('America/New_York') # alters time to fit tz
+df['col_dt'].dt.normalize()  # sets all times to 00:00
+df['col_dt'].dt.floor('D')  # round down to nearest day
+df['col_dt'].dt.ceil('H')   # round up to nearest hour
+"""
+    st.code(pandas_code, language="python")
+
+if show_adv:
+    with st.expander("Casting data types with **pd.to_timedelta()**", expanded=False):
+        pandas_code = ''
+        if 'Pandas' in lang_var:
+            pandas_code += """# pandas
+
+# Timedelta type will usually manifest when subtracting two datetime cols 
+# (time_diff: timedelta type, start_date/end_date: datetime type):
+df['time_diff'] = df['end_date'] - df['start_date']
+
+# You can do arithmetic operations on datetime columns with timedelta type:
+df['week_after_start_date'] = df['start_date'] + pd.to_timedelta(7, unit='D')
+
+# You can convert int columns into timedelta type:
+pd.to_timedelta(df["col_milliseconds_int"], unit="ms")
+pd.to_timedelta(df["col_seconds_int"],      unit="s") 
+pd.to_timedelta(df["col_minutes_int"],      unit="min")
+pd.to_timedelta(df["col_hours_int"],        unit="h")
+pd.to_timedelta(df["col_days_int"],         unit="D")
+pd.to_timedelta(df["col_weeks_int"],        unit="W")
+"""
+        st.code(pandas_code, language="python")
+
+if show_adv:
+    with st.expander("Casting data types with **pd.Categorical()**", expanded=False):
+        pandas_code = ''
+        if 'Pandas' in lang_var:
+            pandas_code += """# pandas
+
+pd.Categorical(df['col_str'], categories=['low', 'med', 'high'], ordered=True)
+# turns a string column into an ordered categorical column
+
+df['col_cat'].cat.reorder_categories(['low', 'medium', 'high'], ordered=True)
+# reorders categories of an existing categorical column
+"""
+        st.code(pandas_code, language="python")
+
+with st.expander("Datetime type accessor **.dt**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df['col'].dt.year           # Grabs the year from the datetime
+df['col'].dt.month          # Grabs the month from the datetime
+df['col'].dt.day            # Grabs the day from the datetime
+df['col'].dt.hour           # Grabs the hour from the datetime
+df['col'].dt.minute         # Grabs the minute from the datetime
+df['col'].dt.second         # Grabs the second from the datetime
+df['col'].dt.day_name()     # Grabs the day name from the datetime
+df['col'].dt.month_name()   # Grabs the month name from the datetime
+df['col'].dt.dayofweek      # Grabs the day of the week from the datetime 
+                            # (Monday=0, Sunday=6)
+
+"""
+
+    st.code(pandas_code, language="python")
+
+with st.expander("String type accessor **.str**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df['col'].str.strip()                          # Remove leading/trailing spaces
+df['col'].str.lower()                          # Convert to lowercase
+df['col'].str.upper()                          # Convert to uppercase
+df['col'].str.title()                          # Capitalize first letter of each word
+df['col'].str.capitalize()                     # Capitalize first letter, rest lower
+df['col'].str.replace('old', 'new')            # Replace text
+df['col'].str.replace(r'\d+', '', regex=True)  # Remove digits (regex finds digits, replaces with "")
+df['col'].str[:4]                              # First 4 characters
+df['col'].str[-3:]                             # Last 3 characters
+df['col'].str.slice(2, 6)                      # Characters from index 2-5
+df['col'].str.get(0)                           # Character at position 0
+"""
+
+    st.code(pandas_code, language="python")
+
+if show_adv:
+    with st.expander("Categorical type accessor **.cat**", expanded=False):
+        pandas_code = ''
+        if 'Pandas' in lang_var:
+            pandas_code += """# pandas
+df['col'].cat.categories                    
+# Get all defined categories of categorical column
+
+df['col'].cat.codes                         
+# Get integer codes of categorical column
+
+df['col'].cat.add_categories(['new_cat'])   
+# Adds a new category
+
+df['col'].cat.remove_categories(['old_cat'])
+# Removes a category
+
+# Rename categories
+df['col'].cat.rename_categories({'old_cat_name': 'new_cat_name'}) 
+
+df['col'].cat.rename_categories({'old_cat_name_1': 'new_cat_name_1',
+                                 'old_cat_name_2': 'new_cat_name_2'}) 
+"""
+        st.code(pandas_code, language="python")
+
+st.markdown("_**Replacing values in a column**_")
+
+with st.expander("Replacing values with **.replace()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+# Replace a single value across the entire dataframe
+df.replace('old_value', 'new_value')
+
+# Replace a single value in a specific column
+df["col"].replace('old_value', 'new_value')
+
+
+# Replace multiple values with the same new value across the entire dataframe
+df.replace(['old_value1', 'old_value2', 'old_value3'], 'new_value')
+
+# Replace multiple values with the same new value in a specific column
+df["col"].replace(['old_value1', 'old_value2', 'old_value3'], 'new_value')
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+# Replace values in a specific column
+df.replace({'col_one': {'old_value': 'new_value'}})
+
+# Replace multiple values in specific columns
+df.replace({'col_one': {'old_value1': 'new_value1', 
+                        'old_value2': 'new_value2'}},
+           {'col_two': {'old_value3': 'new_value3',
+                        'old_value4': 'new_value4'}})
+
+# Regex replacement in a specific column
+df.replace(regex={'col_one': {'r_old_pattern': 'r_new_pattern'},
+                  'col_two': {'r_old_pattern2': 'r_new_pattern2'}})
+"""
+    st.code(pandas_code, language="python")
+
+with st.expander("Replacing null values with **.fillna()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+# Replace all nulls in dataframe with x
+df.fillna(x) 
+
+# Replace nulls in a specific column with x
 df['col_one'].fillna(x)
+
+# Replace nulls in a specific column with the mean of that column
+df['col_one'].fillna(df['col_one'].mean())
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+
+# Forward fill nulls in a specific column (the row above fills the null)
 df['col_one'].fillna(method='ffill')
-df['col_two'].fillna(df['col_two'].mean())
-'''
-if 'Tidyverse' in lang_var:
-    replace_missing += '''
-#tidyverse
-df %>% replace(is.na(.), x)
-df %>% mutate(col_one = ifelse(is.na(col_one), x, col_one))
-df %>% fill(col_one, .direction = "up")
-df %>% mutate(col_one = ifelse(is.na(col_one), mean(df$col_one, na.rm = T), col_one))
-'''
-if 'Polars' in lang_var:
-    replace_missing += '''
-#polars
-df.fill_null(x) # will only fill nulls
-df.fill_nan(x) # will only fill NaNs
-df['col_one'].fill_null(x) # will only fill nulls
-df['col_one'].fill_nan(x) # will only fill NaNs
-df['col_one'].fill_null(method='forward')
-df['col_two'].fill_null(fill_value=pl.col('col_two').mean())
-'''
-if 'SQL' in lang_var:
-    replace_missing += '''
-#sql
-UPDATE df SET col_one = 'x' WHERE col_one IS NULL;
-'''
 
-st.code(replace_missing)
+# Backward fill nulls in a specific column (the row below fills the null)
+df['col_one'].fillna(method='bfill')
+"""
+    st.code(pandas_code, language="python")
 
-#df.fill_null(strategy='backward')
-# df.fill_null(strategy='forward')
+st.markdown("_**Arranging rows in a certain order**_")
 
+with st.expander("Sort rows with **.sort_values()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+df.sort_values('col_one') # sorts df by col_one ascending
 
-st.subheader('Group and aggregate data')
-group_by = ''
-if 'Pandas' in lang_var:
-    group_by += '''
-#pandas
+df.sort_values('col_one', ascending=False) # sorts df by col_one descending
+
+# sorts df by col_one ascending, then col_two descending
+df.sort_values(['col_one', 'col_two'], ascending=[True, False]) 
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+# places nulls at the beginning
+df.sort_values("col_one", na_position='first')  
+"""
+    st.code(pandas_code, language="python")
+
+st.subheader('Reshaping data')
+
+st.markdown("_**Grouping and aggregating data**_")
+
+with st.expander("Group and aggregate data with **.groupby()** and **.agg()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
 df.groupby('Race', as_index=False).size() # Returns the number of rows per group
 
 df.groupby('Race', as_index=False)['Income'].median()
@@ -697,350 +661,130 @@ df.groupby('Race', as_index=False)['Income'].median()
         "Age":"mean"
    })
 )
-
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+# Using pd.NamedAgg to specify new agg column names
 (df.groupby(['Race', 'Sex'], as_index=False)
    .agg(
       new_col1=pd.NamedAgg(column = 'Income', aggfunc = np.median),
       new_col2=pd.NamedAgg(column = 'id', aggfunc = 'count'), #any column will work
       new_col3=pd.NamedAgg(column = 'Age', aggfunc = np.mean)
 ))
-'''
-if 'Tidyverse' in lang_var:
-    group_by += '''
-#tidyverse
-df %>% group_by(Race) %>% count()
-df %>% group_by(Race) %>% summarize(new_col = median(Income))
-df %>% group_by(Race, Sex) %>%
-     summarize(
-       new_col1 = median(Income),
-       new_col2 = n(),
-       new_col3 = mean(age)
-)
-'''
-if 'Polars' in lang_var:
-    group_by += '''
-#polars
-df.groupby('Race').count()
-df.groupby('Race').median()['Income']
-df.groupby(['Sex','Survived']).agg(
-    pl.col('Income').median().alias('new_col1'),
-    pl.col('id').count().alias('new_col2'), #any column will work
-    pl.col('Age').mean().alias('new_col3'),
-)
-'''
-if 'SQL' in lang_var:
-    group_by += '''
-#sql
-SELECT Race, COUNT(*) AS count FROM df GROUP BY Race;
-SELECT Race, MEDIAN(Income) FROM df GROUP BY Race;
-SELECT Race, Sex, 
-       MEDIAN(Income) AS new_col1, 
-       COUNT(id) AS new_col2,
-       AVG(Age) AS new_col3
-FROM df
-GROUP BY Race, Sex;
-'''
-if 'PySpark' in lang_var:
-    group_by += '''
-#pyspark
-df.groupBy('Race').count().show()
-df.groupBy('Race').agg(F.expr('percentile_approx(Income, 0.5)').alias('median')).show()
-df.groupBy('Race', 'Sex').agg(
-    F.expr('percentile_approx(Income, 0.5)').alias('new_col1'),
-    F.count('id').alias('new_col2'),
-    F.mean('Age').alias('new_col3')
-).show()
-'''
-st.code(group_by)
+"""
+    st.code(pandas_code, language="python")
 
+st.markdown("_**Pivoting data**_")
 
-st.subheader('Pivot longer: Reshape data from wide to long format')
-pivot_longer = ''
-if 'Pandas' in lang_var:
-    pivot_longer += '''
-#pandas
+with st.expander("Pivot longer: Reshape wide to long with **.melt()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
 df.melt(
     id_vars=['columns_staying_put'],
     var_name=['col1_melting','col2_melting'])
-'''
-if 'Tidyverse' in lang_var:
-    pivot_longer += '''
-#tidyverse
-df %>% pivot_longer(
-     cols = c("col1_melting", "col2_melting")
-)
-'''
-if 'Polars' in lang_var:
-    pivot_longer += '''
-#polars
-df.melt(
-    id_vars='col_staying',
-    value_vars=['col1_melting','col2_melting'])
+"""
+    st.code(pandas_code, language="python")
 
-'''
-if 'PySpark' in lang_var:
-    pivot_longer += '''
-#pyspark
-df.melt(
-    ids=['col_staying'], 
-    values=['col1_melting', 'col2_melting'],
-    variableColumnName='variable',
-    valueColumnName='value'))
-'''
-st.code(pivot_longer)
-
-
-st.subheader('Pivot wider: Reshape data from long to wide format')
-pivot_wider = ''
-if 'Pandas' in lang_var:
-    pivot_wider += '''
-#pandas
+with st.expander("Pivot wider: Reshape long to wide with **.pivot_table()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
 df.pivot_table(index=['col1_staying','col2_staying'],
       columns='col_pivoting',
       values='val_pivoting',
       aggfunc='mean'
 )
-'''
-if 'Tidyverse' in lang_var:
-    pivot_wider += '''
-#tidyverse
-df %>% pivot_wider(
-      names_from = col_pivoting, 
-      values_from = val_pivoting
-)
-'''
-if 'Polars' in lang_var:
-    pivot_wider += '''
-#polars
-df.pivot_table(index=['col1_staying','col2_staying'],
-      columns='col_pivoting',
-      values='val_pivoting'
-)
-'''
-if 'PySpark' in lang_var:
-    pivot_wider += '''
-#pyspark
-(df
-    .groupBy('col1_staying', 'col2_staying')
-    .pivot('col_pivoting')
-    .agg(F.first('val_pivoting')))
-'''
-st.code(pivot_wider)
+"""
+    st.code(pandas_code, language="python")
 
+st.markdown("_**Joining dataframes**_")
 
-st.subheader('Combine two dataframes')
-combine_df = ''
-if 'Pandas' in lang_var:
-    combine_df += '''
-#pandas
+with st.expander("Concatenating dataframes with **pd.concat()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
 pd.concat([df1,df2], axis="index") # vertically stack (row-wise)
 pd.concat([df1,df2], axis="columns") # horizontally stack (column-wise)
-'''
-if 'Tidyverse' in lang_var:
-    combine_df += '''
-#tidyverse
-df1 %>% bind_rows(df2)
-df1 %>% bind_cols(df2)
-'''
-if 'Polars' in lang_var:
-    combine_df += '''
-#polars
-pd.concat([df1,df2])
-pd.concat([df1,df2], how="horizontal")
-'''
-if 'PySpark' in lang_var:
-    combine_df += '''
-#pyspark
-df1.union(df2)
-df1.join(df2)
-'''
-st.code(combine_df)
+"""
+    st.code(pandas_code, language="python")
 
+with st.expander("Join two dataframes with **pd.merge()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+# Left join on two dataframes
+df1.merge(df2, left_on='df1_id', right_on='df2_id', how='left')
 
-st.subheader('Inner join two dataframes')
-merge_df = ''
-if 'Pandas' in lang_var:
-    merge_df += '''
-#pandas
-pd.merge(df1, df2, 
-     left_on='df1_id', right_on='df2_id'
+# Inner join on two dataframes
+df1.merge(df2, left_on='df1_id', right_on='df2_id', how='inner')
+
+# Outer join on two dataframes
+df1.merge(df2, left_on='df1_id', right_on='df2_id', how='outer')
+"""
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+
+# Left anti join on two dataframes
+(df1
+    .merge(df2, left_on='df1_id', right_on='df2_id', how='left', indicator=True)
+    .query('_merge == "left_only"')
+    .drop(columns='_merge')
 )
-'''
-if 'Tidyverse' in lang_var:
-    merge_df += '''
-#tidyverse
-df1 %>% inner_join(
-      df2, by = c(df1_id = "df2_id")
+
+# Right anti join on two dataframes
+(df1
+    .merge(df2, left_on='df1_id', right_on='df2_id', how='right', indicator=True)
+    .query('_merge == "right_only"')
+    .drop(columns='_merge')
 )
-'''
-if 'Polars' in lang_var:
-    merge_df += '''
-#polars
-pd.join(df1, df2, 
-     left_on='df1_id', right_on='df2_id'
+"""
+    st.code(pandas_code, language="python")
+
+
+
+st.subheader('Creating new columns')
+
+with st.expander("Creating new columns with bracket notation **[]**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+# Create a new column based on existing columns
+df['new_col'] = df['col_one'] + df['col_two']
+
+# Create a new column based on a condition
+df['is_adult'] = np.where(df['age'] >= 18, True, False)
+"""
+    st.code(pandas_code, language="python")
+
+
+with st.expander("Creating new columns with **.assign()**", expanded=False):
+    pandas_code = ''
+    if 'Pandas' in lang_var:
+        pandas_code += """# pandas
+# Create multiple new columns using assign
+
+df = df.assign(
+    new_col1 = df['col_one'] * 2,
+    new_col2 = df['col_two'] + 100
 )
-'''
-if 'SQL' in lang_var:
-    merge_df += '''
-#sql
-SELECT *
-FROM df1
-JOIN df2
-ON df1.df1_id = df2.df2_id;
-'''
-if 'PySpark' in lang_var:
-    merge_df += '''
-#pyspark
-df1.join(df2, df1.df1_id == df2.df2_id, "inner")
-'''
-st.code(merge_df)
 
-
-st.subheader('Left join on two dataframes')
-left_join_df = ''
-if 'Pandas' in lang_var:
-    left_join_df += '''
-#pandas
-pd.merge(df1, df2, how = 'left',
-     left_on='df1_id', right_on='df2_id'
+# Create a new column based on condition
+df = df.assign(
+    is_senior = lambda x: np.where(x['age'] >= 65, True, False)
 )
-'''
-if 'Tidyverse' in lang_var:
-    left_join_df += '''
-#tidyverse
-df1 %>% left_join(df2, 
-      by = c(df1_id = "df2_id")
-)
-'''
-if 'Polars' in lang_var:
-    left_join_df += '''
-#polars
-pd.join(df1, df2, how = 'left',
-     left_on='df1_id', right_on='df2_id'
-)
-'''
-if 'SQL' in lang_var:
-    left_join_df += '''
-#sql
-SELECT *
-FROM df1
-LEFT JOIN df2
-ON df1.df1_id = df2.df2_id;
-'''
-if 'PySpark' in lang_var:
-    left_join_df += '''
-#pyspark
-df1.join(df2, df1.df1_id == df2.df2_id, "left")
-'''
-st.code(left_join_df)
 
+# Create a new column using a custom function with apply
+def categorize_age(age):
+    if age < 18:
+        return 'child'
+    elif age < 65:
+        return 'adult'
+    else:
+        return 'senior'
 
-st.subheader('Create new columns')
-create_cols = ''
-if 'Pandas' in lang_var:
-    create_cols += '''
-#pandas
-df.assign(
-  twomore = lambda df: df.x + 2,
-  twoless = lambda df: df.x - 2
-)
-'''
-if 'Tidyverse' in lang_var:
-    create_cols += '''
-#tidyverse
-df %>% mutate(
-  twomore = x + 2,
-  twoless = x - 2
-)
-'''
-if 'Polars' in lang_var:
-    create_cols += '''
-#polars
-df.with_columns([
-    (pl.col("x") + 2).alias("twomore"),
-    (pl.col("x") - 2).alias("twoless"),
-])
-'''
-if 'SQL' in lang_var:
-    create_cols += '''
-#sql
-SELECT *, 
-       x + 2 AS twomore,
-       x - 2 AS twoless
-FROM df;
-'''
-if 'PySpark' in lang_var:
-    create_cols += '''
-#pyspark
-(df
-    .withColumn('twomore', F.col('x') + 2)
-    .withColumn('twoless', F.col('x') - 2))
-
-'''
-st.code(create_cols)
-
-st.subheader('Create new columns with conditional logic')
-create_cols_cond = ''
-if 'Pandas' in lang_var:
-    create_cols_cond += '''
-#pandas
-df.assign(
-  if_twomore = lambda df: 
-    np.where(df.column == True, 
-             df.x + 2, 
-             df.x)
-)
-'''
-if 'Tidyverse' in lang_var:
-    create_cols_cond += '''
-#tidyverse
-df %>% mutate(
-  if_twomore = ifelse(
-    column == T, 
-    x + 2, 
-    x)
-)
-'''
-if 'Polars' in lang_var:
-    create_cols_cond += '''
-#polars
-df.with_columns(
-    pl.when(pl.col("column") == True)
-    .then(pl.col("x")+2)
-    .otherwise(pl.col("x"))
-    .alias("if_twomore")
-)
-'''
-if 'SQL' in lang_var:
-    create_cols_cond += '''
-#sql
-SELECT *, 
-       CASE WHEN column = true THEN x + 2 ELSE x END AS if_twomore
-FROM my_table;
-'''
-if 'PySpark' in lang_var:
-    create_cols_cond += '''
-#pyspark
-df.withColumn(
-    'if_twomore', 
-    F.when(
-        F.col('column') == True, 
-        F.col('x') + 2) \\
-        .otherwise(F.col('x')))
-'''
-
-st.code(create_cols_cond)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+df['age_group'] = df['age'].apply(categorize_age)
+"""
+    st.code(pandas_code, language="python")
