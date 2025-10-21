@@ -15,10 +15,24 @@ with st.expander("Importing libraries", expanded=False):
         pandas_code += """# pandas
 import pandas as pd
 import numpy as np
+    """
+        if show_adv:
+            pandas_code += """
+# --- advanced ---
+import time
+import datetime as dt
+import math
+import scipy as sp
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+
+import sklearn
 """
     st.code(pandas_code, language="python")
 
-st.subheader('Loading in data')
+st.subheader('Importing datasets')
 
 with st.expander("Creating a series with **pd.Series()**", expanded=False):
     pandas_code = ''
@@ -113,7 +127,7 @@ df = pd.read_excel('data.xlsx',
 """
     st.code(pandas_code, language="python")
 
-st.subheader('Descriptive statistics')
+st.subheader('Describing datasets')
 
 with st.expander("Descriptive statistics for a dataframe with **.info()** and **.describe()**", expanded=False):
     pandas_code = ''
@@ -366,7 +380,7 @@ df.drop_duplicates(keep=False)
 """
     st.code(pandas_code, language="python")
 
-st.subheader('Data Cleaning')
+st.subheader('Cleaning datasets')
 
 st.markdown("_**Renaming columns**_")
 
@@ -642,7 +656,7 @@ df.sort_values("col_one", na_position='first')
 """
     st.code(pandas_code, language="python")
 
-st.subheader('Reshaping data')
+st.subheader('Reshaping datasets')
 
 st.markdown("_**Grouping and aggregating data**_")
 
@@ -745,7 +759,7 @@ df1.merge(df2, left_on='df1_id', right_on='df2_id', how='outer')
 
 
 
-st.subheader('Creating new columns')
+st.subheader('Augmenting datasets')
 
 with st.expander("Creating new columns with bracket notation **[]**", expanded=False):
     pandas_code = ''
