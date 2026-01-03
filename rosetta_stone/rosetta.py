@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 st.title('Data Science Rosetta Stone!')
@@ -1494,3 +1495,4 @@ INSERT INTO existing_table
 SELECT * FROM df;
 """
         st.code(sql_code, language="sql")
+
