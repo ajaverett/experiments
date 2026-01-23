@@ -1,289 +1,452 @@
-import streamlit as st
-import random
+from __future__ import annotations
+
 import math
+import asyncio
+from dataclasses import dataclass
+from typing import List, Optional, Dict, Any, Tuple
 
-# Function to generate a random permutation and compute instances after position
-def permute(elements_list, appearances_per_element, total_num_elements, total_elements):
-    ll = elements_list.copy()
-    permuted_elements_list = []
-    instances_after_position = [[0] * (total_elements + 1) for _ in range(total_num_elements + 1)]
+from shiny import App, ui, render, reactive
 
-    # Initialize instances_after_position[0] with counts appearances_per_element
-    for j in range(1, total_elements + 1):
-        instances_after_position[0][j] = appearances_per_element[j - 1]
 
-    # Generate a random permutation
-    for i in range(total_num_elements, 0, -1):
-        j = random.randint(0, i - 1)
-        permuted_elements_list.append(ll[j])
-        del ll[j]
+# ============================================================
+#  RNG: Numerical Recipes ran1 (same structure as Fortran code)
+# ============================================================
 
-    permuted_elements_list = permuted_elements_list[::-1]  # Reverse to get correct order
+@dataclass
+class Ran1:
+    idum: int = -1
 
-    # Compute instances_after_position
-    for i in range(1, total_num_elements + 1):
-        for j in range(1, total_elements + 1):
-            instances_after_position[i][j] = instances_after_position[i - 1][j]
-        instances_after_position[i][permuted_elements_list[i - 1]] -= 1
+    IA: int = 16807
+    IM: int = 2147483647
+    IQ: int = 127773
+    IR: int = 2836
+    NTAB: int = 32
+    EPS: float = 1.2e-7
 
-    return permuted_elements_list, instances_after_position
+    def __post_init__(self) -> None:
+        self.AM = 1.0 / self.IM
+        self.NDIV = 1 + (self.IM - 1) // self.NTAB
+        self.RNMX = 1.0 - self.EPS
+        self.iv = [0] * (self.NTAB + 1)  # 1-based
+        self.iy = 0
 
-# Function to calculate chiastic likelihood P
-def find_p(num_chiastic_opportunities, num_chiastic_instances, L):
-    pii = (1.0 - L) ** num_chiastic_opportunities
-    P = 1.0 - pii
-    if num_chiastic_instances > 1:
-        ratio = L / (1.0 - L)
-        for i in range(1, num_chiastic_instances):
-            pii *= (num_chiastic_opportunities + 1 - i) * ratio / i
-            P -= pii
-    return P
+    def random(self) -> float:
+        if self.idum <= 0 or self.iy == 0:
+            self.idum = max(-self.idum, 1)
+            for j in range(self.NTAB + 8, 0, -1):
+                k = self.idum // self.IQ
+                self.idum = self.IA * (self.idum - k * self.IQ) - self.IR * k
+                if self.idum < 0:
+                    self.idum += self.IM
+                if j <= self.NTAB:
+                    self.iv[j] = self.idum
+            self.iy = self.iv[1]
 
-# Main Streamlit app
-def main():
-    st.title("Chiastic Likelihood Calculator")
-    st.write("This app calculates the reordering likelihood **L** for chiastic structures.")
-    st.write("It also calculates the chiastic likelihood **P** if desired.")
+        k = self.idum // self.IQ
+        self.idum = self.IA * (self.idum - k * self.IQ) - self.IR * k
+        if self.idum < 0:
+            self.idum += self.IM
 
-    # Sidebar inputs
-    st.sidebar.header("Input Parameters")
+        j = 1 + self.iy // self.NDIV
+        self.iy = self.iv[j]
+        self.iv[j] = self.idum
 
-    # Chiasm name
-    chiasm_name = st.sidebar.text_area("""Chiasm Name""")
+        temp = self.AM * self.iy
+        return min(temp, self.RNMX)
 
-    # Number of chiastic elements
-    num_chiastic_elements = st.sidebar.number_input(
-        "Number n of chiastic elements", min_value=1, max_value=100, step=1, value=2
-    )
 
-    # Appearances of each chiastic element
-    chiastic_appearances_input = st.sidebar.text_input(
-        "Number of appearances of each chiastic element (comma-separated)", value="2,2"
-    )
+# ==============================
+#  Core math (Fortran findp)
+# ==============================
 
-    # Number of nonchiastic elements
-    num_nonchiastic_elements = st.sidebar.number_input(
-        "Number m of nonchiastic elements", min_value=0, max_value=100, step=1, value=0
-    )
+def findp(nopp: int, nchi: int, L: float) -> float:
+    # ppp = P(X >= nchi), X~Binomial(nopp, L)
+    pii = (1.0 - L) ** nopp
+    ppp = 1.0 - pii
+    if nchi > 1:
+        rat = L / (1.0 - L)
+        for i in range(1, nchi):
+            pii = pii * (nopp + 1 - i) * rat / i
+            ppp = ppp - pii
+    return ppp
 
-    # Appearances of each nonchiastic element
-    if num_nonchiastic_elements > 0:
-        nonchiastic_appearances_input = st.sidebar.text_input(
-            "Number of appearances of each nonchiastic element (comma-separated)", value=""
-        )
+
+def permute(
+    l: List[int],
+    kk: List[int],
+    nn: int,
+    m: int,
+    rng: Ran1
+) -> Tuple[List[int], List[List[int]]]:
+    ll = l[:]  # 1-based list, index 0 is dummy
+
+    p = [0] * (nn + 1)
+    for i in range(nn, 0, -1):
+        j = int(rng.random() * i) + 1  # 1..i
+        p[i] = ll.pop(j)
+
+    q = [[0] * (m + 1) for _ in range(nn + 1)]
+    for j in range(1, m + 1):
+        q[0][j] = kk[j]
+
+    for i in range(1, nn + 1):
+        row = q[i - 1][:]
+        row[p[i]] -= 1
+        q[i] = row
+
+    return p, q
+
+
+def max_chiastic_order_for_permutation(
+    p: List[int],
+    q: List[List[int]],
+    nn: int,
+    m: int,
+    mm: int,
+    mu: int
+) -> int:
+    # Backtracking search translated from Fortran main loop
+    u = [0] * (m + 1)
+    ii = [0] * (2 * mm + 2)
+    ii[2 * mm + 1] = nn + 1
+
+    k = 1
+    ii[k] = 1
+    finished = False
+    n = 0
+
+    while not finished:
+        j = p[ii[k]]
+        k2 = 2 * mm - k + 2
+        i = ii[k2] - 1
+
+        if i <= ii[k]:
+            nmax = -1
+        else:
+            nmax = k - 1
+            # count candidates that have >=2 instances within bounds and are unused
+            for jj in range(1, m + 1):
+                njj = q[ii[k] - 1][jj] - q[i][jj]
+                if njj > 1 and u[jj] == 0:
+                    nmax += 1
+            nj = q[ii[k] - 1][j] - q[i][j]
+
+        if nmax <= n:
+            if k == 1:
+                finished = True
+            else:
+                k -= 1
+                u[p[ii[k]]] = 0
+                ii[k] += 1
+
+        elif u[j] == 1 or nj < 2:
+            ii[k] += 1
+
+        else:
+            while p[i] != j:
+                i -= 1
+
+            if k > n:
+                n = k
+
+            ii[2 * mm - k + 1] = i
+            if mu == 0:
+                u[j] = 1
+
+            if k == mm:
+                finished = True
+            else:
+                k += 1
+                ii[k] = ii[k - 1] + 1
+
+    return n
+
+
+# ==========================================
+#  Compute wrapper (what PyShiny calls)
+# ==========================================
+
+def parse_counts(s: str) -> List[int]:
+    s = s.strip()
+    if not s:
+        return []
+    # allow "2,2,3" or "2 2 3"
+    s = s.replace(",", " ")
+    parts = [p for p in s.split() if p]
+    return [int(x) for x in parts]
+
+
+def compute_chiasmus(
+    mc_in: int,
+    chi_counts: List[int],
+    mn: int,
+    non_counts: List[int],
+    r: int,
+    ndup: int,
+    calc_p: bool,
+    nopp: Optional[int],
+    nchi: Optional[int],
+    seed: int = -1,
+    NNMAX: int = 200,
+    MMAX: int = 100,
+) -> Dict[str, Any]:
+    """
+    Returns dict with:
+      L, L_err, (optional) P, P_err, plus some metadata.
+    """
+
+    # basic validation
+    mc = mc_in
+    if mc < 1 or mc > MMAX:
+        raise ValueError(f"mc must be 1..{MMAX}")
+
+    if len(chi_counts) != mc:
+        raise ValueError(f"Need exactly {mc} chiastic counts")
+
+    if any(x < 2 for x in chi_counts):
+        raise ValueError("All chiastic counts must be >= 2")
+
+    if mn < 0:
+        raise ValueError("mn must be >= 0")
+
+    if len(non_counts) != mn:
+        raise ValueError(f"Need exactly {mn} nonchiastic counts")
+
+    if any(x < 2 for x in non_counts):
+        raise ValueError("All nonchiastic counts must be >= 2")
+
+    m = mc + mn
+    if m > MMAX:
+        raise ValueError(f"mc+mn must be <= {MMAX}")
+
+    # 1-based kk
+    kk = [0] + chi_counts + non_counts
+
+    # Build l[1..nn], nlev
+    nn = 0
+    nlev = 0
+    l = [0]  # dummy
+    for j in range(1, m + 1):
+        nlev += kk[j] // 2
+        for _ in range(kk[j]):
+            nn += 1
+            if nn > NNMAX:
+                raise ValueError(f"Total appearances nn exceeds {NNMAX}")
+            l.append(j)
+
+    # ---- exact simple case ----
+    if mn == 0 and nn == mc * 2:
+        # L = product_{i=1..mc} 1/(2i-1)
+        L = 1.0
+        for i in range(1, mc + 1):
+            L /= (2 * i - 1)
+        L_err = 0.0
+        out = {"L": L, "L_err": L_err, "method": "exact", "nn": nn, "m": m, "mc_used": mc}
     else:
-        nonchiastic_appearances_input = ""
+        # Monte Carlo
+        if r < 1:
+            raise ValueError("r must be >= 1")
 
-    # Initialize variables
-    is_simple_chiasm = False
-    total_num_elements = 0
-    elements_list = []
-    appearances_per_element = []
+        mu = 0
+        mm = m
 
-    # Parse chiastic appearances
-    try:
-        appearances_per_element = [
-            int(k) for k in chiastic_appearances_input.replace(',', ' ').split()
-        ]
-        if len(appearances_per_element) != num_chiastic_elements:
-            st.error(f"Please enter exactly {num_chiastic_elements} numbers for chiastic elements.")
-            return
-        if any(k < 2 for k in appearances_per_element):
-            st.error("Each chiastic element must appear at least twice.")
-            return
-    except ValueError:
-        st.error("Invalid input for chiastic appearances. Please enter integers separated by commas.")
-        return
+        if nlev > mc:
+            if ndup < 0 or (ndup + mc) > nlev:
+                raise ValueError("ndup is invalid (too large or negative).")
+            if ndup > 0:
+                mu = 1
+                mm = nn // 2
+                mc = mc + ndup  # matches Fortran
 
-    # Parse nonchiastic appearances
-    if num_nonchiastic_elements > 0:
+        rng = Ran1(idum=seed)
+
+        npn = [0] * (mm + 1)
+
+        for _ip in range(1, r + 1):
+            p, q = permute(l, kk, nn, m, rng)
+            n_found = max_chiastic_order_for_permutation(p, q, nn, m, mm, mu)
+            if 0 <= n_found <= mm:
+                npn[n_found] += 1
+
+        npnh = [0] * (mm + 1)
+        npnh[mm] = npn[mm]
+        for n in range(mm - 1, 0, -1):
+            npnh[n] = npnh[n + 1] + npn[n]
+
+        if mc > mm:
+            L = 0.0
+            L_err = 0.0
+        else:
+            L = npnh[mc] / r
+            L_err = math.sqrt(npnh[mc]) / r
+
+        out = {"L": L, "L_err": L_err, "method": "monte_carlo", "nn": nn, "m": m, "mc_used": mc}
+
+    # ---- P calculation (binomial tail) ----
+    if calc_p:
+        if nopp is None or nchi is None:
+            raise ValueError("Need N and M to compute P.")
+        if nopp < 1 or nchi < 1:
+            raise ValueError("N and M must be >= 1.")
+
+        L = out["L"]
+        L_err = out["L_err"]
+
+        P = findp(nopp, nchi, L)
+
+        if L + L_err < 1.0:
+            P_alt = findp(nopp, nchi, L + L_err)
+        elif L - L_err > 0.0:
+            P_alt = findp(nopp, nchi, L - L_err)
+        else:
+            P_alt = 100.0
+
+        P_err = abs(P - P_alt)
+        out.update({"P": P, "P_err": P_err, "N": nopp, "M": nchi})
+
+    return out
+
+
+# ============================================================
+#  PyShiny UI
+# ============================================================
+
+app_ui = ui.page_fluid(
+    ui.h2("Chiastic Likelihood (Fortran → Python → PyShiny)"),
+
+    ui.layout_sidebar(
+        ui.sidebar(
+            ui.input_numeric("mc", "Number n of chiastic elements (mc)", value=5, min=1, step=1),
+            ui.input_text_area(
+                "chi_counts",
+                "Appearances of each chiastic element (comma/space separated)",
+                "2,2,2,2,2",
+                rows=2,
+            ),
+
+            ui.hr(),
+
+            ui.input_numeric("mn", "Number m of nonchiastic elements (mn)", value=0, min=0, step=1),
+            ui.panel_conditional(
+                "input.mn > 0",
+                ui.input_text_area(
+                    "non_counts",
+                    "Appearances of each nonchiastic element (comma/space separated)",
+                    "2",
+                    rows=2,
+                ),
+            ),
+
+            ui.hr(),
+
+            ui.input_numeric("r", "Rearrangements (Monte Carlo r)", value=10000, min=1, step=1000),
+            ui.input_numeric("ndup", "Duplicate levels (ndup, usually 0)", value=0, min=0, step=1),
+
+            ui.hr(),
+
+            ui.input_checkbox("calc_p", "Calculate P", value=False),
+            ui.panel_conditional(
+                "input.calc_p",
+                ui.input_numeric("N", "N opportunities", value=100, min=1, step=1),
+                ui.input_numeric("M", "M chiastic", value=1, min=1, step=1),
+            ),
+
+            ui.hr(),
+
+            ui.input_action_button("run", "Run calculation", class_="btn-primary"),
+            ui.input_action_button("cancel", "Cancel (if running)", class_="btn-secondary"),
+        ),
+
+        ui.card(
+            ui.card_header("Results"),
+            ui.output_text_verbatim("results"),
+        ),
+    ),
+)
+
+
+# ============================================================
+#  Server logic (ExtendedTask for long computations)
+# ============================================================
+
+@reactive.extended_task
+async def run_calc(params: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Runs in the background so the UI doesn't freeze during long r.
+    (ExtendedTask behavior documented by Posit.) :contentReference[oaicite:1]{index=1}
+    """
+    # Yield once to keep event loop happy
+    await asyncio.sleep(0)
+
+    return compute_chiasmus(**params)
+
+
+def server(input, output, session):
+
+    @reactive.Effect
+    @reactive.event(input.run)
+    def _():
+        # Parse counts from text areas
         try:
-            nonchiastic_appearances = [
-                int(k) for k in nonchiastic_appearances_input.replace(',', ' ').split()
-            ]
-            if len(nonchiastic_appearances) != num_nonchiastic_elements:
-                st.error(f"Please enter exactly {num_nonchiastic_elements} numbers for nonchiastic elements.")
-                return
-            if any(k < 2 for k in nonchiastic_appearances):
-                st.error("Each nonchiastic element must appear at least twice.")
-                return
-            appearances_per_element.extend(nonchiastic_appearances)
-        except ValueError:
-            st.error("Invalid input for nonchiastic appearances. Please enter integers separated by commas.")
-            return
-    else:
-        nonchiastic_appearances = []
+            mc = int(input.mc())
+            mn = int(input.mn())
 
-    total_elements = num_chiastic_elements + num_nonchiastic_elements
+            chi_counts = parse_counts(input.chi_counts())
+            non_counts = parse_counts(input.non_counts()) if mn > 0 else []
 
-    # Build the list of elements in standard order
-    num_possible_levels = 0
-    for j in range(len(appearances_per_element)):
-        num_possible_levels += appearances_per_element[j] // 2
-        for _ in range(appearances_per_element[j]):
-            total_num_elements += 1
-            if total_num_elements > 200:
-                st.error("Total number of element appearances exceeds 200. Please try again.")
-                return
-            elements_list.append(j + 1)  # Elements are 1-indexed
-
-    # Check if the chiasm is simple
-    is_simple_chiasm = (
-        num_nonchiastic_elements == 0 and total_num_elements == num_chiastic_elements * 2
-    )
-
-    if is_simple_chiasm:
-        calc_exact = st.sidebar.radio(
-            "This chiasm is simple. Calculate L exactly?", ("Yes", "No"), index=0
-        )
-        if calc_exact == "Yes":
-            L = 1.0
-            for i in range(1, num_chiastic_elements + 1):
-                L /= (2 * i - 1)
-            error_margin = 0.0
-            st.write(f"Reordering likelihood **L** = {L:.16f}")
-            st.write(f"Margin of error (+ or -) = {error_margin:.16f}")
-
-            # Store L and error_margin in session state
-            st.session_state['L'] = L
-            st.session_state['error_margin'] = error_margin
-
-        else:
-            L = None  # Will be calculated later
-    else:
-        calc_exact = "No"
-        L = None  # Will be calculated later
-
-    # Additional inputs for complex chiasms
-    if calc_exact == "No":
-        num_rearrangements = st.sidebar.number_input(
-            "Number r of rearrangements", min_value=1, step=1, value=10000
-        )
-        num_duplicate_levels = 0
-        if num_possible_levels > num_chiastic_elements:
-            num_duplicate_levels = st.sidebar.number_input(
-                "Number of duplicate levels (normally 0)", min_value=0, step=1, value=0
+            params = dict(
+                mc_in=mc,
+                chi_counts=chi_counts,
+                mn=mn,
+                non_counts=non_counts,
+                r=int(input.r()),
+                ndup=int(input.ndup()),
+                calc_p=bool(input.calc_p()),
+                nopp=int(input.N()) if input.calc_p() else None,
+                nchi=int(input.M()) if input.calc_p() else None,
+                seed=-1,
             )
-        else:
-            num_duplicate_levels = 0
 
-        # Calculate L using Monte Carlo simulation
-        calculate_button = st.sidebar.button("Calculate L")
-        if calculate_button:
-            with st.spinner("Calculating..."):
-                allow_duplicate_elements = False
-                num_possible_chiastic_elements = total_elements
-                if num_duplicate_levels > 0:
-                    allow_duplicate_elements = True
-                    num_possible_chiastic_elements = total_num_elements // 2
-                    num_chiastic_elements += num_duplicate_levels
+            run_calc.invoke(params)
 
-                permutations_per_order = [0] * (num_possible_chiastic_elements + 1)
-                cumulative_permutations_per_order = [0] * (num_possible_chiastic_elements + 1)
+        except Exception as e:
+            # Put error into a fake “completed” result by invoking a tiny run
+            # (simpler than building separate error plumbing).
+            run_calc.invoke({"mc_in": 1, "chi_counts": [2], "mn": 0, "non_counts": [],
+                            "r": 1, "ndup": 0, "calc_p": False, "nopp": None, "nchi": None,
+                            "seed": -1})
+            session.send_notification(f"Input error: {e}", type="error")
 
-                total_iterations = int(num_rearrangements)
-                progress_bar = st.progress(0)
-                for iteration in range(total_iterations):
-                    # Update progress bar
-                    if iteration % max(1, total_iterations // 100) == 0:
-                        progress_bar.progress((iteration + 1) / total_iterations)
+    @reactive.Effect
+    @reactive.event(input.cancel)
+    def _():
+        run_calc.cancel()
+        session.send_notification("Cancelled.", type="message")
 
-                    # Generate random permutation
-                    permuted_elements_list, instances_after_position = permute(
-                        elements_list, appearances_per_element, total_num_elements, total_elements
-                    )
+    @output
+    @render.text
+    def results():
+        # This will automatically show a “busy” state while running
+        # due to ExtendedTask semantics. :contentReference[oaicite:2]{index=2}
+        res = run_calc.result()
 
-                    used_elements = [0] * (total_elements + 1)
-                    indices_in_combination = [0] * (2 * num_possible_chiastic_elements + 2)
-                    c = [0] * (num_possible_chiastic_elements + 1)
-                    indices_in_combination[2 * num_possible_chiastic_elements + 1] = total_num_elements + 1
-                    k = 1
-                    indices_in_combination[k] = 1
-                    finished = False
-                    n = 0  # Highest chiastic order found so far
-                    while not finished:
-                        j = permuted_elements_list[indices_in_combination[k] - 1]
-                        k2 = 2 * num_possible_chiastic_elements - k + 2
-                        i = indices_in_combination[k2] - 1
-                        if i <= indices_in_combination[k]:
-                            nmax = -1
-                        else:
-                            nmax = k - 1
-                            for jj in range(1, total_elements + 1):
-                                njj = instances_after_position[indices_in_combination[k] - 1][jj] - \
-                                      instances_after_position[i][jj]
-                                if njj > 1 and used_elements[jj] == 0:
-                                    nmax += 1
-                            nj = instances_after_position[indices_in_combination[k] - 1][j] - \
-                                 instances_after_position[i][j]
-                        if nmax <= n:
-                            if k == 1:
-                                finished = True
-                                permutations_per_order[n] += 1
-                            else:
-                                k -= 1
-                                used_elements[permuted_elements_list[indices_in_combination[k] - 1]] = 0
-                                indices_in_combination[k] += 1
-                        elif used_elements[j] == 1 or nj < 2:
-                            indices_in_combination[k] += 1
-                        else:
-                            while permuted_elements_list[i - 1] != j:
-                                i -= 1
-                            if k > n:
-                                n = k
-                                for kp in range(1, n + 1):
-                                    c[kp] = permuted_elements_list[indices_in_combination[kp] - 1]
-                            indices_in_combination[2 * num_possible_chiastic_elements - k + 1] = i
-                            if not allow_duplicate_elements:
-                                used_elements[j] = 1
-                            if k == num_possible_chiastic_elements:
-                                finished = True
-                                permutations_per_order[n] += 1
-                            else:
-                                k += 1
-                                indices_in_combination[k] = indices_in_combination[k - 1] + 1
+        lines = []
+        lines.append(f"Method: {res.get('method')}")
+        lines.append(f"nn (total appearances): {res.get('nn')}")
+        lines.append(f"m (total elements): {res.get('m')}")
+        lines.append(f"mc_used (order threshold): {res.get('mc_used')}")
+        lines.append("")
+        lines.append(f"Reordering likelihood L  = {res['L']:.16f}")
+        lines.append(f"Margin of error (+/-)    = {res['L_err']:.16f}")
 
-                cumulative_permutations_per_order[num_possible_chiastic_elements] = permutations_per_order[num_possible_chiastic_elements]
-                for n_idx in range(num_possible_chiastic_elements - 1, 0, -1):
-                    cumulative_permutations_per_order[n_idx] = cumulative_permutations_per_order[n_idx + 1] + permutations_per_order[n_idx]
+        if "P" in res:
+            lines.append("")
+            lines.append(f"N opportunities          = {res['N']}")
+            lines.append(f"M chiastic               = {res['M']}")
+            lines.append(f"Chiastic likelihood P    = {res['P']:.16f}")
+            lines.append(f"Margin of error (+/-)    = {res['P_err']:.16f}")
 
-                L = cumulative_permutations_per_order[num_chiastic_elements] / num_rearrangements
-                error_margin = math.sqrt(cumulative_permutations_per_order[num_chiastic_elements]) / num_rearrangements
-                st.success("Calculation completed!")
-                st.write(f"Reordering likelihood **L** = {L:.16f}")
-                st.write(f"Margin of error (+ or -) = {error_margin:.16f}")
+        return "\n".join(lines)
 
-                # Store L and error_margin in session state
-                st.session_state['L'] = L
-                st.session_state['error_margin'] = error_margin
 
-    # Option to calculate P
-    if 'L' in st.session_state and st.session_state['L'] is not None:
-        L = st.session_state['L']
-        error_margin = st.session_state['error_margin']
-
-        calc_P = st.sidebar.radio("Calculate P?", ("No", "Yes"), index=0)
-        if calc_P == "Yes":
-            num_chiastic_opportunities = st.sidebar.number_input(
-                "Number N of chiastic opportunities", min_value=1, step=1, value=1
-            )
-            num_chiastic_instances = st.sidebar.number_input(
-                "Number M of these that are chiastic", min_value=1, step=1, value=1
-            )
-            calculate_P_button = st.sidebar.button("Calculate P")
-            if calculate_P_button:
-                P = find_p(num_chiastic_opportunities, num_chiastic_instances, L)
-                if L + error_margin < 1.0:
-                    P_error = find_p(num_chiastic_opportunities, num_chiastic_instances, L + error_margin)
-                elif L - error_margin > 0.0:
-                    P_error = find_p(num_chiastic_opportunities, num_chiastic_instances, L - error_margin)
-                else:
-                    P_error = 100.0
-                P_error_margin = abs(P - P_error)
-                st.write(f"Chiastic likelihood **P** = {P:.16f}")
-                st.write(f"Margin of error (+ or -) = {P_error_margin:.16f}")
-    else:
-        st.sidebar.write("Please calculate L first.")
-
-if __name__ == '__main__':
-    main()
+app = App(app_ui, server)
