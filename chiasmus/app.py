@@ -258,7 +258,7 @@ st.markdown(
 )
 
 st.markdown("## Chiasmus Likelihood")
-st.caption("Monte Carlo + exact simple-case likelihood (L), with optional P tail probability.")
+st.caption("https://scholarsarchive.byu.edu/cgi/viewcontent.cgi?article=4295&context=byusq")
 
 
 # -----------------------------
