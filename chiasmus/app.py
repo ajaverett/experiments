@@ -235,6 +235,158 @@ def parse_counts(text: str):
     parts = [p for p in s.split() if p]
     return [int(x) for x in parts]
 
+def compute_chiasmus(
+    mc_in: int,
+    chi_counts: List[int],
+    mn: int,
+    non_counts: List[int],
+    r: int,
+    ndup: int,
+    calc_p: bool,
+    nopp: int | None,
+    nchi: int | None,
+    seed: int = -1,
+    NNMAX: int = 200,
+    MMAX: int = 100,
+):
+    """
+    Standalone compute wrapper.
+    Returns dict: L, L_err, plus optional P, P_err, and metadata.
+    """
+
+    # ---- validation ----
+    mc = mc_in
+    if mc < 1 or mc > MMAX:
+        raise ValueError(f"mc must be 1..{MMAX}")
+
+    if len(chi_counts) != mc:
+        raise ValueError(f"Need exactly {mc} chiastic counts")
+
+    if any(x < 2 for x in chi_counts):
+        raise ValueError("All chiastic counts must be >= 2")
+
+    if mn < 0:
+        raise ValueError("mn must be >= 0")
+
+    if len(non_counts) != mn:
+        raise ValueError(f"Need exactly {mn} nonchiastic counts")
+
+    if any(x < 2 for x in non_counts):
+        raise ValueError("All nonchiastic counts must be >= 2")
+
+    m = mc + mn
+    if m > MMAX:
+        raise ValueError(f"mc+mn must be <= {MMAX}")
+
+    # 1-based kk
+    kk = [0] + chi_counts + non_counts
+
+    # Build l[1..nn], nlev
+    nn = 0
+    nlev = 0
+    l = [0]  # dummy 0 index
+    for j in range(1, m + 1):
+        nlev += kk[j] // 2
+        for _ in range(kk[j]):
+            nn += 1
+            if nn > NNMAX:
+                raise ValueError(f"Total appearances nn exceeds {NNMAX}")
+            l.append(j)
+
+    # ---- exact simple case ----
+    if mn == 0 and nn == mc * 2:
+        L = 1.0
+        for i in range(1, mc + 1):
+            L /= (2 * i - 1)
+        L_err = 0.0
+
+        out = {
+            "L": L,
+            "L_err": L_err,
+            "method": "exact",
+            "nn": nn,
+            "m": m,
+            "mc_used": mc,
+        }
+
+    else:
+        # ---- Monte Carlo case ----
+        if r < 1:
+            raise ValueError("r must be >= 1")
+
+        mu = 0
+        mm = m
+
+        # Duplicate levels logic (as Fortran)
+        if nlev > mc:
+            if ndup < 0 or (ndup + mc) > nlev:
+                raise ValueError("ndup is invalid (too large or negative).")
+
+            if ndup > 0:
+                mu = 1
+                mm = nn // 2
+                mc = mc + ndup  # matches Fortran behavior
+
+        rng = Ran1(idum=seed)
+
+        # order histogram
+        npn = [0] * (mm + 1)
+
+        for _ in range(r):
+            p, q = permute(l, kk, nn, m, rng)
+            n_found = max_chiastic_order_for_permutation(p, q, kk, nn, m, mm, mu)
+            if 0 <= n_found <= mm:
+                npn[n_found] += 1
+
+        # cumulative distribution npnh[n] = count(order >= n)
+        npnh = [0] * (mm + 1)
+        npnh[mm] = npn[mm]
+        for n in range(mm - 1, 0, -1):
+            npnh[n] = npnh[n + 1] + npn[n]
+
+        if mc > mm:
+            L = 0.0
+            L_err = 0.0
+        else:
+            L = npnh[mc] / r
+            L_err = math.sqrt(npnh[mc]) / r
+
+        out = {
+            "L": L,
+            "L_err": L_err,
+            "method": "monte_carlo",
+            "nn": nn,
+            "m": m,
+            "mc_used": mc,
+        }
+
+    # ---- optional P calculation ----
+    if calc_p:
+        if nopp is None or nchi is None:
+            raise ValueError("Need N and M to compute P.")
+        if nopp < 1 or nchi < 1:
+            raise ValueError("N and M must be >= 1.")
+
+        L = out["L"]
+        L_err = out["L_err"]
+
+        P = findp(nopp, nchi, L)
+
+        # propagate error like original Fortran logic
+        if L + L_err < 1.0:
+            P_alt = findp(nopp, nchi, L + L_err)
+        elif L - L_err > 0.0:
+            P_alt = findp(nopp, nchi, L - L_err)
+        else:
+            P_alt = 100.0
+
+        out["P"] = P
+        out["P_err"] = abs(P - P_alt)
+        out["N"] = nopp
+        out["M"] = nchi
+
+    return out
+
 
 st.set_page_config(
     page_title="Chiasmus Likelihood",
